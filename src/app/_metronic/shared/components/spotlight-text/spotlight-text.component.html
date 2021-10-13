@@ -1,0 +1,190 @@
+<div class="mt-5">
+    <form action="#" [formGroup]="formGroup">
+        <div class="form-group row">
+            <div class="col-lg-5">
+                <label class="form-label">Question</label>
+                <textarea type="text" class="form-control form-control-lg form-control-solid" name="question"
+                    placeholder="Enter Question" autocomplete="off"
+                    [class.is-invalid]="validationService.isControlInvalid('question')"
+                    [class.is-valid]="validationService.isControlValid('question')"
+                    formControlName="question"></textarea>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'question')">
+                    Question is required
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <label>Answer Type</label>
+                <select class="form-control form-control-lg form-control-solid" placeholder="Select Answer Type"
+                    name="answerType" formControlName="answerType" (change)="changeAnswerType($event.target.value)">
+                    <option [value]="null" disabled>Select Answer Type </option>
+                    <option [value]="type.id" *ngFor="let type of answerTypeMaster">{{type.title}} </option>
+                </select>
+            </div>
+        </div>
+        <ng-container *ngIf="answerType==2">
+            <div class="col-lg-12" formArrayName="answers">
+                <div class="row" *ngIf="answers().controls.length>0">
+                    <div class="col-lg-3"  *ngFor="let items of answers().controls; let i=index "
+                    [formGroupName]="i">
+                        <div class="form-group" >
+                            <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 " (click)="removeQuantity(i)" ><i
+                                class="ki ki-minus icon-xs "></i></span>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label class="radio radio-single">
+                                            <input  type="radio" [value]="true" formControlName="isAnswer" />
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                                <input type="text" name="{{i}}" formControlName="option" class="form-control"
+                                    aria-label="Text input with radio" [class.is-invalid]="items.controls['option'].invalid && (items.controls['option'].dirty || items.controls['option'].touched) "
+                                    [class.is-valid]="items.controls['option'].valid && (items.controls[ 'option'].dirty || items.controls[ 'option'].touched) "/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="plusIcon" *ngIf="answers().controls.length !== 6">
+                        <span class="float-right btn btn-success" (click)="addAnswers(undefined)"><i
+                            class="ki ki-plus icon-xs "></i></span>
+                            <span class="float-right danger" *ngIf="answers().controls.length === 6">
+                                You can add options max up to 6
+                            </span>
+                    </div>
+                </div>
+            </div>
+            
+        </ng-container>
+        <ng-container *ngIf="answerType==3">
+            <div class="col-lg-12" formArrayName="answers">
+                <div class="row" *ngIf="answers().controls.length>0">
+                    <div class="col-lg-3"  *ngFor="let items of answers().controls; let i=index "
+                    [formGroupName]="i">
+                    <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 " (click)="removeQuantity(i)"><i
+                        class="ki ki-minus icon-xs "></i></span>
+                        <div class="form-group" >
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <label class="checkbox checkbox-inline">
+                                            <input type="checkbox"  [value]="true" formControlName="isAnswer" checked />
+                                            <span></span>
+                                        </label>
+                                    </span>
+                                </div>
+                                <input type="text" name="{{i}}" formControlName="option" class="form-control"
+                                    aria-label="Text input with radio" [class.is-invalid]="items.controls['option'].invalid && (items.controls['option'].dirty || items.controls['option'].touched) "
+                                    [class.is-valid]="items.controls['option'].valid && (items.controls[ 'option'].dirty || items.controls[ 'option'].touched) "/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="plusIcon" *ngIf="answers().controls.length !== 6">
+                        <span class="float-right btn btn-success" (click)="addAnswers(undefined)"><i
+                            class="ki ki-plus icon-xs "></i></span>
+                            <span class="float-right danger" *ngIf="answers().controls.length === 6">
+                                You can add option max up to 6.
+                            </span>
+                    </div>
+                </div>
+            </div>
+            
+        </ng-container>
+        <ng-container *ngIf="answerType==4">
+            <div class="pt-5">
+                <p class="font-weight-normal font-size-lg pb-7">
+                    Note: Student will be shown textarea for answering
+                </p>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="answerType==5">
+            <div class="col-lg-12" formArrayName="answers">
+                <div class="row" *ngIf="answers().controls.length>0">
+                    <div class="col-lg-3"  *ngFor="let items of answers().controls; let i=index "
+                    [formGroupName]="i">
+                        <div class="form-group" >
+                            <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 " (click)="removeQuantity(i)"><i
+                                class="ki ki-minus icon-xs "></i></span>
+                            <div class="input-group-append" >
+                                <div id="upload_button" >
+                                    <label>
+                                        <input type="file" (change)="uploadImage($event,items)" >
+                                            <span class="btn btn-success"> Upload Image </span>
+                                    </label>
+                                </div>                            </div>
+                            <input type="text" name="{{i}}" formControlName="option" class="form-control"
+                                aria-label="Text input with radio" [class.is-invalid]="items.controls['option'].invalid && (items.controls['option'].dirty || items.controls['option'].touched) "
+                                [class.is-valid]="items.controls['option'].valid && (items.controls[ 'option'].dirty || items.controls[ 'option'].touched) "/>
+                        </div>
+                     
+                    </div>
+                    <div style="margin-top: 43px !important;" class="plusIcon" *ngIf="answers().controls.length !== 6">
+                        <span class="float-right btn btn-success" (click)="addAnswers(undefined)"><i
+                            class="ki ki-plus icon-xs "></i></span>
+                            <span class="float-right danger" *ngIf="answers().controls.length === 6">
+                                You can add option max up to 6.
+                            </span>
+                    </div>
+                </div>
+            </div>
+          <!--   <div class="row">
+                <div class="col-lg-3">
+                    <label class="form-label"></label>
+                    <input type="text" class="form-control form-control-lg form-control-solid" name="answer"
+                        placeholder="Enter Answer" autocomplete="off"
+                        [class.is-invalid]="validationService.isControlInvalid('answer')"
+                        [class.is-valid]="validationService.isControlValid('answer')" formControlName="answer" />
+                    <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'answer')">
+                        Answer is required
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <app-upload-button [multiple]="false"></app-upload-button>
+                </div>
+            </div> -->
+        </ng-container>
+
+        <div class="form-group row">
+            <div class="col-lg-12 float-right">
+               
+                <span class="float-right btn btn-success" (click)="add()"><i
+                        class="ki ki-plus icon-xs "></i>Add</span>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="separator separator-solid my-10"></div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th >Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center" *ngIf="questionData?.length==0">No questions available</tr>
+            <tr *ngFor="let item of questionData">
+                <td>{{item.question}}</td>
+                <td >
+                    <a title="Edit question" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                        (click)="edit(item)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+                            class="svg-icon svg-icon-md svg-icon-primary">
+                        </span>
+                    </a>
+
+                    <a title="Delete question" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                        (click)="delete(item)">
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                            class="svg-icon svg-icon-md svg-icon-danger">
+                        </span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

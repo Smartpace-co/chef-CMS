@@ -1,0 +1,18 @@
+.removeIcon {
+    width: 0px;
+    margin-top: -26px;
+    margin-left: -15px;
+}
+.image-wrapper {
+    height: 120px;
+    width: 120px;
+    border: 1px solid lightgray;
+    border-width: 2px;
+  }
+  #upload_button {
+    display: inline-block;
+  }
+  
+  #upload_button input[type="file"] {
+    display: none;
+  }

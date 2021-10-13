@@ -1,0 +1,20 @@
+.upload-card{
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.note{
+    width: 100%;text-align: right;order: 4;
+}
+.od-1{
+    order: 1;
+}
+.od-2{
+    order: 2;
+}
+.od-3{
+    order: 3;
+}
+.grade-card:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}

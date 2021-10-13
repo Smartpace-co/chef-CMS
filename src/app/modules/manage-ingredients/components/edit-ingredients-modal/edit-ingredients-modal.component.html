@@ -1,0 +1,314 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container *ngIf="ingredients">
+                <ng-container *ngIf="ingredients.id">Edit</ng-container>
+                <ng-container *ngIf="!ingredients.id">Create</ng-container>
+                Ingredient
+                <ng-container *ngIf="ingredients.id">'{{ingredients.ingredientTitle}}'</ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+        <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.BASIC_TAB"
+                    (click)="changeTab()" [class.active]="activeTabId === tabs.BASIC_TAB">
+                    Basic info
+                </a>
+            </li>
+            <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button" (click)="activeTabId =tabs.SPOTLIGHT_TAB"
+                    [attr.aria-selected]="activeTabId === tabs.SPOTLIGHT_TAB"
+                    [class.active]="activeTabId === tabs.SPOTLIGHT_TAB">Spotlight Questions</a>
+            </li>
+            <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button" (click)="activeTabId =tabs.MULTI_SENSORY_TAB"
+                    [attr.aria-selected]="activeTabId === tabs.MULTI_SENSORY_TAB"
+                    [class.active]="activeTabId === tabs.MULTI_SENSORY_TAB">Multi sensory Question</a>
+            </li>
+            <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button" (click)="activeTabId =tabs.QUESTION_TAB"
+                    [attr.aria-selected]="activeTabId === tabs.QUESTION_TAB"
+                    [class.active]="activeTabId === tabs.QUESTION_TAB">Questions</a>
+            </li>
+        </ul> -->
+
+        <ng-container *ngIf="ingredients && activeTabId ==tabs.BASIC_TAB">
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group row">
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Ingredient Name</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="ingredientName"
+                            placeholder="Enter Ingredients Name" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('ingredientName')"
+                            [class.is-valid]="validationService.isControlValid('ingredientName')"
+                            formControlName="ingredientName" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('ingredientName')">
+                            Ingredients Name was entered correct</div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'ingredientName')">Ingredients Name is
+                            required
+                        </div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('minlength', 'ingredientName')">Ingredients Name
+                            is required
+                        </div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('maxlength', 'ingredientName')">Ingredients Name
+                            is required
+                        </div>
+                    </div>
+                    <div *ngIf="!id" class="form-group col-lg-4">
+                        <label>Language</label>
+                        <select class="form-control form-control-lg form-control-solid" name="languageId" [class.is-invalid]="validationService?.isControlInvalid('languageId')" formControlName="languageId">
+                            <option [value]="null" disabled>Select Language </option>
+                            <option [value]="item.id" [disabled]="!item.is_enable"
+                                *ngFor="let item of languageMaster">{{item.title}}</option>
+
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'languageId')">Language is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Link for Easy Ordering</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid"
+                            name="linkForEasyOrdering" placeholder="Enter Link for easy ordering" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('linkForEasyOrdering')"
+                            [class.is-valid]="validationService.isControlValid('linkForEasyOrdering')"
+                            formControlName="linkForEasyOrdering" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('linkForEasyOrdering')">
+                            Link for easy ordering was entered correct</div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'linkForEasyOrdering')">Link for easy
+                            ordering is required</div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Season</label>
+                        <select class="form-control form-control-lg form-control-solid" name="seasonId" [class.is-invalid]="validationService?.isControlInvalid('seasonId')" formControlName="seasonId">
+                            <option [value]="null" disabled>Select Season </option>
+                            <option [value]="item.id" *ngFor="let item of seasonMaster">{{item.title}}</option>
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'seasonId')">Season is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Common Name</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid"
+                            name="commonNameOfIngredient" placeholder="Enter Common name of ingredient"
+                            autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('commonNameOfIngredient')"
+                            [class.is-valid]="validationService.isControlValid('commonNameOfIngredient')"
+                            formControlName="commonNameOfIngredient" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('commonNameOfIngredient')">
+                            Common name of ingredient was entered correct</div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'commonNameOfIngredient')">Common name
+                            of ingredient is required</div>
+                    </div>
+                  <!--   <div class="form-group col-lg-4">
+                        <label class="form-label"> Size of ingredient</label>
+                        <input type="number" class="form-control form-control-lg form-control-solid" name="size"
+                            placeholder="Enter size of ingredient" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('size')"
+                            [class.is-valid]="validationService.isControlValid('size')" formControlName="size" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('size')">
+                            Size of ingredient was entered correct</div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'size')">
+                            Size ingredient is required</div>
+                    </div> -->
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Scientific name</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid"
+                            name="scientificNameOfIngredient" placeholder="Enter Scientific name of ingredient
+                        " autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('scientificNameOfIngredient')"
+                            [class.is-valid]="validationService.isControlValid('scientificNameOfIngredient')"
+                            formControlName="scientificNameOfIngredient" />
+                        <div class="valid-feedback"
+                            *ngIf="validationService?.isControlValid('scientificNameOfIngredient')">
+                            Scientific name of ingredient was entered correct</div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'scientificNameOfIngredient')">
+                            Scientific name of ingredient is required</div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Ingredient Spotlight Text</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid"
+                            name="commonNameOfIngredient" placeholder="Enter Ingredient Spotlight Text"
+                            autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('commonNameOfIngredient')"
+                            [class.is-valid]="validationService.isControlValid('commonNameOfIngredient')"
+                            formControlName="commonNameOfIngredient" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('commonNameOfIngredient')">
+                            Ingredient Spotlight Text was entered correct</div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'commonNameOfIngredient')">Ingredient Spotlight Text is required</div>
+                    </div>
+                    <!-- <div *ngIf="showTagList" class="form-group col-lg-3">
+                        <label>Tag</label>
+                        <app-ng-select-input [formName]="formGroup" [textField]="'tagTitle'" [idfield]="'id'"
+                            [fieldControl]="'tag'" [dataList]="tagMaster" [placeHolder]="'Select Tags'">
+                        </app-ng-select-input>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'tag')">Tags
+                            required</div>
+                    </div>
+                    <div *ngIf="showTagList" class="form-group col-lg-1">
+                        <label></label>
+                        <button class="mt-7 btn btn-primary" (click)="showTag()">Add</button>
+                    </div>
+                    <div *ngIf="!showTagList" class="form-group col-lg-4 mt-2">
+                        <div class="input-group mb-3">
+                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="newTag"
+                                class="form-control form-control-solid" placeholder="Enter New Tag">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" (click)="addTag()">Save</button>
+                                <button class="btn btn-warning" type="button" (click)="resetTag()">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="input-group invalid-feedback" *ngIf="tagErrorMessage">
+                            {{tagErrorMessage}}
+                        </div>
+                    </div>
+
+ -->
+                    <div *ngIf="showAllergenList" class="form-group col-lg-3">
+                        <label>Allergen</label>
+                        <app-ng-select-input [formName]="formGroup" [textField]="'allergenTitle'" [idfield]="'id'"
+                            (onItemSelect)="selectTool($event)" (onSelectAllItem)="selectAllTool($event)"
+                            (onDeSelectItem)="onDeselectTool($event)" [fieldControl]="'allergen'"
+                            [dataList]="allergenMaster" [placeHolder]="'Select Allergens'"></app-ng-select-input>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'allergen')">Allergens required</div>
+                    </div>
+                    <div *ngIf="showAllergenList" class="form-group col-lg-1">
+                        <label></label>
+                        <button class="mt-7 btn btn-primary" (click)="showAllergen()">Add</button>
+                    </div>
+                    <div *ngIf="!showAllergenList" class="form-group col-lg-4 mt-2">
+                        <div class="input-group mb-3">
+                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="newAllergen"
+                                class="form-control form-control-solid" placeholder="Enter New Allergen">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" (click)="addAllergen()">Save</button>
+                                <button class="btn btn-warning" type="button" (click)="resetAllergen()">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="input-group invalid-feedback" *ngIf="allergenErrorMessage">
+                            {{allergenErrorMessage}}
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-4">
+                        <label>Substitutes</label>
+                        <app-ng-select-input [formName]="formGroup" [textField]="'ingredientTitle'" [idfield]="'id'"
+                            (onItemSelect)="selectTool($event)" (onSelectAllItem)="selectAllTool($event)"
+                            (onDeSelectItem)="onDeselectTool($event)" [fieldControl]="'substitutes'"
+                            [dataList]="substituteMaster" [placeHolder]="'Select Substitutes'"></app-ng-select-input>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Additional Nutrients</label>
+                        <app-ng-select-input [formName]="formGroup" [textField]="'nutrientTitle'" [idfield]="'id'"
+                            (onItemSelect)="selectTool($event)" (onSelectAllItem)="selectAllTool($event)"
+                            (onDeSelectItem)="onDeselectTool($event)" [fieldControl]="'additionalNutrients'"
+                            [dataList]="nutrientMaster" [placeHolder]="'Select Additional Nutrients'">
+                        </app-ng-select-input>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'allergen')">Additional Nutrients
+                            required</div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Status</label>
+                        <div class="radio-inline">
+                            <label class="radio">
+                                <input type="radio" name="status" [value]="true" formControlName="status" />
+                                <span></span>
+                                Active
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="status" [value]="false" formControlName="status" />
+                                <span></span>
+                                Inactive
+                            </label>
+
+                        </div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'status')">
+                            Status is required</div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Ingredient Image: </label>
+
+                        <app-upload-button [multiple]="false" [moreImage]="moreIngredientImage"
+                            [imageData]="ingredientImages" (onUpload)="uploadIngredientImage($event)"
+                            (onRemove)="removeIngredientImage($event)"></app-upload-button>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'images')">
+                            Ingredient Image is required</div>
+                    </div>
+
+                 <!--    <ng-container class="form-group row" formArrayName="scienceFact">
+                        <div class="col-lg-12">
+                            <div class="row" *ngIf="scienceFact().controls.length > 0">
+                                <div class="col-lg-4 mb-1" *ngFor="let items of scienceFact().controls; let i=index "
+                                    [formGroupName]="i">
+                                    <label class="form-label ">Science Fact {{i+1}}</label>
+                                    <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 "
+                                        (click)="removeQuantity(i)" *ngIf="scienceFact().controls.length > 1"><i
+                                            class="ki ki-minus icon-xs "></i></span>
+                                    <textarea type="text" class="form-control form-control-lg form-control-solid"
+                                        name="{{i}}" placeholder="Enter Science Fact {{i+1}}" autocomplete="off"
+                                        [class.is-invalid]="items.controls['fact'].invalid && (items.controls['fact'].dirty || items.controls['fact'].touched) "
+                                        formControlName="fact"
+                                        [class.is-valid]="items.controls['fact'].valid && (items.controls[ 'fact'].dirty || items.controls[ 'fact'].touched) "></textarea>
+
+                                    <div class="invalid-feedback"
+                                        *ngIf="items.controls['fact'].hasError('required') && (items.controls['fact'].dirty || items.controls['fact'].touched) ">
+                                        Science facts is required</div>
+                                </div>
+                                <div class="plusIcon">
+                                    <span class="float-right btn btn-success" (click)="addQuantity(undefined) "
+                                        *ngIf="scienceFact().controls.length !== 4"><i
+                                            class="ki ki-plus icon-xs "></i>Add Facts</span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+ -->
+                </div>
+
+
+
+            </form>
+        </ng-container>
+
+       <!--  <ng-container *ngIf="ingredients && activeTabId ==tabs.QUESTION_TAB">
+            <app-match-the-pair [id]="questionId" [questionData]="matchThePairQuestions"
+                (onCreate)="createMatchThePairQuestion($event)" (onEdit)="editMatchThePairQuestion($event)"
+                (onDelete)="deleteMatchThePairQuestion($event)"></app-match-the-pair>
+        </ng-container>
+        <ng-container *ngIf="ingredients &&  activeTabId === tabs.SPOTLIGHT_TAB">
+            <app-spotlight-text [id]="questionId" [questionData]="spotlightQuestions"
+                (onCreate)="createSpotQuestion($event)" (onEdit)="editSpotQuestion($event)"
+                (onDelete)="deleteSpotQuestion($event)"></app-spotlight-text>
+        </ng-container>
+        <ng-container *ngIf="ingredients && activeTabId ===tabs.MULTI_SENSORY_TAB">
+            <app-spotlight-text [id]="questionId" [questionData]="multiSensoryQuestions"
+                (onCreate)="createSensoryQuestion($event)" (onEdit)="editSensoryQuestion($event)"
+                (onDelete)="deleteSensoryQuestion($event)"></app-spotlight-text>
+        </ng-container> -->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+        <ng-container *ngIf="ingredients">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+                [disabled]="formGroup.invalid">Save</button>
+        </ng-container>
+    </div>
+</div>

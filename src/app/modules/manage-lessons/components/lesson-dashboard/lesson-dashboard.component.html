@@ -1,0 +1,59 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Grades list</h3>
+        </div>
+        <div class="card-toolbar upload-card">
+            <div class="mr-1 od-1">{{fileInputLabel}}</div>
+            <div class="btn btn-warning mr-3 od-2">
+                <input type="file" id="actual-btn" (change)="uploadFile($event)" accept=".xlsx, .xls, .csv" hidden />
+                <label class="mb-0" for="actual-btn">Upload</label>
+            </div>
+            <div class="od-3">
+                <button type="button" class="btn btn-primary" routerLink="/manage-lessons/new">New Lesson</button>
+            </div>
+            <div class="note pt-1">
+                <p>Note: <a style="color:blue;cursor: pointer;" (click)="onDownloadFile()"> Click here</a> to download
+                    sample sheet for lessons</p>
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- begin: Filtration form -->
+        <!-- <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <select class="form-control" placeholder="Filter by Language"
+                                (change)="changeLanguage($event)">
+                                <option [value]="null">All</option>
+                                <option [value]="item.id" *ngFor="let item of languageMaster">{{item.title}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- end: Filtration form -->
+        <div  class="row">
+            
+            <div *ngFor="let grade of lessonService._getlessonArray$ |async" class="col-lg-3 mb-3">
+                <!--begin::Card-->
+                <div style="border: 1px solid gray;" class="card card-custom card-stretch bg-light grade-card" (click)="filterByGrade(grade)">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h3 class="card-label">Grade : {{grade.grade}} </h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        No. of Lesson : {{grade.lessonCount}}
+                    </div>
+                </div>
+                <!--end::Card-->
+            </div>
+        
+        </div>
+    </div>
+</div>

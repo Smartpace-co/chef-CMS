@@ -1,0 +1,113 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">User list</h3>
+        </div>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-primary" (click)="create()">New User</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- begin: Grouping -->
+        <ng-container *ngIf="grouping.getSelectedRowsCount()">
+            <div class="form">
+                <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
+                    <div class="col-xl-12">
+                        <div class="form-group form-group-inline">
+                            <div class="form-label form-label-no-wrap">
+                                <label class="font-bold font-danger"><span>Selected records count:
+                      <b>{{ grouping.getSelectedRowsCount() }}</b></span></label>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-danger font-weight-bolder font-size-sm mr-1" (click)="deleteSelected()">
+                    <i class="fa fa-trash"></i> Delete All
+                  </button>&nbsp;
+                                <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1" (click)="updateStatusForSelected()">
+                    <i class="fa fa-sync-alt"></i> Update Status
+                  </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <!-- end: Grouping -->
+
+        <!-- begin:Table -->
+        <div class="table-responsive angular-bootstrap-table">
+            <table class="table table-head-custom table-vertical-center overflow-hidden">
+                <thead>
+                   <!--  <th class="selection-cell-header" data-row-selection="true">
+                        <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectAllRows()"
+                  [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
+                    </th> -->
+                    <th>
+                        ID
+                        <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        NAME
+                        <app-sort-icon column="name" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+
+                    <th>
+                        EMAIL
+                        <app-sort-icon column="email" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        PHONE NUMBER
+                        <app-sort-icon column="phoneNumber" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        ROLE
+                        <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        STATUS
+                        <app-sort-icon column="type" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>ACTIONS</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let customer of userService.items$ | async;let i=index">
+                       <!--  <td class="selection-cell">
+                            <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectRow(customer.id)"
+                    [checked]="grouping.isRowSelected(customer.id)" />
+                  <span></span>
+                </label>
+                        </td> -->
+                        <td>{{  (paginator.page-1)*paginator.pageSize +i+1}}</td>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.phoneNumber }}</td>
+                        <td>{{ customer.role.title }}</td>
+                        <td>
+                            <span class="label label-lg label-inline" [class.label-light-success]="customer.status === true" [class.label-light-danger]="customer.status === false">
+                  <ng-container *ngIf="customer.status === true">Active</ng-container>
+                  <ng-container *ngIf="customer.status === false">Inactive</ng-container>
+                </span>
+                        </td>
+
+                        <td>
+
+                            <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-md mr-2 pt-2 icon-label" (click)="edit(customer.id)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
+                  </span>
+                  <span>Edit</span>
+                            </a>
+
+                            <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-md mr-2 pt-2 icon-label" (click)="delete(customer.id)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
+                  </span>
+                  <span>Delete</span>
+
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- end: Table -->
+        <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator" [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+    </div>
+</div>

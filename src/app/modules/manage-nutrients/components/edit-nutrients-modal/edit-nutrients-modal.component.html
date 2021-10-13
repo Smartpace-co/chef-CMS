@@ -1,0 +1,176 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container *ngIf="nutrients">
+                <ng-container *ngIf="nutrients.id">Edit</ng-container>
+                <ng-container *ngIf="!nutrients.id">Create</ng-container>
+                Nutrient
+                <ng-container *ngIf="nutrients.id">'{{nutrients.nutrientTitle}}'</ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist" >
+            <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.BASIC_TAB"
+                    (click)="changeTab()" [class.active]="activeTabId === tabs.BASIC_TAB">
+                    Basic info
+                </a>
+            </li>
+            <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button" (click)="activeTabId =tabs.SPOTLIGHT_TAB"
+                    [attr.aria-selected]="activeTabId === tabs.SPOTLIGHT_TAB"
+                    [class.active]="activeTabId === tabs.SPOTLIGHT_TAB">Spotlight Questions</a>
+            </li>
+            <!-- <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button" (click)="activeTabId =tabs.MULTI_SENSORY_TAB"
+                    [attr.aria-selected]="activeTabId === tabs.MULTI_SENSORY_TAB"
+                    [class.active]="activeTabId === tabs.MULTI_SENSORY_TAB">Multi sensory Question</a>
+            </li> -->
+        </ul>
+
+
+        <ng-container *ngIf="nutrients && activeTabId === tabs.BASIC_TAB">
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group row">
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Nutrient Name</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="nutrientName" placeholder="Enter Nutrient Name" autocomplete="off"
+                         [class.is-valid]="validationService?.isControlValid('nutrientName')"
+                            formControlName="nutrientName" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('nutrientName')">Nutrient name was entered correct
+                        </div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'nutrientName')">Nutrient name is required
+                        </div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('minlength', 'nutrientName')">Nutrient name should have at least 3 symbols</div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('maxLength', 'nutrientName')">Nutrient name should have maximum 100 symbols</div>
+                    </div>
+                    <div *ngIf="!id" class="form-group col-lg-4">
+                        <label>Language</label>
+                        <select class="form-control form-control-lg form-control-solid" name="languageId" [class.is-invalid]="validationService?.isControlInvalid('languageId')" formControlName="languageId">
+                            <option [value]="null" disabled>Select Language </option>
+                            <option [value]="item.id" [disabled]="!item.is_enable"
+                                *ngFor="let item of languageMaster">{{item.title}}</option>
+
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'languageId')">Language is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Spotlight Video Link</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="spotlightVideo"
+                            placeholder="Spotlight video link" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('spotlightVideo')"
+                            formControlName="spotlightVideo" />
+
+
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Nutrient Type</label>
+                        <select class="form-control form-control-lg form-control-solid" placeholder="Select Type"
+                            name="type" [class.is-invalid]="validationService?.isControlInvalid('type')"
+                            formControlName="type">
+                            <option value="null" disabled>Select type </option>
+                            <option [value]="type.id" *ngFor="let type of typeMaster">
+                                {{type.typeTitle}}</option>
+
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'type')">
+                            Type is required</div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Nutrient Category</label>
+                        <select class="form-control form-control-lg form-control-solid" placeholder="Select Category"
+                            name="category" [class.is-invalid]="validationService?.isControlInvalid('category')"
+                            formControlName="category">
+                            <option value="null" disabled>Select Category </option>
+                            <option [value]="cat.id" *ngFor="let cat of categoryMaster">
+                                {{cat.categoryTitle}}</option>
+                        </select>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'category')">
+                            Category is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label class="form-label">Description</label>
+                        <textarea type="text" class="form-control form-control-lg form-control-solid" name="description"
+                            placeholder="Enter Description" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('description')"
+                            [class.is-valid]="validationService.isControlValid('description')"
+                            formControlName="description"></textarea>
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('description')">
+                            Description was entered correct</div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'description')">
+                            Description is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Status</label>
+                        <div class="radio-inline">
+                            <label class="radio">
+                                <input type="radio" name="status" [value]=true formControlName="status" />
+                                <span></span>
+                                Active
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="status" [value]=false formControlName="status" />
+                                <span></span>
+                                Inactive
+                            </label>
+
+                        </div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'status')">
+                            Status is required</div>
+                    </div>
+                    <ng-container class="form-group row" formArrayName="relatedQuestions">
+                        <div class="col-lg-12">
+                            <div class="row" *ngIf="relatedQuestion().controls.length > 0">
+                                <div class="col-lg-4 mb-1" *ngFor="let items of relatedQuestion().controls; let i=index " [formGroupName]="i">
+                                    <label class="form-label ">Related Question {{i+1}}</label>
+                                    <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 " (click)="removeQuantity(i)" *ngIf="relatedQuestion().controls.length > 1"><i
+                                            class="ki ki-minus icon-xs "></i></span>
+                                    <input type="text " class="form-control form-control-lg form-control-solid " name="{{i}}" formControlName="question" placeholder="Enter Question {{i + 1}}" autocomplete="off " [class.is-invalid]="items.controls['question'].invalid && (items.controls['question'].dirty || items.controls['question'].touched) "
+                                        [class.is-valid]="items.controls['question'].valid && (items.controls[ 'question'].dirty || items.controls[ 'question'].touched) " />
+                                    <div class="invalid-feedback" *ngIf="items.controls['question'].hasError('required') && (items.controls['question'].dirty || items.controls['question'].touched) ">
+                                        Related questions is required</div>
+                                </div>
+                                <div class="plusIcon">
+                                    <span class="float-right btn btn-success" (click)="addQuantity(undefined) " *ngIf="relatedQuestion().controls.length !== 10"><i
+                                            class="ki ki-plus icon-xs "></i>Add Question</span>
+                                    <span class="float-right danger" *ngIf="relatedQuestion().controls.length === 10">
+                                        You can add multiple question max up to 10.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+
+                </div>
+            </form>
+        </ng-container>
+        <ng-container *ngIf="nutrients &&  activeTabId === tabs.SPOTLIGHT_TAB">
+                <app-spotlight-text  [id]="questionId" [questionData]="spotlightQuestions" (onCreate)="createSpotQuestion($event)" (onEdit)="editSpotQuestion($event)"  (onDelete)="deleteSpotQuestion($event)"></app-spotlight-text>
+        </ng-container>
+        <!-- <ng-container *ngIf="nutrients && activeTabId ===tabs.MULTI_SENSORY_TAB">
+            <app-spotlight-text  [id]="questionId" [questionData]="multiSensoryQuestions" (onCreate)="createSensoryQuestion($event)" (onEdit)="editSensoryQuestion($event)"  (onDelete)="deleteSensoryQuestion($event)"></app-spotlight-text>
+        </ng-container> -->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+        <ng-container *ngIf="nutrients">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+                [disabled]="formGroup.invalid">Save</button>
+        </ng-container>
+    </div>
+</div>

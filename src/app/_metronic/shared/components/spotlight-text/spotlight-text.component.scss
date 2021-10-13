@@ -1,0 +1,17 @@
+.plusIcon {
+    margin-top: 23px;
+    margin-left: -7px;
+    position: relative;
+}
+
+#upload_button {
+    display: inline-block;
+  }
+  
+  #upload_button input[type="file"] {
+    display: none;
+  }
+  .image-wrapper {
+    height: 120px;
+    width: 120px;
+  }

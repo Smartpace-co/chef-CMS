@@ -1,0 +1,79 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container *ngIf="unitOfMeasurement">
+                <ng-container *ngIf="unitOfMeasurement.id">Edit</ng-container>
+                <ng-container *ngIf="!unitOfMeasurement.id">Create</ng-container>
+                Unit Of Measurement
+                <ng-container *ngIf="unitOfMeasurement.id">'{{unitOfMeasurement.unitOfMeasure}}</ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="unitOfMeasurement">
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group row">
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Unit Of Measurement</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="unitOfMeasure" placeholder="Enter Unit Of Measurement" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('unitOfMeasure')" [class.is-valid]="validationService.isControlValid('unitOfMeasure')"
+                            formControlName="unitOfMeasure" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('unitOfMeasure')">Unit Of Measurement was entered correct</div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'unitOfMeasure')">Unit Of Measurement is required</div>
+                    </div>
+                    <div *ngIf="!id" class="form-group col-lg-12">
+                        <label>Language</label>
+                        <select class="form-control form-control-lg form-control-solid" name="languageId" [class.is-invalid]="validationService?.isControlInvalid('languageId')" formControlName="languageId">
+                            <option [value]="null" disabled>Select Language </option>
+                            <option [value]="item.id" [disabled]="!item.is_enable"
+                                *ngFor="let item of languageMaster">{{item.title}}</option>
+
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'languageId')">Language is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="description" placeholder="Enter Description" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('description')" [class.is-valid]="validationService.isControlValid('description')"
+                            formControlName="description" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('description')">Description was entered correct</div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'description')">Description is required</div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-inline">
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="true" formControlName="status"/>
+                            <span></span>
+                           Active
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="false" formControlName="status"/>
+                            <span></span>
+                            Inactive
+                        </label>
+
+                    </div>
+                    <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'status')">Status is required</div>
+                </div>
+
+
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+        <ng-container *ngIf="unitOfMeasurement">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">Save</button>
+        </ng-container>
+    </div>
+</div>

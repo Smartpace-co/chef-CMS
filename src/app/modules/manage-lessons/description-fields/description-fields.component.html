@@ -1,0 +1,45 @@
+<div class="form-group row" [formGroup]="form">
+
+    <ng-container *ngIf="descriptionInfo() && descriptionInfo().controls.length > 0" formArrayName="{{fieldControler}}">
+        <ng-container *ngFor="let items of descriptionInfo().controls;let i=index ">
+            <!-- <div class="" > -->
+            <ng-container [formGroupName]="i">
+                <div class="col-lg-12 ">
+                    <label class="orm-label font-weight-bold mt-5">Description {{i+1}}</label>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"></label>
+                    <ng-select [items]="desLevelMaster" placeholder="Select Level" bindLabel="name" bindValue="value" formControlName="level">
+                    </ng-select>
+                    <!-- <input type="text" class="form-control form-control-lg form-control-solid" name="grade" placeholder="Enter Grade" autocomplete="off" [class.is-invalid]="isControlInvalid('grade')" [class.is-valid]="isControlValid('grade')" formControlName="grade" /> -->
+                    <div class="valid-feedback" *ngIf="items.controls['level'].valid && (items.controls['level'].dirty || items.controls['level'].touched) ">
+                        Level was entered correct</div>
+                    <div class="invalid-feedback" *ngIf="items.controls['level'].hasError('required') && (items.controls[
+                'level'].dirty || items.controls['level'].touched) ">Level is required
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4 ">
+                    <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 " (click)="removeQuantity(i)" *ngIf="descriptionInfo().controls.length > 1"><i class="ki ki-minus icon-xs "></i></span>
+                    <label class="form-label "></label>
+                    <textarea type="text " class="form-control form-control-lg form-control-solid " name="text " placeholder="Enter text " autocomplete="off " [class.is-invalid]="items.controls['text'].invalid && (items.controls[
+                'text'].dirty || items.controls['text'].touched) " [class.is-valid]="items.controls[ 'text'].valid && (items.controls[ 'text'].dirty || items.controls['text'].touched) " formControlName="text"></textarea>
+                    <div class="valid-feedback " *ngIf="items.controls['text'].valid && (items.controls['text'].dirty || items.controls['text'].touched) ">
+                        Description Text was entered correct</div>
+                    <div class="invalid-feedback " *ngIf="items.controls['text'].hasError('required') && (items.controls[
+                'text'].dirty || items.controls['text'].touched) ">
+                        Description Text is required
+                    </div>
+                </div>
+            </ng-container>
+            <!-- </div> -->
+        </ng-container>
+    </ng-container>
+    <div class="plusIcon mt-28">
+        <span class="float-right btn btn-success font-weight-bold btn-light-success" (click)="addQuantity(undefined) " *ngIf="descriptionInfo().controls.length !== 3"><i class="ki ki-plus icon-xs "></i>Add Description</span>
+        <span class="float-right danger" *ngIf="descriptionInfo().controls.length === 3">
+            You can add multiple descriptions max up to 3.
+        </span>
+    </div>
+</div>

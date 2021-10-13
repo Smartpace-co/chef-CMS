@@ -1,0 +1,73 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">School list</h3>
+        </div>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-primary" (click)="create()">New School Admin</button>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <!-- begin:Table -->
+        <div class="table-responsive angular-bootstrap-table">
+            <table class="table table-head-custom table-vertical-center overflow-hidden">
+                <thead>
+                   
+                    <th>
+                        ID
+                        <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        School Name
+                        <app-sort-icon column="name" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        Email
+                        <app-sort-icon column="lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        Phone Number
+                        <app-sort-icon column="lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+
+                    <th>
+                        STATUS
+                        <app-sort-icon column="type" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>ACTIONS</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let school of schoolService.items$ |async; let i=index">
+                        <td>{{  (paginator.page-1)*paginator.pageSize +i+1}}</td>
+                        <td>{{school.school.name}}</td>
+                        <td>{{ school.email}}</td>
+                        <td>{{ school.phone_number}}</td>
+                        <td>
+                            <span class="label label-lg label-inline" [class.label-light-success]="school.status === true" [class.label-light-danger]="school.status === false">
+                  <ng-container *ngIf="school.status ===true">Active</ng-container>
+                  <ng-container *ngIf="school.status === false">Inactive</ng-container>
+                </span>
+                        </td>
+
+                        <td>
+
+                            <a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-md mr-2 pt-2 icon-label" (click)="edit(school.id)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
+                  </span>
+                  <span>Edit</span>
+                            </a>
+
+                            <!-- <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm" (click)="delete(school.school.id)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
+                  </span>
+                            </a>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- end: Table -->
+      <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator" [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+    </div>
+</div>

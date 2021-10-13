@@ -1,0 +1,182 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container *ngIf="subscriptionPkgs">
+                <ng-container *ngIf="subscriptionPkgs.id">Edit</ng-container>
+                <ng-container *ngIf="!subscriptionPkgs.id">Create</ng-container>
+                subscription package
+                <ng-container *ngIf="subscriptionPkgs.id">'{{subscriptionPkgs.packageTitle}}'</ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="subscriptionPkgs">
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group row">
+                    <div class="col-lg-12">
+                        <label class="form-label">Subscription Package Title</label>
+                        <input type="text" class="form-control form-control-lg " name="Roletitle"
+                            placeholder="Subscription Package Title" autocomplete="off"
+                            [class.is-invalid]="isControlInvalid('title')" [class.is-valid]="isControlValid('title')"
+                            formControlName="title" />
+                        <div class="valid-feedback" *ngIf="isControlValid('title')">Subscription Package Title was
+                            entered correct</div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'title')">Subscription Package
+                            Title is required</div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'title')">Subscription Package
+                            Title should have at least 3 symbols</div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'title')">Subscription Package
+                            Title should have maximum 100 symbols</div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-control form-control-lg " name="description"
+                        placeholder="Enter Description" autocomplete="off"
+                        [class.is-invalid]="isControlInvalid('description')" [class.is-valid]="isControlValid('description')"
+                        formControlName="description" />
+                </div>
+                <div class="form-group">
+                    <label>Package Type:</label>
+                    <div class="radio-inline">
+                        <label class="radio" [ngClass]="subscriptionPkgs.id ?'radio-disabled' :'' ">
+                            <input type="radio" name="isPrivate" [value]="false" formControlName="isPrivate" (change)="changePackageType('false')" />
+                            <span></span>
+                            Public
+                        </label>
+                        <label class="radio" [ngClass]="subscriptionPkgs.id ?'radio-disabled' :'' ">
+                            <input type="radio" name="isPrivate" [value]="true" formControlName="isPrivate" (change)="changePackageType('true')" />
+                            <span></span>
+                            Private
+                        </label>
+
+                    </div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'isPrivate')">Package Type is required</div>
+                </div>
+                <div *ngIf="subscriptionPkgs.isPrivate && subscriptionPkgs.id" class="form-group ">
+                    <label>Sharable Link:</label>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control" readonly formControlName="shareableLink" #inputTarget />
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" [class.btn-success]="isCopied" (click)="copyShareableLink()"
+                                ><i class="fa fa-copy"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Package For:</label>
+                    <div class="radio-inline">
+                        <label class="radio" [ngClass]="subscriptionPkgs.id ?'radio-disabled' :'' " *ngFor="let item of roleMaster">
+                            <input type="radio" name="packageFor" [value]="item.id" formControlName="packageFor" (change)="changePackageFor(item)" />
+                            <span></span>
+                            {{item.title}}
+                        </label>
+                    </div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'status')">Status is required</div>
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="form-group col-lg-6">
+                        <label class="form-label">Start Month:</label>
+                        <select class="form-control form-control-lg " name="languageId" [class.is-invalid]="validationService?.isControlInvalid('validityFrom')" formControlName="validityFrom" >
+                            <option [value]="null" disabled>Select Month </option>
+                            <option [value]="item.id"
+                                *ngFor="let item of monthMaster">{{item.title}}</option>
+                        </select>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'validityFrom')">Start Month is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label class="form-label">End Month:</label>
+                        <select class="form-control form-control-lg " name="languageId" [class.is-invalid]="validationService?.isControlInvalid('validityTo')" formControlName="validityTo" >
+                            <option [value]="null" disabled>Select Month </option>
+                            <option [value]="item.id"
+                                *ngFor="let item of monthMaster">{{item.title}}</option>
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'validityTo')">
+                            End Month is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label class="form-label">{{maxLabel}}</label>
+                        <input type="number" class="form-control form-control-lg " name="maximumUsers"
+                            placeholder="Enter Maximum User" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('maximumUsers')"
+                            [class.is-valid]="validationService.isControlValid('maximumUsers')"
+                            formControlName="maximumUsers" />
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'maximumUsers')">Maximum users is
+                            required
+                        </div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('pattern', 'maximumUsers')">Maximum users
+                            is not valid</div>
+
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label class="form-label">Price</label>
+                        <input type="text" class="form-control form-control-lg " name="price"
+                            placeholder="Enter Price" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('price')"
+                            [class.is-valid]="validationService.isControlValid('price')" formControlName="price" />
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'price')">
+                            Price is required
+                        </div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('pattern', 'price')">Price is not valid
+                        </div>
+
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label class="form-label">Grace Period (In Days)</label>
+                        <input type="number" class="form-control form-control-lg " name="gracePeriod"
+                            placeholder="Enter Grace Period" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('gracePeriod')"
+                            [class.is-valid]="validationService.isControlValid('gracePeriod')"
+                            formControlName="gracePeriod" />
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'gracePeriod')">Grace Period is
+                            required
+                        </div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('pattern', 'gracePeriod')">Grace period is
+                            not valid</div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-inline">
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="true" formControlName="status" />
+                            <span></span>
+                            Active
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="false" formControlName="status" />
+                            <span></span>
+                            Inactive
+                        </label>
+
+                    </div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'status')">Status is required</div>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+        <ng-container *ngIf="subscriptionPkgs">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+                [disabled]="formGroup.invalid">Save</button>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+<script type="text/javascript" class="js-code-example-basic-single">
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+</script>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container *ngIf="countries">
+                <ng-container *ngIf="countries.id">Edit</ng-container>
+                <ng-container *ngIf="!countries.id">Create</ng-container>
+                Country
+                <ng-container *ngIf="countries.id">{{countries.countryName}}</ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="countries">
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group row">
+
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Country Name</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="countryName" placeholder="Enter Country Name" autocomplete="off" [class.is-invalid]="validationService?.isControlInvalid('countryName')" [class.is-valid]="validationService?.isControlValid('countryName')"
+                            formControlName="countryName" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('countryName')">Country Name was entered correct</div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'countryName')">Country Name is required</div>
+                    </div>
+                    <div *ngIf="!id" class="form-group col-lg-12">
+                        <label>Language</label>
+                        <select class="form-control form-control-lg form-control-solid" name="languageId" [class.is-invalid]="validationService?.isControlInvalid('languageId')" formControlName="languageId">
+                            <option [value]="null" disabled>Select Language </option>
+                            <option [value]="item.id" [disabled]="!item.is_enable"
+                                *ngFor="let item of systemLanguageMaster">{{item.title}}</option>
+
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'languageId')">Language is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>Grades</label>
+                        <ng-select formControlName="grades" [(ngModel)]="this.groupList" bindLabel="grade" [items]="gradeMaster"  [multiple]="true" bindLabel="grade" placeholder="Select Grades">
+                     </ng-select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'grades')">Grade Levels is required</div>
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label>Country Language</label>
+                        <ng-select formControlName="languages" [(ngModel)]="this.languageList" [items]="languageMaster"  [multiple]="true" bindLabel="language" placeholder="Select Languages"></ng-select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'languages')">Languages is required</div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Flag Image : </label>
+                    <app-upload-button [multiple]="false" [moreImage]="moreFlagImage" [imageData]="flagImages" (onUpload)="uploadFlagImage($event)" (onRemove)="removeFlagImage($event)"></app-upload-button>
+                    <div style="display: block;"class="invalid-feedback" *ngIf="fileResolutionError">Image should be of size 140 * 95.</div>
+                    <div class="mt-4"><strong>Note : Image should be of size 140 * 95 .</strong></div>
+
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Backgorund Image : </label>
+                    <app-upload-button [multiple]="false" [moreImage]="moreBackgroundImage" [imageData]="backgroundImages" (onUpload)="uploadBackgroundImage($event)" (onRemove)="removeBackgroundImage($event)"></app-upload-button>
+                    <div style="display: block;"class="invalid-feedback" *ngIf="bgfileResolutionError">Image should be of size 1848 * 1136.</div>
+                    <div class="mt-4"><strong>Note : Image should be of size 1848 * 1136 .</strong></div>
+
+                </div>
+                <div class="form-group">
+                    <span *ngIf="!formGroup.controls['countryTrack'].value" id="upload_button">
+                        <label>
+                            <input type="file"  accept="audio/mp3"
+                                class="form-control" (change)="uploadCountryTrack($event)">
+                            <span class="btn btn-success"> Upload Country Track (.MP3) </span>
+                        </label>
+                    </span>
+                    <span *ngIf="formGroup.controls['countryTrack'].value">
+                        <audio controls>
+                            <source [src]="formGroup.controls['countryTrack'].value" type="audio/mp3">
+                        </audio>
+
+
+                    </span>
+                    <span class="btn btn-success align-remove" *ngIf="formGroup.controls['countryTrack'].value"  (click)="removeTrack()">Remove</span>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'countryTrack')">
+                        Country Track is required
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-inline">
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="true" formControlName="status"/>
+                            <span></span>
+                           Active
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="false" formControlName="status"/>
+                            <span></span>
+                            Inactive
+                        </label>
+
+                    </div>
+                    <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'status')">Status is required</div>
+                </div>
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+        <ng-container *ngIf="countries">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">Save</button>
+        </ng-container>
+    </div>
+</div>

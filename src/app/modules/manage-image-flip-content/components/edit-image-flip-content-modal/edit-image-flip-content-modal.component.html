@@ -1,0 +1,78 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container *ngIf="imageFlipContent">
+                <ng-container *ngIf="imageFlipContent.id">Edit</ng-container>
+                <ng-container *ngIf="!imageFlipContent.id">Create</ng-container>
+               Image Flip Content
+                <ng-container *ngIf="imageFlipContent.id">'{{imageFlipContent.title}}</ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="imageFlipContent">
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group row">
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Image Title</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="title" placeholder="Enter image title" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('title')" [class.is-valid]="validationService.isControlValid('title')"
+                            formControlName="title" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('title')">Image title entered incorrect</div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'title')">Image title is required</div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>Image theme Type</label>
+                        <select class="form-control form-control-lg form-control-solid" name="themeType" [class.is-invalid]="validationService?.isControlInvalid('themeType')" formControlName="themeType">
+                            <option value="null" disabled>Select Image Theme Type</option>
+                            <option [value]="type.id"  *ngFor="let type of themeMaster">{{type.categoryTitle}}
+                            </option>
+
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'themeType')">Image theme is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Image : </label>
+                         <app-upload-button [multiple]="false" [moreImage]="moreFlipImage" [imageData]="flipImages" (onUpload)="uploadFlipImage($event)" (onRemove)="removeFlipImage($event)"></app-upload-button>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'gameImage')" >
+                            Flip Image is required</div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-inline">
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="true" formControlName="status"/>
+                            <span></span>
+                           Active
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="false" formControlName="status"/>
+                            <span></span>
+                            Inactive
+                        </label>
+
+                    </div>
+                    <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'status')">Status is required</div>
+                </div>
+
+
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+        <ng-container *ngIf="imageFlipContent">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">Save</button>
+        </ng-container>
+    </div>
+</div>

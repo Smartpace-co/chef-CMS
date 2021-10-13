@@ -1,0 +1,6 @@
+<ng-container [formGroup]="formName" *ngIf="fieldControl">
+    <ng-multiselect-dropdown [placeholder]="placeHolder" [settings]="dropdownSettings" [data]="dataList"  name="fieldControl"  
+    [formControlName]="fieldControl" (onSelect)="onItemSelect($event)"
+    (onSelectAll)="onSelectAll($event)" (onDeSelect)="onDeselect($event)">
+    </ng-multiselect-dropdown>
+</ng-container>

@@ -1,0 +1,120 @@
+<div class="mt-5">
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+
+    <form action="#" class="form form-label-right" [formGroup]="form" (ngSubmit)="onSave()" *ngIf="controlerData">
+
+        <div class="form-group row">
+            <div class="form-group col-lg-12">
+                <div *ngIf="!trackForm.controls['track'].value" id="upload_button">
+                    <label>
+                        <input type="file" accept="audio/mp3" class="form-control"
+                            (change)="uploadTrack($event)">
+                        <span class="btn btn-success">Upload Voicehover For {{labelName}} (.MP3) </span>
+                    </label>
+                </div>
+                <div class="row" *ngIf="trackForm.controls['track'].value">
+                    <label class="form-group mr-5 ml-5">Voicehover For {{labelName}} :</label>
+                    <audio style="width: 22rem!important;" controls>
+                        <source [src]="trackForm.controls['track'].value" type="audio/mp3">
+                    </audio>
+                    <label (click)="removeTrack()"
+                    class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
+                    <i class="fa fa-times icon-md text-muted"></i>
+                </label>
+            </div>
+            </div>
+            <ng-container *ngIf="formArrayControls() && formArrayControls().controls.length > 0" formArrayName="{{fieldControler}}">
+                <ng-container *ngFor="let items of formArrayControls().controls;let i=index ">
+                    <ng-container [formGroupName]="i">
+                        <div class="col-md-12">
+                            <label class="form-label font-weight-bold">{{labelName}} {{i+1}}</label>
+                            <span class="float-right btn btn-xs btn-light-danger btn-icon" (click)="removeQuantity(i)" *ngIf="formArrayControls().controls.length > 1"><i
+                                    class="ki ki-minus icon-xs "></i></span>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label class="form-label">Text</label>
+                            <input type="text " class="form-control form-control-lg form-control-solid " name="text " placeholder="Enter Text " autocomplete="off " [class.is-invalid]="items.controls['text'].invalid && (items.controls[
+                        'text'].dirty || items.controls[ 'text'].touched) " [class.is-valid]="items.controls['text'].valid && (items.controls['text'].dirty || items.controls[ 'text'].touched) " formControlName="text" />
+                            <div class="valid-feedback " *ngIf="items.controls[ 'text'].valid && (items.controls['text'].dirty || items.controls['text'].touched) ">
+                                Text was entered correctly</div>
+                            <div class="invalid-feedback " *ngIf="items.controls['text'].hasError('required') && (items.controls[
+                        'text'].dirty || items.controls['text'].touched) ">
+                                Text is required
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6" *ngIf="fieldControler === 'cookingSteps'">
+                            <label class="form-label ">Cooking Preparation Time (In Minutes)</label>
+                            <input type="number" class="form-control form-control-lg form-control-solid " name="estimatedTime " placeholder="Enter Cooking Preparation time in minute" autocomplete="off " [class.is-invalid]="items.controls['estimatedTime'].invalid && (items.controls['estimatedTime'].dirty || items.controls[ 'estimatedTime'].touched) "
+                                [class.is-valid]="items.controls[ 'estimatedTime'].valid && (items.controls['estimatedTime'].dirty || items.controls['estimatedTime'].touched) " formControlName="estimatedTime" />
+                            <div class="valid-feedback " *ngIf="items.controls['estimatedTime'].valid && (items.controls['estimatedTime'].dirty || items.controls['estimatedTime'].touched) ">
+                                Cooking Preparation time was entered correctly</div>
+                            <div class="invalid-feedback " *ngIf="items.controls['estimatedTime'].hasError('required') && (items.controls['estimatedTime'].dirty || items.controls['estimatedTime'].touched) ">
+                                Cooking Preparation time is required
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6" *ngIf="fieldControler === 'preparationSteps'">
+                            <label class="form-label ">Teaching Preparation Time (In Minutes)</label>
+                            <input type="number" class="form-control form-control-lg form-control-solid " name="estimatedTime " placeholder="Enter Teaching Preparation time in minute" autocomplete="off " [class.is-invalid]="items.controls['estimatedTime'].invalid && (items.controls['estimatedTime'].dirty || items.controls[ 'estimatedTime'].touched) "
+                                [class.is-valid]="items.controls[ 'estimatedTime'].valid && (items.controls['estimatedTime'].dirty || items.controls['estimatedTime'].touched) " formControlName="estimatedTime" />
+                            <div class="valid-feedback " *ngIf="items.controls['estimatedTime'].valid && (items.controls['estimatedTime'].dirty || items.controls['estimatedTime'].touched) ">
+                                Teaching Preparation time was entered correctly</div>
+                            <div class="invalid-feedback " *ngIf="items.controls['estimatedTime'].hasError('required') && (items.controls['estimatedTime'].dirty || items.controls['estimatedTime'].touched) ">
+                                Teaching Preparation time is required
+                            </div>
+                        </div>
+                        <div *ngIf="fieldControler !== 'cleanupSteps' && fieldControler !== 'servingSteps'" class="form-group col-lg-6 ">
+                            <label class="form-label ">Video or Animation Link</label>
+                            <input type="text " (keyup)="changeHint($event)" class="form-control form-control-lg form-control-solid " name="link " placeholder="Enter Video or Animation Link" autocomplete="off " [class.is-invalid]="items.controls[ 'link'].invalid && (items.controls[
+                        'link'].dirty || items.controls['link'].touched) " [class.is-valid]="items.controls['link'].valid && (items.controls['link'].dirty || items.controls[ 'link'].touched) " formControlName="link" />
+                            <div class="valid-feedback " *ngIf="items.controls['link'].valid && (items.controls['link'].dirty || items.controls['link'].touched) ">
+                                Video or Animation Link was entered correctly</div>
+                            <div class="invalid-feedback " *ngIf="items.controls['link'].hasError('required') && (items.controls['link'].dirty || items.controls['link'].touched) ">
+                                Video or Animation Link is required
+                            </div>
+                        </div>
+                         <div *ngIf="fieldControler !== 'servingSteps' " class="form-group col-lg-6">
+                            <label *ngIf="fieldControler !== 'cleanupSteps' " style="padding-right: 14px;">OR</label>
+                            <label class="form-label" >  Image: </label>
+                            <app-upload-button *ngIf="!items.controls['image'].value" [multiple]="false" [moreImage]="true"  (onUpload)="uploadPairImage(i,$event)" [isDisabled]="isUploadDisabled"></app-upload-button>
+                            <img *ngIf="items.controls['image'].value" class="image-wrapper ml-3" [src]="items.controls['image'].value" />
+                        </div>
+                        <div class="form-group col-lg-6 " *ngIf="(fieldControler === 'preparationSteps' || fieldControler === 'cookingSteps')">
+                            <label class="form-label">Applicable for</label>
+                            <div class="checkbox-inline">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="isApplicableForBigChef" formControlName="isApplicableForBigChef" />
+                                    <span></span>
+                                    Big Chef
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="isApplicableForLittleChef" formControlName="isApplicableForLittleChef"  />
+                                    <span></span>
+                                    Little Chef
+                                </label>
+                            </div>
+                        </div>
+
+                    </ng-container>
+                </ng-container>
+                <div *ngIf="fieldControler !== 'servingSteps' " class="col-lg-12  mt-5">
+                    <span class="btn btn-success " (click)="addQuantity(undefined)" *ngIf="fieldControler !== 'activity'"><i class="ki ki-plus icon-xs "></i>
+                        Add New {{labelName}}</span>
+                </div>
+            </ng-container>
+        </div>
+
+
+        <div class="float-right ">
+            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+            <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+            <button type="submit " class="btn btn-primary font-weight-bold mr-2 " [disabled]="form.invalid && fieldControler!='preparationSteps'">Save &
+                Next</button>
+
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,89 @@
+<div class="mt-5">
+
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+                style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+
+    <form action="#" class="form form-label-right" [formGroup]="activityForm" (ngSubmit)="onSave()"
+        *ngIf="activityData">
+
+        <div class="form-group row">
+
+           <!--  <div class="form-group col-lg-6">
+                <label class="form-label">Activity Name</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="activityName"
+                    placeholder="Enter Activity Name" autocomplete="off"
+                    [class.is-invalid]="validationService?.isControlInvalid('activityName')"
+                    [class.is-valid]="validationService?.isControlValid('activityName')"
+                    formControlName="activityName" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('activityName')">
+                    Activity Name was entered correct</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'activityName')">
+                    Activity Name is required
+                </div>
+            </div> -->
+            <div class="form-group col-lg-6">
+                <label class="form-label">Image: </label>
+                <app-upload-button [multiple]="false" [moreImage]="moreActivityImage" [imageData]="activityImages" (onUpload)="uploadActivityImage($event)" (onRemove)="removeActivityImage($event)"></app-upload-button>
+
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'image')">
+                    Activity Image is required</div>
+            </div>
+
+            <div class="form-group col-lg-12">
+                <label class="form-label">Description</label>
+                <textarea type="text" class="form-control form-control-lg form-control-solid" name="description"
+                    placeholder="Enter description" autocomplete="off"
+                    [class.is-invalid]="validationService?.isControlInvalid('description')"
+                    [class.is-valid]="validationService?.isControlValid('description')"
+                    formControlName="description"></textarea>
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('description')">
+                    Description was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'description')">
+                    Description is required
+                </div>
+            </div>
+            <ng-container class="form-group row" formArrayName="activityQuestions">
+                <div class="col-lg-12">
+                    <div class="row" *ngIf="activityQuestion().controls.length > 0">
+                        <div class="form-group col-lg-12 mb-1" *ngFor="let items of activityQuestion().controls; let i=index "
+                            [formGroupName]="i">
+                            <label>Reflection Question {{i+1}}</label>
+                            <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 "
+                                (click)="removeQuestion(i)" *ngIf="activityQuestion().controls.length > 1"><i
+                                    class="ki ki-minus icon-xs "></i></span>
+                            <input type="text " class="form-control form-control-lg form-control-solid " name="{{i}}"
+                                formControlName="question" placeholder="Enter Question {{i + 1}}" autocomplete="off "
+                                [class.is-invalid]="items.controls['question'].invalid && (items.controls['question'].dirty || items.controls['question'].touched) "
+                                [class.is-valid]="items.controls['question'].valid && (items.controls[ 'question'].dirty || items.controls[ 'question'].touched) " />
+                            <div class="invalid-feedback"
+                                *ngIf="items.controls['question'].hasError('required') && (items.controls['question'].dirty || items.controls['question'].touched) ">
+                                questions is required
+                            </div>
+                        </div>
+                        <div class="plusIcon pl-5">
+                            <span class="float-right btn btn-success" (click)="addQuestions(undefined) "
+                                *ngIf="activityQuestion().controls.length !== 10"><i class="ki ki-plus icon-xs "></i>Add
+                                Question</span>
+                            <span class="float-right danger" *ngIf="activityQuestion().controls.length === 10">
+                                You can add multiple question max up to 10.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="float-right ">
+            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+            <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+            <button type="submit " class="btn btn-primary font-weight-bold mr-2 "
+                [disabled]="activityForm.invalid">Save</button>
+
+        </div>
+
+    </form>
+</div>

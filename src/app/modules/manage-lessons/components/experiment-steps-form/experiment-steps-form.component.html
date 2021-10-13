@@ -1,0 +1,173 @@
+<div class="mt-5">
+
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+    <form action="#" class="form form-label-right" [formGroup]="formGroup" (ngSubmit)="onSave()" *ngIf="experiments">
+
+        <div class="form-group row">
+            <div class="form-group col-lg-6">
+                <label class="form-label">Experiment Name</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="experimentName" placeholder="Enter Experiment Name" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('experimentName')" [class.is-valid]="validationService.isControlValid('experimentName')"
+                    formControlName="experimentName" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('experimentName')">
+                    Experiment Name was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'experimentName')">
+                    Experiment Name is required
+                </div>
+            </div>
+
+            <!-- <div class="col-lg-4">
+                <label class="form-label"></label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="steps" placeholder="Enter Steps" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('steps')" [class.is-valid]="validationService.isControlValid('steps')"
+                    formControlName="steps" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('steps')">
+                    Steps was entered correct</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'steps')">Steps is required
+                </div>
+            </div> -->
+
+            <div class="form-group col-lg-6">
+                <label>Ingredient</label>
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'ingredients'" [dataList]="ingredientMaster" [idfield]="'id'" [textField]="'ingredientTitle'" [placeHolder]="'Select Ingredients'">
+                </app-ng-select-input>
+            </div>
+
+            <div class="form-group col-lg-6">
+                <label>Tool</label>
+
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'tools'" [dataList]="toolsMaster" [idfield]="'id'" [textField]="'toolTitle'" [placeHolder]="'Select Tools'">
+                </app-ng-select-input>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'tools')">
+                    Tools is required
+                </div>
+            </div>
+
+           <!--  <div class="form-group col-lg-6">
+                <label>Technique</label>
+
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'techniques'" [dataList]="techniquesMaster" [idfield]="'id'" [textField]="'culinaryTechniqueTitle'" [placeHolder]="'Select Techniques'">
+                </app-ng-select-input>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'techniques')">
+                    Techniques is required
+                </div>
+            </div> -->
+            <div class="form-group col-lg-6">
+                <label class="form-label">Description</label>
+                <textarea type="text" class="form-control form-control-lg form-control-solid" name="description" placeholder="Enter Description" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('description')" [class.is-valid]="validationService.isControlValid('description')"
+                    formControlName="description"></textarea>
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('description')">
+                    Description was entered correct</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'description')">
+                    Description is required
+                </div>
+            </div> 
+            <div class="form-group col-lg-6">
+                <label class="form-label">Experiment Fact</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="fact" placeholder="Enter Experiment Fact" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('fact')" [class.is-valid]="validationService.isControlValid('fact')"
+                    formControlName="fact" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('fact')">
+                    Experiment Fact was entered correct</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'fact')">
+                    Experiment Fact is required
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <label>Voicehover for Experiment Steps :</label>
+                <div  *ngIf="!formGroup.controls['experimentStepsTrack'].value" id="upload_button">
+                    <label>
+                        <input type="file" accept="audio/mp3" class="form-control"
+                            (change)="uploadTrack($event,'experimentStepsTrack')">
+                        <span class="btn btn-success">Upload Voicehover for Experiment Steps (.MP3) </span>
+                    </label>
+                </div>
+                <div *ngIf="formGroup.controls['experimentStepsTrack'].value">
+                    <div class="row">
+                    <audio controls>
+                        <source [src]="formGroup.controls['experimentStepsTrack'].value" type="audio/mp3">
+                    </audio>
+                    <label (click)="removeTrack('experimentStepsTrack')"
+                    class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
+                    <i class="fa fa-times icon-md text-muted"></i>
+                     </label>
+                    </div>
+            </div>
+            </div>
+            
+
+            <ng-container *ngIf="experimentsStepArray() && experimentsStepArray().controls.length > 0" formArrayName="experimentsStepsArray">
+                <ng-container *ngFor="let items of experimentsStepArray().controls;let i=index ">
+                    <ng-container [formGroupName]="i">
+                        <div class="form-group col-md-12">
+                             <label class="form-label font-weight-bold">Experiment Step {{i+1}}</label>
+                            <span class="float-right btn btn-xs btn-light-danger btn-icon" (click)="removeQuantity(i)" *ngIf="experimentsStepArray().controls.length > 1"><i
+                                    class="ki ki-minus icon-xs "></i></span>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label ">Step </label>
+                            <input type="text " class="form-control form-control-lg form-control-solid " name="text" placeholder="Enter Step " autocomplete="off " [class.is-invalid]="items.controls['text'].invalid && (items.controls[
+                        'text'].dirty || items.controls[ 'text'].touched) " [class.is-valid]="items.controls['text'].valid && (items.controls['text'].dirty || items.controls[ 'text'].touched) " formControlName="text" />
+                            <div class="valid-feedback " *ngIf="items.controls[ 'text'].valid && (items.controls['text'].dirty || items.controls['text'].touched) ">
+                                Step was entered correct</div>
+                            <div class="invalid-feedback " *ngIf="items.controls['text'].hasError('required') && (items.controls[
+                        'text'].dirty || items.controls['text'].touched) ">
+                                Step is required
+                            </div>
+                        </div>
+                      
+                        <div class="col-lg-4 ">
+                            <label class="form-label ">Video Link</label>
+                            <input type="text " class="form-control form-control-lg form-control-solid " name="link " placeholder="Enter Link " autocomplete="off " [class.is-invalid]="items.controls[ 'link'].invalid && (items.controls[
+                        'link'].dirty || items.controls['link'].touched) " [class.is-valid]="items.controls['link'].valid && (items.controls['link'].dirty || items.controls[ 'link'].touched) " formControlName="link" />
+                            <div class="valid-feedback " *ngIf="items.controls['link'].valid && (items.controls['link'].dirty || items.controls['link'].touched) ">
+                                Link was entered correct</div>
+                            <div class="invalid-feedback " *ngIf="items.controls['link'].hasError('required') && (items.controls['link'].dirty || items.controls['link'].touched) ">
+                                Link is required
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mt-7">
+                            <div *ngIf="!items.controls['image'].value; else elseBlock" id="upload_button" >
+                                <label>
+                                    <input type="file"  class="form-control" (change)="uploadImage($event,items)">
+                                        <span class="btn btn-success"> Upload Image </span>
+                                </label>
+                            </div>
+                            <ng-template #elseBlock>
+                                <img height="100px" width="100px" [src]="items.controls['image'].value">
+                            </ng-template>
+
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <div class="col-lg-12  mt-5">
+                    <span class="btn btn-success " (click)="addQuantity(undefined)"><i class="ki ki-plus icon-xs "></i>
+                        Add New</span>
+                </div>
+            </ng-container>
+
+            <div class="form-group col-lg-6">
+                <label class="form-label">Estimated Time (In Minutes)</label>
+                <input type="number" class="form-control form-control-lg form-control-solid" name="estimatedMakeTime" placeholder="Enter Estimated Time" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('estimatedMakeTime')" [class.is-valid]="validationService.isControlValid('estimatedMakeTime')"
+                    formControlName="estimatedMakeTime" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('estimatedMakeTime')">
+                    Estimated Time was entered correct</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'estimatedMakeTime')">
+                    Estimated Time is required
+                </div>
+            </div>
+        </div>
+
+        <!-- <app-description-fields [form]="formGroup" [fieldValues]="experiments?.description" [fieldControler]="'description'"></app-description-fields> -->
+
+
+        <div class="float-right ">
+            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+            <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+            <button type="submit " class="btn btn-primary font-weight-bold mr-2 " [disabled]="formGroup.invalid">Save &
+                Next</button>
+        </div>
+
+    </form>
+</div>

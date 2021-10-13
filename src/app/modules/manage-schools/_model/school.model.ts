@@ -1,0 +1,17 @@
+import { BaseModel } from '../../../_metronic/shared/crud-table';
+export interface School extends BaseModel{
+    id: number;
+    district_id:number;
+    name: string;
+    admin_account_name:string;
+    email:string;   
+    contact_person_email:string;
+    package_id:number;
+    contact_person_number:string;
+    contact_person_name:string;
+    phone_number:string;
+    emergency_contact_number:string;
+    role_id:number;
+     status: boolean;
+     isSendPaymentLink:boolean;
+}

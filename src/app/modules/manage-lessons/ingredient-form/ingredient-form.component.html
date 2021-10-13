@@ -1,0 +1,141 @@
+<div class="mt-5">
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+                style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Ingredients</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="ingredientData?.length==0" class="text-center">
+                  <td class="ingredient-text" colspan="2"> CURRENTLY THERE ARE NO INGREDIENTS. ADD ONE BELOW.</td> 
+            </tr>
+                <tr *ngFor="let item of ingredientData;let i=index">
+                    <td>{{item.ingredient.ingredientTitle}}</td>
+                    <td>
+                        <a title="Edit Ingredients" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                            (click)="loadIngredient(item,i)">
+                            <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                                cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
+                            </span>
+                        </a>
+
+                        <a title="Delete Ingredients" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                            (click)="delete(i)">
+                            <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                class="svg-icon svg-icon-md svg-icon-danger">
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="separator separator-solid my-4"></div>
+    <div class="ingredient-text text-center">ADD INGREDIENT</div>
+    <form  class="form form-label-right" *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSave()">
+
+        <div class="row">
+            <div class="form-group col-lg-4">
+                <label class="form-label">Ingredient</label>
+                <ng-select   bindLabel="ingredientTitle" bindValue="id" formControlName="ingredientId" [items]="ingredientMaster" placeholder="Select Ingredient">
+
+                </ng-select>
+                  <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'ingredientId')">Ingredient is required</div>
+
+            </div>
+            <div class="form-group col-lg-4">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control form-control-lg form-control-solid"  placeholder="Enter Quantity" autocomplete="off"
+                 [class.is-valid]="validationService?.isControlValid('quantity')"
+                    formControlName="quantity" />
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'quantity')">Quantity is required</div>
+            </div>
+           <div class="form-group col-lg-4">
+                <label>Unit of Measurement</label>
+                <select class="form-control form-control-lg form-control-solid" name="unitOfMeasurementId" [class.is-invalid]="validationService?.isControlInvalid('unitOfMeasurementId')" formControlName="unitOfMeasurementId">
+                    <option value="null" disabled>Select Unit of Measurement </option>
+                    <option [value]="measure.id" *ngFor="let measure of unitOfMeasureMaster">{{measure.unitOfMeasure}}</option>
+
+                </select>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'unitOfMeasurementId')">
+                    Unit of measurement is required</div>
+            </div>
+            <div class="form-group col-lg-4">
+                <label class="form-label">Link </label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="image" placeholder="Enter Link of Image" autocomplete="off"
+                 [class.is-valid]="validationService?.isControlValid('image')"
+                    formControlName="image" />
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'image')">Link of Image is required
+                </div>
+            </div>
+            <div class="form-group col-lg-4 mt-7">
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <input type="checkbox" formControlName="isOptional" checked="isOptional" name="isOptional" />
+                        <span></span>
+                        Optional
+                    </label>
+                </div>
+            </div>
+            <ng-container class="form-group row" formArrayName="spotlightFacts">
+                <div class="col-lg-12">
+                    <div class="row" *ngIf="spotlightFacts().controls.length > 0">
+                        <div class="col-lg-4 mb-1" *ngFor="let items of spotlightFacts().controls; let i=index "
+                            [formGroupName]="i">
+                            <label class="form-label ">Spotlight Fact {{i+1}}</label>
+                            <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 "
+                                (click)="removeQuantity(i)" *ngIf="spotlightFacts().controls.length > 1"><i
+                                    class="ki ki-minus icon-xs "></i></span>
+                            <input type="text" class="form-control form-control-lg form-control-solid"
+                                name="{{i}}" placeholder="Enter Spotlight Fact {{i+1}}" autocomplete="off"
+                                [class.is-invalid]="items.controls['fact'].invalid && (items.controls['fact'].dirty || items.controls['fact'].touched) "
+                                formControlName="fact"
+                                [class.is-valid]="items.controls['fact'].valid && (items.controls[ 'fact'].dirty || items.controls[ 'fact'].touched) "/>
+
+                            <div class="invalid-feedback"
+                                *ngIf="items.controls['fact'].hasError('required') && (items.controls['fact'].dirty || items.controls['fact'].touched) ">
+                                Spotlight facts is required</div>
+                        </div>
+                        <div class="plusIcon">
+                            <span class="float-right btn btn-success" (click)="addQuantity(undefined) "
+                                *ngIf="spotlightFacts().controls.length !== 4"><i
+                                    class="ki ki-plus icon-xs "></i>Add Facts</span>
+
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="form-group row">
+                <div class="form-group col-lg-12 float-right">
+                    <span class="float-right btn btn-success" (click)="add()"><i
+                            class="ki ki-plus icon-xs "></i>{{id ?'Update Ingredient':'Add Another Ingredient'}}</span>
+                </div>
+            </div>
+          <!--   <div class="col-lg-6">
+                <label style="padding-right: 14px;">OR</label>
+                <label class="form-label" > Match Image: </label>
+                <app-upload-button [multiple]="false" [moreImage]="true" (onUpload)="uploadPairImage()" [isDisabled]="isUploadDisabled"></app-upload-button>
+            </div> -->
+
+    </div>
+            
+        <div class="float-right ">
+            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+            <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+            <button type="submit " class="btn btn-primary font-weight-bold mr-2 " [disabled]="form.invalid">Save &
+                Next</button>
+
+        </div>
+
+    </form>
+
+</div>

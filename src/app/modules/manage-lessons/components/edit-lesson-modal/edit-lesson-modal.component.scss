@@ -1,0 +1,19 @@
+.addIcon {
+    width: 0px;
+    margin-top: -26px;
+    margin-left: -26px;
+}
+
+.plusIcon {
+    margin-top: 22px;
+    margin-left: -8px;
+    position: relative;
+}
+
+#upload_button {
+    display: inline-block;
+  }
+  
+  #upload_button input[type="file"] {
+    display: none;
+  }

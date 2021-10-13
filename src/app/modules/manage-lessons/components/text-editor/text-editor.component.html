@@ -1,0 +1,32 @@
+<div class="form-group row" [formGroup]="form">
+    <ng-container class="form-group" formArrayName="{{fieldControl}}">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-5">
+                    <!-- <span class="float-right  btn btn-xs btn-light-success btn-icon" (click)="addQuantity(undefined)"><i
+                            class="ki ki-plus icon-xs"></i></span> -->
+                    <label class="form-label font-weight-bold"> {{labelName}} </label>
+                </div>
+            </div>
+            <div class="row">
+                <ng-container *ngFor="let items of chefIntroductionInfo().controls; let i=index" [formGroupName]="i">
+
+                    <div class="col-lg-6 mb-9">
+                        <ckeditor [editor]="editor" [config]="config" (change)="onChange($event)" formControlName="text"></ckeditor>
+                    </div>
+                    <div class="removeIcon" *ngIf="chefIntroductionInfo().controls.length > 1">
+                        <span class="float-right btn btn-xs btn-light-danger btn-icon" (click)="removeQuantity(i)"><i
+                                class="ki ki-minus icon-xs"></i></span>
+                    </div>
+                    <div class="invalid-feedback " *ngIf="items.controls['text'].hasError('required') && (items.controls['text'].dirty || items.controls['text'].touched) ">
+                        Text is required
+                    </div>
+                </ng-container>
+                <div class="plusIcon">
+                    <span class="float-right  btn btn-success " (click)="addQuantity(undefined)"><i
+                            class="ki ki-plus icon-xs"></i>Add</span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,51 @@
+<div class="mt-5">
+
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+                style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+
+    <form action="#" class="form form-label-right" [formGroup]="multiSensoryForm" (ngSubmit)="onSave()"
+        *ngIf="questionData">
+
+        <div class="form-group row">
+            <div class="form-group col-lg-9">
+                <label class="form-label">Question</label>
+                <textarea type="text" class="form-control form-control-lg form-control-solid" name="question"
+                    placeholder="Enter question" autocomplete="off"
+                    [class.is-invalid]="validationService?.isControlInvalid('question')"
+                    [class.is-valid]="validationService?.isControlValid('question')"
+                    formControlName="question"></textarea>
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('question')">
+                    Question was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'question')">
+                    Question is required
+                </div>
+            </div>
+            <div class="form-group col-lg-9">
+                <label class="form-label">Estimated Time (In Minutes)</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="estimatedMakeTime"
+                    placeholder="Enter estimated time" autocomplete="off"
+                    [class.is-invalid]="validationService?.isControlInvalid('estimatedMakeTime')"
+                    [class.is-valid]="validationService?.isControlValid('estimatedMakeTime')"
+                    formControlName="estimatedMakeTime"/>
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('estimatedMakeTime')">
+                    Estimated time was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'estimatedMakeTime')">
+                    Estimated time is required
+                </div>
+            </div>
+        </div>
+
+        <div class="float-right ">
+            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+            <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+            <button type="submit " class="btn btn-primary font-weight-bold mr-2 "
+                [disabled]="multiSensoryForm.invalid">Save</button>
+
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,25 @@
+.removeIcon {
+    width: 0px;
+    margin-top: -26px;
+    // margin-left: -15px;
+}
+
+.row .addition:last-child .btn-light-danger {
+    display: none;
+}
+
+.row .addition:last-child .btn-light-success {
+    display: none;
+}
+
+.addIcon {
+    width: 0px;
+    margin-top: -26px;
+    margin-left: -26px;
+}
+
+.plusIcon {
+    margin-top: 1px;
+    margin-left: -6px;
+    position: relative;
+}

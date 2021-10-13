@@ -1,0 +1,217 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            <ng-container *ngIf="stamp">
+                <ng-container *ngIf="stamp.id">Edit</ng-container>
+                <ng-container *ngIf="!stamp.id">Create</ng-container>
+                Stamp
+                <ng-container *ngIf="stamp.id">'{{stamp.stampTitle}}</ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px;">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="overlay-layer bg-transparent">
+                <div class="spinner spinner-lg spinner-success"></div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="stamp">
+            <form action="#" class="form form-label-right" [formGroup]="formGroup">
+                <div class="form-group row">
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Stamp Title</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="stampTitle"
+                            placeholder="Enter Stamp title" autocomplete="off"
+                            [class.is-invalid]="validationService.isControlInvalid('stampTitle')"
+                            [class.is-valid]="validationService.isControlValid('stampTitle')"
+                            formControlName="stampTitle" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('stampTitle')">Stamp title
+                            was entered correct</div>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'stampTitle')">Stamp title is required
+                        </div>
+                    </div>
+                    <div *ngIf="!id" class="form-group col-lg-12">
+                        <label>Select Language</label>
+                        <select class="form-control form-control-lg form-control-solid" name="languageId"
+                            [class.is-invalid]="validationService?.isControlInvalid('languageId')"
+                            formControlName="languageId">
+                            <option [value]="null" disabled>Select Language </option>
+                            <option [value]="item.id" [disabled]="!item.is_enable" *ngFor="let item of languageMaster">
+                                {{item.title}}</option>
+
+                        </select>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'languageId')">Language is required
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>Stamp Type</label>
+                        <select class="form-control form-control-lg form-control-solid" placeholder="Select Stamp Type"
+                            name="stampType" [class.is-invalid]="validationService?.isControlInvalid('stampType')"
+                            formControlName="stampType" (change)="selectedStampType($event.target.value)">
+                            <option value="null" disabled>Select Stamp Type </option>
+                            <option value="{{item.type}}" *ngFor="let item of stampTypeMaster">
+                                {{item.type}}</option>
+                        </select>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'stampType')">
+                            Stamp Type is required
+                        </div>
+                    </div>
+                    <div *ngIf="formGroup.controls.stampType.value=='Country'" class="form-group col-lg-12">
+                        <label>Select Country</label>
+                        <select class="form-control form-control-lg form-control-solid" placeholder="Select Country"
+                            name="country" [class.is-invalid]="validationService?.isControlInvalid('country')"
+                            formControlName="country">
+                            <option value="null" disabled>Select Country </option>
+                            <option value="{{country.id}}" *ngFor="let country of countryMaster">
+                                {{country.countryName}}</option>
+                        </select>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'country')">
+                            Country is required
+                        </div>
+                    </div>
+                    <div *ngIf="formGroup.controls.stampType.value=='Level'" class="form-group col-lg-12">
+                        <label>Level Type</label>
+                        <select class="form-control form-control-lg form-control-solid" placeholder="Select Level Type"
+                            name="levelType" formControlName="levelType">
+                            <option value="null" disabled>Select Level Type </option>
+                            <option value="{{levelType.id}}" *ngFor="let levelType of levelTypeMaster">
+                                {{levelType.level}}</option>
+                        </select>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'levelType')">
+                            Level Type is required
+                        </div>
+
+                    </div>
+                    <ng-container
+                        *ngIf="relatedItem() && relatedItem().controls.length > 0 && formGroup.controls.stampType.value=='Level'"
+                        formArrayName="relatedItems">
+                        <ng-container *ngFor="let items of relatedItem().controls;let i=index ">
+                            <ng-container [formGroupName]="i">
+                                <div class="form-group col-md-12">
+                                    <label class="form-label font-weight-bold">Item {{i+1}}</label>
+                                    <span class="float-right btn btn-xs btn-light-danger btn-icon"
+                                        (click)="removeQuantity(i)" *ngIf="relatedItem().controls.length > 1"><i
+                                            class="ki ki-minus icon-xs "></i></span>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label ">Item </label>
+                                    <input type="text " class="form-control form-control-lg form-control-solid "
+                                        name="text" placeholder="Enter Item " autocomplete="off " [class.is-invalid]="items.controls['item'].invalid && (items.controls[
+                                'item'].dirty || items.controls[ 'item'].touched) "
+                                        [class.is-valid]="items.controls['item'].valid && (items.controls['item'].dirty || items.controls[ 'item'].touched) "
+                                        formControlName="item" />
+                                    <div class="valid-feedback "
+                                        *ngIf="items.controls[ 'item'].valid && (items.controls['item'].dirty || items.controls['item'].touched) ">
+                                        Item was entered correct</div>
+                                    <div class="invalid-feedback "
+                                        *ngIf="items.controls['item'].hasError('required') && (items.controls['item'].dirty || items.controls['item'].touched) ">
+                                        Item is required
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4 ">
+                                    <div class="radio-inline">
+                                        <label class="radio">
+                                            <input type="radio" [value]="true" formControlName="itemStatus" />
+                                            <span></span>
+                                            Active
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" [value]="false" formControlName="itemStatus" />
+                                            <span></span>
+                                            Inactive
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 mt-7">
+                                    <div *ngIf="!items.controls['image'].value; else elseBlock" id="upload_button">
+                                        <label>
+                                            <input type="file" class="form-control"
+                                                (change)="uploadImage($event,items)">
+                                            <span class="btn btn-success"> Upload Image </span>
+                                        </label>
+                                    </div>
+                                    <ng-template #elseBlock>
+                                        <div class="image-input image-input-empty image-input-outline" id="kt_image_5">
+                                            <div style="margin-right: 10px;" class="image-input-wrapper">
+                                                <label
+                                                    class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow cross-button"
+                                                    (click)="removeImage(items)">
+                                                    <i class="fa fa-times icon-sm text-muted"></i></label>
+                                                <img class="image-wrapper" [src]="items.controls['image'].value" />
+                                            </div>
+                                        </div>
+
+                                    </ng-template>
+
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                        <div class="col-lg-12  mt-5">
+                            <span *ngIf="relatedItem().controls.length !== 3" class="btn btn-success "
+                                (click)="addQuantity(undefined)"><i class="ki ki-plus icon-xs "></i>
+                                Add New</span>
+                            <span class="float-right danger" *ngIf="relatedItem().controls.length === 3">
+                                You can add multiple item max up to 3.
+                            </span>
+                        </div>
+                    </ng-container>
+
+                    <div *ngIf="formGroup.controls.stampType.value=='Learning'" class="col-lg-12">
+                        <label>Learning Type</label>
+                        <select class="form-control form-control-lg form-control-solid"
+                            placeholder="Select Learning Type" name="learningType" formControlName="learningType">
+                            <option value="null" disabled>Select Learning Type </option>
+                            <option value="{{learningType.id}}" *ngFor="let learningType of learningTypeMaster">
+                                {{learningType.learning}}</option>
+                        </select>
+                        <div class="invalid-feedback"
+                            *ngIf="validationService?.controlHasError('required', 'learningType')">
+                            Learning Type is required
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Stamp Image</label>
+                    <app-upload-button [multiple]="true" [moreImage]="moreStampImage" [imageData]="stampImages"
+                        (onUpload)="uploadStampImage($event)" (onRemove)="removeStampImage($event)"></app-upload-button>
+                    <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'images')">
+                        Stamp Image is required</div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label>Status</label>
+                    <div class="radio-inline">
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="true" formControlName="status" />
+                            <span></span>
+                            Active
+                        </label>
+                        <label class="radio">
+                            <input type="radio" name="status" [value]="false" formControlName="status" />
+                            <span></span>
+                            Inactive
+                        </label>
+
+                    </div>
+                    <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'status')">
+                        Status is required</div>
+                </div>
+
+
+            </form>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+        <ng-container *ngIf="stamp">
+
+            <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
+                [disabled]="formGroup.invalid">Save</button>
+        </ng-container>
+    </div>
+</div>

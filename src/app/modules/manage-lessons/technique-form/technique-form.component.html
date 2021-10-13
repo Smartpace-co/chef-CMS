@@ -1,0 +1,96 @@
+<div class="mt-5">
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+                style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+
+    <form  class="form form-label-right" *ngIf="formGroup" [formGroup]="formGroup" (ngSubmit)="onSave()">
+
+        <div class="row">
+            <div class="form-group col-lg-4">
+                <label class="form-label">Technique</label>
+                <ng-select   bindLabel="culinaryTechniqueTitle" bindValue="id" formControlName="culinaryTechniqueId" [items]="techniqueMaster" placeholder="Select Technique">
+    
+                </ng-select>
+                  <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'culinaryTechniqueId')">Technique is required</div>
+ 
+            </div> 
+            <div class="form-group col-lg-4">
+                <label class="form-label">Dialogue</label>
+                <input type="text" class="form-control form-control-lg form-control-solid"  placeholder="Enter Dialogue" autocomplete="off" 
+                 [class.is-valid]="validationService?.isControlValid('dialogue')"
+                    formControlName="dialogue" />
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'dialogue')">Dialogue is required</div>
+            </div>
+        
+            <div class="form-group col-lg-4">
+                <label class="form-label">Video or Animation Link</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="animationLink" placeholder="Enter Video or Animation Link" autocomplete="off" 
+                 [class.is-valid]="validationService?.isControlValid('animationLink')"
+                    formControlName="animationLink" />
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'animationLink')">Video or Animation Link is required
+                </div>
+            </div>
+            <div class="form-group col-lg-4">
+                <label class="form-label">Estimated Time (In Minutes)</label>
+                <input type="number" class="form-control form-control-lg form-control-solid" name="estimatedTime" placeholder="Enter Estimated make time in minute" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('estimatedTime')" [class.is-valid]="validationService.isControlValid('estimatedTime')"
+                    formControlName="estimatedTime" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('estimatedTime')">
+                    Estimated make time was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'estimatedTime')">
+                    Estimated make time is required
+                </div>
+            </div>
+        </div> 
+            <div class="form-group row">
+                <div class="col-lg-12 ">
+                    <span class="float-left btn btn-success" (click)="add()"><i
+                            class="ki ki-plus icon-xs "></i>Add Technique</span>
+                </div>
+            </div>
+         
+            <div class="separator separator-solid my-10"></div>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Technique Title</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" *ngIf="techniqueData?.length==0">No Technique available</tr>
+                        <tr *ngFor="let item of techniqueData;let i=index">
+                            <td>{{item.culinaryTechnique.culinaryTechniqueTitle}}</td>
+                            <td>
+                                <a title="Edit Ingredients" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+                                    (click)="loadTechnique(item,i)">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'"
+                                        cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
+                                    </span>
+                                </a>
+
+                                <a title="Delete Ingredients" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                                    (click)="delete(i)">
+                                    <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                                        class="svg-icon svg-icon-md svg-icon-danger">
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <div class="float-right ">
+            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+            <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+            <button type="submit " class="btn btn-primary font-weight-bold mr-2 " [disabled]="form.invalid">Save &
+                Next</button>
+
+        </div>
+
+    </form>
+
+</div>

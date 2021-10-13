@@ -1,0 +1,559 @@
+<div class="card card-custom gutter-b">
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+                style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                <ng-container *ngIf="lesson">
+                    {{ id ? "Edit" : "New" }} Lesson
+                    <span *ngIf="lesson && lesson.id">'{{lesson.lessonTitle}}'</span>
+                </ng-container>
+            </h3>
+        </div>
+        <div class="card-toolbar">
+
+            <a type="button" class="btn btn-light" routerLink="manage-lessons/lessons/">
+                <i class="fa fa-arrow-left"></i>Back
+            </a>
+        </div>
+    </div>
+
+
+    <div class="card-body">
+        <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+            <li class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" (click)="lesson.id ? activeTabId=tabs.BASIC_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.BASIC_TAB"
+                    [class.active]="activeTabId === tabs.BASIC_TAB">
+                    Basic info
+                </a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button"
+                    (click)="lesson.id ? activeTabId=tabs.RECIPES_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.RECIPES_TAB"
+                    [class.active]="activeTabId === tabs.RECIPES_TAB">Recipes</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button"
+                    (click)="lesson.id ? activeTabId=tabs.INGREDIENT_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.INGREDIENT_TAB"
+                    [class.active]="activeTabId === tabs.INGREDIENT_TAB">Ingredients</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button"
+                    (click)="lesson.id ? activeTabId=tabs.TECHNIQUE_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.TECHNIQUE_TAB"
+                    [class.active]="activeTabId === tabs.TECHNIQUE_TAB">Techniques</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button"
+                    (click)="lesson.id ? activeTabId=tabs.PREPARATION_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.PREPARATION_TAB"
+                    [class.active]="activeTabId === tabs.PREPARATION_TAB">Preparation</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button"
+                    (click)="lesson.id ? activeTabId=tabs.COOKINGSTEP_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.COOKINGSTEP_TAB"
+                    [class.active]="activeTabId === tabs.COOKINGSTEP_TAB">Cooking </a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="button"
+                    (click)="lesson.id ? activeTabId=tabs.SERVING_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.SERVING_TAB"
+                    [class.active]="activeTabId === tabs.SERVING_TAB">Serving</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" (click)="lesson.id ? activeTabId=tabs.CLEANUP_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.CLEANUP_TAB"
+                    [class.active]="activeTabId === tabs.CLEANUP_TAB">Clean-Up Steps</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab"
+                    (click)="lesson.id ? activeTabId=tabs.EXPERIMENT_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.EXPERIMENT_TAB"
+                    [class.active]="activeTabId === tabs.EXPERIMENT_TAB">Experiment</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab"
+                    (click)="lesson.id ? activeTabId=tabs.EXPERIMENT_QUE_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.EXPERIMENT_QUE_TAB"
+                    [class.active]="activeTabId === tabs.EXPERIMENT_QUE_TAB">Experiment Question</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" (click)="lesson.id ? activeTabId=tabs.QUESTION_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.QUESTION_TAB"
+                    [class.active]="activeTabId === tabs.QUESTION_TAB">Questions</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" (click)="lesson.id ? activeTabId=tabs.SENSORY_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.SENSORY_TAB"
+                    [class.active]="activeTabId === tabs.SENSORY_TAB">Sensory Exercise</a>
+            </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" (click)="lesson.id ? activeTabId=tabs.ACTIVITY_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.ACTIVITY_TAB"
+                    [class.active]="activeTabId === tabs.ACTIVITY_TAB">Take Action Activity</a>
+            </li>
+        </ul>
+
+
+
+        <ng-container *ngIf="activeTabId === tabs.BASIC_TAB">
+            <div class="mt-5" *ngIf="lesson">
+
+                <ng-container *ngIf="lesson">
+                    <form action="#" class="form form-label-right" [formGroup]="formGroup" (ngSubmit)="save()">
+                        <div class="form-group row">
+                            <div *ngIf="lesson && lesson.id" class="col-lg-12">
+                                <label class="form-label"><strong>Creator Name :</strong> {{lesson?.user.name}} </label>
+                            </div>
+                            <div *ngIf="lesson && lesson.id && lesson.isReviewed" class="col-lg-12">
+                                <label class="form-label"><strong>Reviewer Name :</strong>
+                                    <span> {{lesson.reviewer.join(", ")}} </span>
+                                </label>
+
+                            </div>
+
+                            <div class="form-group" [ngClass]="id ? 'col-lg-6':'col-lg-4'">
+
+                                <label class="form-label">Lesson Name</label>
+
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="lessonTitle" placeholder="Enter lesson Name" autocomplete="off"
+                                    [class.is-invalid]="isControlInvalid('lessonTitle')"
+                                    [class.is-valid]="isControlValid('lessonTitle')" formControlName="lessonTitle" />
+                                <div class="valid-feedback" *ngIf="isControlValid('lessonTitle')">
+                                    Lesson Name was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'lessonTitle')">Lession
+                                    Name is required
+                                </div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'lessonTitle')">
+                                    Lesson Name is required
+                                </div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('maxlength', 'lessonTitle')">
+                                    Lesson Name is required
+                                </div>
+                            </div>
+                            <div class="form-group" [ngClass]="id ? 'col-lg-6':'col-lg-4'">
+                                <label>Grade</label>
+                                <select class="form-control form-control-lg form-control-solid"
+                                    placeholder="Select Grade" name="grade"
+                                    [class.is-invalid]="isControlInvalid('grade')" formControlName="grade">
+                                    <option [value]="null" disabled>Select Grades</option>
+                                    <option [value]="type.id" *ngFor="let type of gradeMaster">{{type.grade}}</option>
+
+                                </select>
+                                <div class="valid-feedback" *ngIf="isControlValid('grade')">
+                                    Grade was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'grade')">Grade is
+                                    required
+                                </div>
+                            </div>
+                            <div *ngIf="!id" class="form-group" [ngClass]="!id ? 'col-lg-4':''">
+                                <label>Language</label>
+                                <select class="form-control form-control-lg form-control-solid" name="languageId"
+                                    [class.is-invalid]="isControlInvalid('languageId')" formControlName="languageId">
+                                    <option [value]="null" disabled>Select Language </option>
+                                    <option [value]="item.id" [disabled]="!item.is_enable"
+                                        *ngFor="let item of systemLanguageMaster">{{item.title}}</option>
+
+                                </select>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'languageId')">Language
+                                    is required
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-4">
+                                <label class="form-label"></label>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="createrName" placeholder="Enter Creater Name" autocomplete="off" [class.is-invalid]="isControlInvalid('createrName')" [class.is-valid]="isControlValid('createrName')" formControlName="createrName"
+                                />
+                                <div class="valid-feedback" *ngIf="isControlValid('createrName')">
+                                    Creater Name was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'createrName')">Creater Name is required</div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label class="form-label"></label>
+                                <input type="text" class="form-control form-control-lg form-control-solid" name="reviewerName" placeholder="Enter Reviewer Name" autocomplete="off" [class.is-invalid]="isControlInvalid('reviewerName')" [class.is-valid]="isControlValid('reviewerName')"
+                                    formControlName="reviewerName" />
+                                <div class="valid-feedback" *ngIf="isControlValid('reviewerName')">
+                                    Reviewer Name was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'reviewerName')">
+                                    Reviewer Name is required</div>
+                            </div> -->
+
+                            <div class="form-group col-lg-4">
+                                <label class="form-label">Greeting Text</label>
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="greeting" placeholder="Enter Greeting   " autocomplete="off"
+                                    [class.is-invalid]="isControlInvalid('greeting')"
+                                    [class.is-valid]="isControlValid('greeting')" formControlName="greeting" />
+                                <div class="valid-feedback" *ngIf="isControlValid('greeting')">
+                                    Greeting was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'greeting')">Greeting
+                                    is required
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label class="form-label">Greeting Linguistic Details (Optional)</label>
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="linguisticDetails" placeholder="Enter Greeting Linguistic Details" autocomplete="off"
+                                    [class.is-invalid]="isControlInvalid('linguisticDetails')"
+                                    [class.is-valid]="isControlValid('linguisticDetails')"
+                                    formControlName="linguisticDetails" />
+                                <div class="valid-feedback" *ngIf="isControlValid('linguisticDetails')">
+                                    Greeting Linguistic details was entered correctly</div>
+                            </div>
+                            <div class="form-group col-lg-4 mt-7">
+                                <span *ngIf="!formGroup.controls['greetingTrack'].value" id="upload_button">
+                                    <label>
+                                        <input type="file" accept="audio/mp3" class="form-control"
+                                            (change)="uploadGreetingTrack($event)">
+                                        <span class="btn btn-success"> Upload Greeting Voicehover (.MP3) </span>
+                                    </label>
+                                </span>
+                                <span class="row" *ngIf="formGroup.controls['greetingTrack'].value">
+                                    <audio style="width: 22rem!important;"  controls>
+                                        <source [src]="formGroup.controls['greetingTrack'].value" type="audio/mp3">
+                                    </audio>
+                                    <label (click)="removeGreetingTrack()"
+                                    class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
+                                    <i class="fa fa-times icon-md text-muted"></i>
+                                </label>
+                                </span>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="form-label">Enjoy your meal</label>
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="goodbye" placeholder="Enjoy your meal" autocomplete="off"
+                                    [class.is-invalid]="isControlInvalid('goodbye')"
+                                    [class.is-valid]="isControlValid('goodbye')" formControlName="goodbye" />
+                                <div class="valid-feedback" *ngIf="isControlValid('goodbye')">
+                                    Enjoy your meal was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'goodbye')">Enjoy your
+                                    meal is required
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label class="form-label">Enjoy your meal Linguistic Details</label>
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="goodbyeLinguistic" placeholder="Enter Enjoy your meal Linguistic details"
+                                    autocomplete="off" [class.is-invalid]="isControlInvalid('goodbyeLinguistic')"
+                                    [class.is-valid]="isControlValid('goodbyeLinguistic')"
+                                    formControlName="goodbyeLinguistic" />
+                                <div class="valid-feedback" *ngIf="isControlValid('goodbyeLinguistic')">
+                                    Enjoy your meal Linguistic details was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'goodbyeLinguistic')">
+                                    Enjoy your meal Linguistic details is required</div>
+                            </div>
+                            <div class="form-group col-lg-4 mt-7">
+                                <span *ngIf="!formGroup.controls['goodbyeTrack'].value" id="upload_button">
+                                    <label>
+                                        <input type="file" accept="audio/mp3" class="form-control"
+                                            (change)="uploadGoodbyeTrack($event)">
+                                        <span class="btn btn-success"> Upload Enjoy your meal Voicehover (.MP3) </span>
+                                    </label>
+                                </span>
+                                <span class="row" *ngIf="formGroup.controls['goodbyeTrack'].value">
+                                    <audio style="width: 22rem!important;" controls>
+                                        <source [src]="formGroup.controls['goodbyeTrack'].value" type="audio/mp3">
+                                    </audio>
+                                        <label (click)="removeGoodbyeTrack()"
+                                            class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
+                                            <i class="fa fa-times icon-md text-muted"></i>
+                                        </label>
+                                </span>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'goodbyeTrack')">
+                                    Enjoy your meal Track is required
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-6 ">
+                                <label class="form-label font-weight-bold mt-5">Learning objectives for teachers</label>
+                                <ckeditor [editor]="editor" formControlName="learningObjForTeacher"></ckeditor>
+                                <div class="valid-feedback" *ngIf="isControlValid('learningObjForTeacher')">
+                                    Learning objectives for teachers was entered correctly</div>
+                                <div class="invalid-feedback"
+                                    *ngIf="controlHasError('required', 'learningObjForTeacher')">
+                                    Learning objectives for teachers is required</div>
+                            </div>
+
+
+                            <div class="form-group col-lg-6">
+                                <label class="form-label font-weight-bold mt-5">Learning objectives for students
+                                </label>
+                                <ckeditor [editor]="editor" formControlName="learningObjForStudent"></ckeditor>
+                                <div class="valid-feedback" *ngIf="isControlValid('learningObjForStudent')">
+                                    Learning objectives for students was entered correctly</div>
+                                <div class="invalid-feedback"
+                                    *ngIf="controlHasError('required', 'learningObjForStudent')">
+                                    Learning objectives for students is required</div>
+                            </div>
+                            <div class="form-group col-lg-4 mt-7">
+                                <span *ngIf="!formGroup.controls['learningObjectivesForStudentTrack'].value" id="upload_button">
+                                    <label>
+                                        <input type="file" accept="audio/mp3" class="form-control"
+                                            (change)="uploadLearningObjectiveTrack($event,'learningObjectivesForStudentTrack')">
+                                        <span class="btn btn-success"> Upload Learning Objective Voicerhover For Student(.MP3) </span>
+                                    </label>
+                                </span>
+                                <span class="row" *ngIf="formGroup.controls['learningObjectivesForStudentTrack'].value">
+                                    <label>Learning Objective Voicehover For Student</label>
+                                    <audio style="width: 20rem!important;" controls>
+                                        <source [src]="formGroup.controls['learningObjectivesForStudentTrack'].value" type="audio/mp3">
+                                    </audio>
+                                    <label (click)="removeLearningObjectiveTrack('learningObjectivesForStudentTrack')"
+                                    class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
+                                    <i class="fa fa-times icon-md text-muted"></i>
+                                </label>
+                                </span>
+                            </div>
+                            <div class="form-group col-lg-4 mt-7">
+                                <span *ngIf="!formGroup.controls['learningObjectivesForTeacherTrack'].value" id="upload_button">
+                                    <label>
+                                        <input type="file" accept="audio/mp3" class="form-control"
+                                            (change)="uploadLearningObjectiveTrack($event,'learningObjectivesForTeacherTrack')">
+                                        <span class="btn btn-success">Upload Learning Objective Voicehover For Teacher (.MP3) </span>
+                                    </label>
+                                </span>
+                                <span class="row" *ngIf="formGroup.controls['learningObjectivesForTeacherTrack'].value">
+                                    <label>Learning Objective Voicehover For Teacher</label>
+                                    <audio style="width: 20rem!important;" controls>
+                                        <source [src]="formGroup.controls['learningObjectivesForTeacherTrack'].value" type="audio/mp3">
+                                    </audio>
+                                    <label (click)="removeLearningObjectiveTrack('learningObjectivesForTeacherTrack')"
+                                    class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
+                                    <i class="fa fa-times icon-md text-muted"></i>
+                                </label>
+                                </span>
+                            </div>
+                            <div class="form-group col-lg-4 mt-7">
+                                <span *ngIf="!formGroup.controls['safetyStepsTrack'].value" id="upload_button">
+                                    <label>
+                                        <input type="file" accept="audio/mp3" class="form-control"
+                                            (change)="uploadLearningObjectiveTrack($event,'safetyStepsTrack')">
+                                        <span class="btn btn-success">Upload Voicehover for Safety Steps (.MP3) </span>
+                                    </label>
+                                </span>
+                                <span class="row" *ngIf="formGroup.controls['safetyStepsTrack'].value">
+                                    <label>Voicehover for Safety Steps :</label>
+                                    <audio style="width: 20rem!important;" controls>
+                                        <source [src]="formGroup.controls['safetyStepsTrack'].value" type="audio/mp3">
+                                    </audio>
+                                    <label (click)="removeLearningObjectiveTrack('safetyStepsTrack')"
+                                    class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
+                                    <i class="fa fa-times icon-md text-muted"></i>
+                                </label>
+                                </span>
+                            </div>
+                            
+                            <div class="col-lg-12">
+                                <app-text-editor [form]="formGroup" [fieldControl]="'chefIntroduction'"
+                                    [labelName]="'Chef introduction'" [fieldValues]="lesson?.chefIntroductions">
+                                </app-text-editor>
+                            </div>
+                            <div class="col-lg-12">
+                                <app-text-editor [form]="formGroup" [fieldControl]="'teacherInstruction'"
+                                    [labelName]="'Preparation instructions For the teacher'"
+                                    [fieldValues]="lesson?.teacherInstructions">
+                                </app-text-editor>
+                            </div>
+                            <div class="col-lg-12">
+                                <app-text-editor [form]="formGroup" [fieldControl]="'safteySteps'"
+                                    [labelName]="'Safety steps'" [fieldValues]="lesson?.safetySteps"></app-text-editor>
+                            </div>
+                            <!-- <div class="form-group col-lg-4">
+                                <label>Language</label>
+                                <select class="form-control form-control-lg form-control-solid" name="language"
+                                    [class.is-invalid]="isControlInvalid('language')" formControlName="language">
+                                    <option [value]="null" disabled>Select Language </option>
+                                    <option [value]="language.id" *ngFor="let language of languageMaster">
+                                        {{language.language}}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'language')">Language
+                                    is required </div>
+                            </div> -->
+
+                            <div class="form-group col-lg-4">
+                                <label class="form-label">Dish fact</label>
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="funFact" placeholder="Enter Dish fact " autocomplete="off"
+                                    [class.is-invalid]="isControlInvalid('funFact')"
+                                    [class.is-valid]="isControlValid('funFact')" formControlName="funFact" />
+                                <div class="valid-feedback" *ngIf="isControlValid('funFact')">
+                                    Dish fact was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'funFact')">Dish fact
+                                    is
+                                    required
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4">
+                                <label class="form-label"> Country Fact</label>
+                                <input type="text" class="form-control form-control-lg form-control-solid"
+                                    name="linkName" placeholder="Enter Country fact " autocomplete="off"
+                                    [class.is-invalid]="isControlInvalid('socialStudiesFact')"
+                                    [class.is-valid]="isControlValid('socialStudiesFact')"
+                                    formControlName="socialStudiesFact" />
+                                <div class="valid-feedback" *ngIf="isControlValid('socialStudiesFact')">
+                                    Country fact was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'socialStudiesFact')">
+                                    Country fact is required
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="form-label">Estimated Story Time (In Minutes)</label>
+                                <input type="number" class="form-control form-control-lg form-control-solid"
+                                    name="storyTime" placeholder="Enter Story Time" autocomplete="off"
+                                    [class.is-invalid]="isControlInvalid('storyTime')"
+                                    [class.is-valid]="isControlValid('storyTime')" formControlName="storyTime" />
+                                <div class="valid-feedback" *ngIf="isControlValid('storyTime')">
+                                    Story Time was entered correctly</div>
+                                <div class="invalid-feedback" *ngIf="controlHasError('required', 'storyTime')">
+                                    Story Time is required
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="form-label ">Featured (Optional):</label>
+                                <div class="radio-inline ">
+                                    <label class="radio">
+                                        <input type="radio" name="isFeatured" [value]="true"
+                                            formControlName="isFeatured" />
+                                        <span></span> Yes
+                                    </label>
+                                    <label class="radio ">
+                                        <input type="radio" name="isFeatured" [value]="false"
+                                            formControlName="isFeatured" />
+                                        <span></span>
+                                        No
+                                    </label>
+
+                                </div>
+                                <div class="invalid-feedback " *ngIf="controlHasError( 'required', 'isFeatured') ">
+                                    Featured is required</div>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label class="form-label ">Status</label>
+                                <div class="radio-inline ">
+                                    <label class="radio">
+                                        <input type="radio" name="status" [value]="true" formControlName="status" />
+                                        <span></span> Active
+                                    </label>
+                                    <label class="radio ">
+                                        <input type="radio" name="status" [value]="false" formControlName="status" />
+                                        <span></span>
+                                        Inactive
+                                    </label>
+
+                                </div>
+                                <div class="invalid-feedback " *ngIf="controlHasError( 'required', 'status') ">
+                                    Status is required</div>
+                            </div>
+                            <!--
+                            <ng-container class="form-group row" formArrayName="links">
+                                <div class="col-lg-4 mb-1" *ngFor="let items of linkNames().controls; let i=index " [formGroupName]="i">
+                                    <label class="form-label ">Links</label>
+                                    <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 " (click)="removeQuantity(i)" *ngIf="linkNames().controls.length > 1"><i
+                                            class="ki ki-minus icon-xs "></i></span>
+                                    <input type="text " class="form-control form-control-lg form-control-solid " name="{{i}}" formControlName="videoLink" placeholder="Enter Link " autocomplete="off " [class.is-invalid]="items.controls[ 'videoLink'].invalid && (items.controls[
+                                                'videoLink'].dirty || items.controls[ 'videoLink'].touched) " [class.is-valid]="items.controls[ 'videoLink'].valid && (items.controls[ 'videoLink'].dirty || items.controls[ 'videoLink'].touched) " />
+                                </div>
+                                <div class="plusIcon"> <span class="float-right btn btn-success" (click)="addQuantity(undefined)"><i class="ki ki-plus icon-xs "></i> Add
+                                        Link</span>
+                                </div>
+                            </ng-container> -->
+                        </div>
+
+
+                        <div class="float-right ">
+                            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+                            <button type="submit " class="btn btn-primary font-weight-bold mr-2 "
+                                [disabled]="formGroup.invalid">Save & Next</button>
+                        </div>
+
+                    </form>
+                </ng-container>
+
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="activeTabId===tabs.RECIPES_TAB && lesson && id">
+            <app-recips-form [fieldControler]="'recips'" [form]="formGroup" [lessonId]="id" [activeTabId]="activeTabId"
+                (changeActiveTab)="changeTab($event)" [previousStepName]="tabs.BASIC_TAB"
+                [nextStepName]="tabs.INGREDIENT_TAB"></app-recips-form>
+        </ng-container>
+        <ng-container *ngIf="activeTabId===tabs.INGREDIENT_TAB && lesson && id">
+            <app-ingredient-form [fieldControler]="'recipeIngredients'" [lessonId]="id" [labelName]="'Ingredients'"
+                [form]="ingredientForm" [activeTabId]="activeTabId" [previousStepName]="tabs.RECIPES_TAB"
+                [nextStepName]="tabs.TECHNIQUE_TAB" (changeActiveTab)="changeTab($event)"></app-ingredient-form>
+        </ng-container>
+        <ng-container *ngIf="activeTabId===tabs.TECHNIQUE_TAB && lesson && id">
+            <app-technique-form [fieldControler]="'recipeTechniques'" [lessonId]="id" [labelName]="'Techniques'"
+                [form]="techniqueForm" [activeTabId]="activeTabId" [previousStepName]="tabs.INGREDIENT_TAB"
+                [nextStepName]="tabs.PREPARATION_TAB" (changeActiveTab)="changeTab($event)"></app-technique-form>
+        </ng-container>
+        <ng-container *ngIf="activeTabId===tabs.PREPARATION_TAB && lesson && id">
+            <app-shared-form [fieldControler]="'preparationSteps'" [trackField]="'preparationStepsTrack'" [lessonId]="id" [labelName]="'Preparation Step'"
+                [form]="preprationForm" [activeTabId]="activeTabId" [previousStepName]="tabs.TECHNIQUE_TAB"
+                [nextStepName]="tabs.COOKINGSTEP_TAB" (changeActiveTab)="changeTab($event)">
+            </app-shared-form>
+        </ng-container>
+
+        <ng-container *ngIf="activeTabId===tabs.COOKINGSTEP_TAB && lesson && id">
+            <app-shared-form [fieldControler]="'cookingSteps'" [lessonId]="id" [labelName]="'Cooking Step'"
+                [form]="cookingForm" [activeTabId]="activeTabId" [trackField]="'cookingStepsTrack'" [previousStepName]="tabs.PREPARATION_TAB"
+                [nextStepName]="tabs.SERVING_TAB" (changeActiveTab)="changeTab($event)">
+            </app-shared-form>
+        </ng-container>
+
+
+        <ng-container *ngIf="activeTabId===tabs.SERVING_TAB && lesson && id">
+            <app-shared-form [fieldControler]="'servingSteps'" [lessonId]="id" [labelName]="'Serving Step'"
+                [form]="servingForm" [activeTabId]="activeTabId" [trackField]="'servingStepsTrack'" [previousStepName]="tabs.COOKINGSTEP_TAB"
+                [nextStepName]="tabs.CLEANUP_TAB" (changeActiveTab)="changeTab($event)">
+            </app-shared-form>
+        </ng-container>
+
+        <ng-container *ngIf="activeTabId===tabs.CLEANUP_TAB && lesson && id">
+            <app-shared-form [fieldControler]="'cleanupSteps'" [lessonId]="id" [labelName]="'Clean-up Step'"
+                [form]="cleanupForm" [activeTabId]="activeTabId" [trackField]="'cleanupStepsTrack'" [previousStepName]="tabs.SERVING_TAB"
+                [nextStepName]="tabs.EXPERIMENT_TAB" (changeActiveTab)="changeTab($event)"></app-shared-form>
+        </ng-container>
+
+        <ng-container *ngIf="activeTabId===tabs.EXPERIMENT_TAB && lesson && id">
+            <app-experiment-steps-form [activeTabId]="activeTabId" [lessonId]="id" [previousStepName]="tabs.CLEANUP_TAB"
+                [nextStepName]="tabs.EXPERIMENT_QUE_TAB" (changeActiveTab)="changeTab($event)">
+            </app-experiment-steps-form>
+        </ng-container>
+
+        <ng-container *ngIf="activeTabId===tabs.EXPERIMENT_QUE_TAB && lesson && id">
+            <app-experiment-question-form [activeTabId]="activeTabId" [gradeId]="lesson?.grade.id" [lessonId]="id"
+                [previousStepName]="tabs.EXPERIMENT_TAB" [nextStepName]="tabs.QUESTION_TAB"
+                (changeActiveTab)="changeTab($event)"></app-experiment-question-form>
+        </ng-container>
+
+        <ng-container *ngIf="activeTabId===tabs.QUESTION_TAB && lesson && id">
+            <app-questions-form [activeTabId]="activeTabId" [gradeId]="lesson?.grade.id" [lessonId]="id"
+                [previousStepName]="tabs.EXPERIMENT_QUE_TAB" [nextStepName]="tabs.SENSORY_TAB"
+                (changeActiveTab)="changeTab($event)"></app-questions-form>
+        </ng-container>
+        <ng-container *ngIf="activeTabId===tabs.SENSORY_TAB && lesson && id">
+            <app-sensory-question-form [activeTabId]="activeTabId" [lessonId]="id"
+                [previousStepName]="tabs.QUESTION_TAB" [nextStepName]="tabs.ACTIVITY_TAB"
+                (changeActiveTab)="changeTab($event)"></app-sensory-question-form>
+        </ng-container>
+        <ng-container *ngIf="activeTabId===tabs.ACTIVITY_TAB && lesson && id">
+            <app-activity-name-form [activeTabId]="activeTabId" [lessonId]="id" [previousStepName]="tabs.SENSORY_TAB"
+                [nextStepName]="true" (changeActiveTab)="changeTab($event)"></app-activity-name-form>
+        </ng-container>
+    </div>
+</div>

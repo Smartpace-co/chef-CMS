@@ -1,0 +1,133 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Country list</h3>
+        </div>
+        <div class="card-toolbar">
+            <button type="button" class="btn btn-primary" (click)="create()">New Country</button>
+        </div>
+    </div>
+    <div class="card-body">
+         <!-- begin: Filtration form -->
+         <div class="form form-label-right">
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <select class="form-control" placeholder="Filter by Language"
+                                (change)="changeLanguage($event)">
+                                <option [value]="null">All</option>
+                                <option [value]="item.id" *ngFor="let item of languageMaster">{{item.title}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end: Filtration form -->
+        <!-- begin: Grouping -->
+        <ng-container *ngIf="grouping.getSelectedRowsCount()">
+            <div class="form">
+                <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
+                    <div class="col-xl-12">
+                        <div class="form-group form-group-inline">
+                            <div class="form-label form-label-no-wrap">
+                                <label class="font-bold font-danger"><span>Selected records count:
+                                        <b>{{ grouping.getSelectedRowsCount() }}</b></span></label>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-danger font-weight-bolder font-size-sm mr-1" (click)="deleteSelected()">
+                                    <i class="fa fa-trash"></i> Delete All
+                                </button>&nbsp;
+                                <!-- <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1" (click)="fetchSelected()">
+                    <i class="fa fa-stream"></i> Fetch Selected
+                  </button>&nbsp; -->
+                                <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1" (click)="updateStatusForSelected()">
+                                    <i class="fa fa-sync-alt"></i> Update Status
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <!-- end: Grouping -->
+
+        <!-- begin:Table -->
+        <div class="table-responsive angular-bootstrap-table">
+            <table class="table table-head-custom table-vertical-center overflow-hidden">
+                <thead>
+                <!--     <th class="selection-cell-header" data-row-selection="true">
+                        <label class="checkbox checkbox-single"><input type="checkbox"
+                                (click)="grouping.selectAllRows()"
+                                [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
+                    </th> -->
+                    <th>
+                        ID
+                        <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        NAME
+                        <app-sort-icon column="name" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        GRADE LEVELS
+                        <app-sort-icon column="lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        LANGUAGES
+                        <app-sort-icon column="email" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+
+                    <th>
+                        STATUS
+                        <app-sort-icon column="type" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>ACTIONS</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let country of countriesService.items$ | async; let i=index">
+                       <!--  <td class="selection-cell">
+                            <label class="checkbox checkbox-single"><input type="checkbox"
+                                    (click)="grouping.selectRow(country.id)"
+                                    [checked]="grouping.isRowSelected(country.id)" />
+                                <span></span>
+                            </label>
+                        </td> -->
+                        <td>{{  (paginator.page-1)*paginator.pageSize +i+1}}</td>
+                        <td>{{ country.countryName }}</td>
+                        <td><span *ngFor="let g of country.country_grades">{{g.grade.grade}},</span></td>
+                        <td><span *ngFor="let lan of country.country_languages">{{lan.language.language}},</span></td>
+                        <td>
+                            <span class="label label-lg label-inline" [class.label-light-success]="country.status === true" [class.label-light-danger]="country.status === false">
+                                <ng-container *ngIf="country.status === true">Active</ng-container>
+                                <ng-container *ngIf="country.status === false">Inactive</ng-container>
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <a title="Edit Country" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-2" (click)="edit(country.id)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
+                                </span>
+                            </a>
+
+                            <a title="Delete Country" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-2" (click)="delete(country.id)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
+                                </span>
+                            </a>
+                            <a title="Add Country" class="btn btn-icon btn-light btn-hover-warning btn-sm "
+                                (click)="addCountry(country)">
+                                <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
+                                    class="svg-icon svg-icon-md svg-icon-warning">
+                                </span>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- end: Table -->
+        <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator" [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+    </div>
+</div>

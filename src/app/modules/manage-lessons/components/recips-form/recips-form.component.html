@@ -1,0 +1,120 @@
+<!-- <div class="card"> -->
+<div class="mt-5">
+    <ng-container *ngIf="isLoading$ | async">
+        <div class="progress progress-modal">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </ng-container>
+    <form action="#" class="form form-label-right" [formGroup]="formGroup" (ngSubmit)="onSave()" *ngIf="recipes">
+        <div class="form-group row">
+
+            <div class="form-group col-lg-6">
+                <label class="form-label">Recipe Name</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="reciepsName" placeholder="Enter Recipes name" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('reciepsName')" [class.is-valid]="validationService.isControlValid('reciepsName')"
+                    formControlName="reciepsName" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('reciepsName')">
+                    Recipes name was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'reciepsName')">
+                    Recipes name is required
+                </div>
+            </div>
+
+
+            <div class="form-group col-lg-6">
+                <label class="form-label">Holidays</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="holidays" placeholder="Enter Holidays names" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('holidays')" [class.is-valid]="validationService.isControlValid('holidays')"
+                    formControlName="holidays" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('holidays')">
+                    Holidays names was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'holidays')">
+                    Holidays names is required
+                </div>
+            </div>
+
+             <div class="form-group col-lg-6">
+                <label class="form-label">Alternative Name</label>
+                <input type="text" class="form-control form-control-lg form-control-solid" name="alterNativeName" placeholder="Enter Alternative names" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('alterNativeName')" [class.is-valid]="validationService.isControlValid('alterNativeName')"
+                    formControlName="alterNativeName" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('alterNativeName')">
+                    Alternative names was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'alterNativeName')">
+                    Alternative names is required
+                </div>
+            </div> 
+
+
+            <div class="form-group col-lg-6">
+                <label class="form-label">Estimated Recipe Time (In Minutes)</label>
+                <input type="number" class="form-control form-control-lg form-control-solid" name="estimatesTime" placeholder="Enter Estimated Recipe time in minute" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('estimatesTime')" [class.is-valid]="validationService.isControlValid('estimatesTime')"
+                    formControlName="estimatesTime" />
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('estimatesTime')">
+                    Estimated Recipe time was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'estimatesTime')">
+                    Estimated Recipe time is required
+                </div>
+            </div>
+
+            <div class="form-group col-lg-6">
+                <label class="form-label">Serves</label>
+                <ng-select [items]="serveMaster" placeholder="Select Serves" bindLabel="Value" bindValue="id" formControlName="serves">
+                </ng-select>
+                <div class="valid-feedback" *ngIf="validationService?.isControlValid('serves')">
+                    Serves was entered correctly</div>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'serves')">
+                    Serves is required
+                </div>
+            </div>
+
+
+            <div class="form-group col-lg-6">
+                <label>Country</label>
+                <select class="form-control form-control-lg form-control-solid" placeholder="Select country" name="country" [class.is-invalid]="validationService?.isControlInvalid('country')" formControlName="country">
+                    <option [value]="null" disabled>Select Country </option>
+                    <option [value]="country.id" *ngFor="let country of countryMaster">
+                        {{country.countryName}} </option>
+
+                </select>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'country')">
+                    Country is required
+                </div>
+            </div>
+
+
+
+            <div class="form-group col-lg-6">
+                <label>Tools for Big Chef</label>
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'toolsBigChef'" [dataList]="toolBigChefMaster" [idfield]="'id'" [textField]="'toolTitle'" [placeHolder]="'Select Tools big chef'"></app-ng-select-input>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'toolsBigChef')">
+                    Tools big chef is required
+                </div>
+            </div>
+
+            <div class="form-group col-lg-6">
+                <label>Tools for Little Chef</label>
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'toolslittleChef'" [dataList]="toolLittleChefMaster" [idfield]="'id'" [textField]="'toolTitle'" [placeHolder]="'Select Tools little chef'"></app-ng-select-input>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'toolslittleChef')">
+                    Tools little chef is required
+                </div>
+            </div>
+
+            <div class="form-group col-lg-6">
+                <label class="form-label">Recipe Image: </label>
+                <app-upload-button [multiple]="false" [moreImage]="moreRecipeImage" [imageData]="recipeImages" (onUpload)="uploadRecipeImage($event)" (onRemove)="removeRecipeImage($event)"></app-upload-button>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'recipeImage')" >
+                   Recipe Image is required</div>
+                   <div *ngIf="moreRecipeImage" class="mt-4">Hint : Image should be of size 710 * 390 .</div>
+
+            </div>
+        </div>
+        
+<!--         <app-description-fields [form]="formGroup" [fieldValues]="recipes?.description" [fieldControler]="'description'"></app-description-fields>
+ -->        <div class="float-right ">
+            <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+            <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+            <button type="submit " class="btn btn-primary font-weight-bold mr-2 " [disabled]="formGroup.invalid">Save &
+                Next</button>
+
+        </div>
+    </form>
+
+</div>

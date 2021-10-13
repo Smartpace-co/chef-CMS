@@ -1,0 +1,99 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">Issues Or Feedback List</h3>
+        </div>
+       
+    </div>
+    <div class="card-body">
+
+        <!-- begin: Grouping -->
+        <ng-container *ngIf="grouping.getSelectedRowsCount()">
+            <div class="form">
+                <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
+                    <div class="col-xl-12">
+                        <div class="form-group form-group-inline">
+                            <div class="form-label form-label-no-wrap">
+                                <label class="font-bold font-danger"><span>Selected records count:
+                                        <b>{{ grouping.getSelectedRowsCount() }}</b></span></label>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-danger font-weight-bolder font-size-sm mr-1" (click)="deleteSelected()">
+                                    <i class="fa fa-trash"></i> Delete All
+                                </button>&nbsp;
+                                <!-- <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1" (click)="fetchSelected()">
+                    <i class="fa fa-stream"></i> Fetch Selected
+                  </button>&nbsp; -->
+                                <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1" (click)="updateStatusForSelected()">
+                                    <i class="fa fa-sync-alt"></i> Update Status
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <!-- end: Grouping -->
+
+        <!-- begin:Table -->
+        <div class="table-responsive angular-bootstrap-table">
+            <table class="table table-head-custom table-vertical-center overflow-hidden">
+                <thead>
+                <!--     <th class="selection-cell-header" data-row-selection="true">
+                        <label class="checkbox checkbox-single"><input type="checkbox"
+                                (click)="grouping.selectAllRows()"
+                                [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
+                    </th> -->
+                    <th>
+                        ID
+                        <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        Posted By
+                        <app-sort-icon column="name" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        User Type
+                        <app-sort-icon column="lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        Description
+                        <app-sort-icon column="email" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        Posted On
+                        <app-sort-icon column="email" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                   
+                    <th>ACTIONS</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let issuesFeedback of issuesFeedbackService.items$ | async; let i=index">
+                       <!--  <td class="selection-cell">
+                            <label class="checkbox checkbox-single"><input type="checkbox"
+                                    (click)="grouping.selectRow(country.id)"
+                                    [checked]="grouping.isRowSelected(country.id)" />
+                                <span></span>
+                            </label>
+                        </td> -->
+                        <td>{{  (paginator.page-1)*paginator.pageSize +i+1}}</td>
+                        <td *ngIf="issuesFeedback.report_issue.school">{{ issuesFeedback.report_issue.school?.admin_account_name }}</td>                     
+                        <td *ngIf="issuesFeedback.report_issue.district_admin">{{ issuesFeedback.report_issue.district_admin?.admin_account_name}}</td>                     
+                        <td>{{ issuesFeedback.report_issue.user.role.title }}</td>
+                        <td>{{ issuesFeedback.report_issue.description }}</td>
+                        <td>{{ issuesFeedback.report_issue.createdAt | date: 'dd/MM/yyyy' }}</td>
+
+                   
+                        <td>
+
+                            <button type="button" class="btn btn-primary" (click)="edit(issuesFeedback.report_issue.id)">Reply</button>
+                           
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- end: Table -->
+        <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator" [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+    </div>
+</div>

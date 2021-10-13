@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <div class="modal-title h4">Status update for selected roles</div>
+</div>
+<div class="modal-body overlay overlay-block cursor-default">
+    <ng-container *ngIf="isLoading">
+        <div class="overlay-layer">
+            <div class="spinner spinner-lg spinner-primary"></div>
+        </div>
+    </ng-container>
+
+    <div class="table-responsive angular-bootstrap-table">
+        <table class="table table-head-custom table-vertical-center overflow-hidden">
+            <thead>
+                <th>TITLE</th>
+                <th>STATUS</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let role of roles">
+                    <td>{{role.title}}</td>
+                    <!-- <td>{{role.status}}</td> -->
+                    <td>
+                        <span class="label label-lg label-inline" [class.label-light-success]="role.status === true" [class.label-light-danger]="role.status === false">
+                <ng-container *ngIf="role.status ===true">Active</ng-container>
+                <ng-container *ngIf="role.status === false">Inactive</ng-container>
+              </span>
+                    </td>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="form modal-footer">
+    <div class="form-group mr-2">
+        <select class="form-control" [(ngModel)]="status" name="status">
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-light btn-elevate mr-3" (click)="modal.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary btn-elevate" (click)="updateRolesStatus()">Update Status</button>
+    </div>
+</div>
