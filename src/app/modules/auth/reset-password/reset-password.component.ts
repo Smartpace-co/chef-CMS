@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { AuthService } from '../_services/auth.service';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ConfirmPasswordValidator } from '../registration/confirm-password.validator';
 import { UserModel } from '../_models/user.model';
 import { first } from 'rxjs/operators';
@@ -16,18 +16,16 @@ export class ResetPasswordComponent implements OnInit {
   resetForm: FormGroup;
   hasError: boolean;
   isLoading$: Observable<boolean>;
-  token='';
+
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {
     this.isLoading$ = this.authService.isLoading$;
-    this.token=this.route.snapshot.queryParams.token
     // redirect to home if already logged in
     if (this.authService.currentUserValue) {
       this.router.navigate(['/']);
@@ -87,7 +85,7 @@ export class ResetPasswordComponent implements OnInit {
       result[key] = this.f[key].value;
     });
     const resetPasswordSubscr = this.authService
-      .resetPassword(result,this.token)
+      .resetPassword(result)
       .pipe(first())
       .subscribe((result: any) => {
         if (result) {

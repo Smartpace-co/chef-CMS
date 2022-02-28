@@ -1,35 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
-
 @import url("https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700");
 // Global vendors
 @import "~bootstrap/dist/css/bootstrap.css";
 // => Material
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 @import "~highlight.js/styles/googlecode.css";
 @import "~perfect-scrollbar/css/perfect-scrollbar.css";
+
 // Global fonts
 @import "~socicon/css/socicon.css";
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
 @import "./assets/plugins/flaticon/flaticon.css";
 @import "./assets/plugins/flaticon2/flaticon.css";
 @import "./assets/plugins/keenthemes-icons/font/ki.css";
+
 // Metronic styles (replace these path when using RTL css below)
 @import "./assets/sass/style.angular.scss";
+
 // For RTL, check this documentation https://keenthemes.com/metronic/?page=docs&section=angular-rtl
 // @import "./assets/sass/style.angular.rtl.css";
+
 // Default Layout themes
 @import "./assets/sass/themes/layout/header/base/light.scss";
 @import "./assets/sass/themes/layout/header/menu/light.scss";
 @import "./assets/sass/themes/layout/brand/dark.scss";
 @import "./assets/sass/themes/layout/aside/dark.scss";
+
 // Header themes
 // .header-base-light {
 //     @import "./assets/sass/themes/layout/header/base/light.scss";
 // }
+
 // .header-base-dark {
 //     @import "./assets/sass/themes/layout/header/base/dark.scss";
 // }
+
 // Header Menu themes
 // .header-menu-light {
 //     @import "./assets/sass/themes/layout/header/menu/light.scss";
@@ -37,93 +44,62 @@
 // .header-menu-dark {
 //     @import "./assets/sass/themes/layout/header/menu/dark.scss";
 // }
+
 // Brand themes
 .brand-dark {
-    @import "./assets/sass/themes/layout/brand/dark.scss";
+  @import "./assets/sass/themes/layout/brand/dark.scss";
 }
 
 .brand-light {
-    @import "./assets/sass/themes/layout/brand/light.scss";
+  @import "./assets/sass/themes/layout/brand/light.scss";
 }
 
 // Aside themes
 // .aside-dark {
 //   @import "./assets/sass/themes/layout/aside/dark.scss";
 // }
+
 // .aside-light {
 //   @import "./assets/sass/themes/layout/aside/light.scss";
 // }
+
 // hide bootstrap dropdown arrow globally
 .dropdown-toggle::after {
-    display: none !important;
+  display: none !important;
 }
 
 .angular-bootstrap-table {
-    overflow-x: auto;
+  overflow-x: auto;
 }
-
 .angular-bootstrap-table {
-    th {
-        outline: none;
-        &.sortable {
-            .svg-icon-sort {
-                opacity: 0;
-            }
-            &:hover {
-                cursor: pointer;
-                .svg-icon-sort {
-                    opacity: 1;
-                }
-            }
+  th {
+    outline: none;
+
+    &.sortable {
+      .svg-icon-sort {
+        opacity: 0;
+      }
+
+      &:hover {
+        cursor: pointer;
+
+        .svg-icon-sort {
+          opacity: 1;
         }
+      }
     }
-    .table.table-head-custom thead th.sortable-active {
-        color: $primary !important;
-    }
+  }
+
+  .table.table-head-custom thead th.sortable-active {
+    color: $primary !important;
+  }
 }
 
 .cursor-default {
-    cursor: default !important;
+  cursor: default !important;
 }
 
 .progress-modal {
-    height: 3px;
-    width: 100%;
-}
-
-// select box
-@import "~@ng-select/ng-select/themes/default.theme.css";
-// @import "~@ng-select/ng-select/themes/material.theme.css";
-.ng-select .ng-select-container {
-    // color: #333;
-    // background-color: #fff;
-    border-radius: 0.42rem;
-    border: 1px solid #F3F6F9;
-    min-height: 45px;
-    align-items: center;
-    background-color: #F3F6F9;
-    color: #3F4254;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    // border-color: #F3F6F9;
-}
-
-.danger {
-    color: red;
-}
-
-.ck-editor__editable_inline {
-    min-height: 120px;
-}
-
-.plusIcon {
-    margin-top: 64px;
-    margin-left: -34px;
-    position: relative;
-}
-.mx-40{
-    max-width: 40rem;
-}
-.icon-label{
-  display: flex;
-  flex-direction: column;
+  height: 3px;
+  width: 100%;
 }

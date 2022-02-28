@@ -1,9 +1,9 @@
 <ng-container *ngIf="subheaderVersion$ | async as _version">
-    <ng-container *ngIf="_version === 'v1'">
-        <app-subheader1></app-subheader1>
-    </ng-container>
+  <ng-container *ngIf="_version === 'v1'">
+    <app-subheader1></app-subheader1>
+  </ng-container>
 
-    <!-- <ng-container *ngIf="_version === 'v2'">
+  <ng-container *ngIf="_version === 'v2'">
     <app-subheader2></app-subheader2>
   </ng-container>
 
@@ -25,5 +25,5 @@
 
   <ng-container *ngIf="_version === 'v7'">
     <app-subheader7></app-subheader7>
-  </ng-container> -->
+  </ng-container>
 </ng-container>

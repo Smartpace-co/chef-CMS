@@ -1,17 +1,5 @@
 @import "../../../assets/sass/pages/login/login-1.scss";
+
 :host {
-    height: 100%;
-}
-
-.bg-image {
-    background-image: url('../../../assets/media/logos/login-bg-chef.jpg');
-    background-repeat: no-repeat;
-    background-position: 0em;
-}
-
-.bg-image-down {
-    background-image: url('../../../assets/media/logos/kids-and-planet.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 75%;
+  height: 100%;
 }
