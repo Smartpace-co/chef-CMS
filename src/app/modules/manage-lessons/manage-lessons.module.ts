@@ -18,6 +18,7 @@ import { IngredientFormComponent } from './ingredient-form/ingredient-form.compo
 import { TechniqueFormComponent } from './technique-form/technique-form.component';
 import { LessonDashboardComponent } from './components/lesson-dashboard/lesson-dashboard.component';
 import { SensoryQuestionFormComponent } from './components/sensory-question-form/sensory-question-form.component';
+import { LinkFormComponent } from './components/link-form/link-form.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SensoryQuestionFormComponent } from './components/sensory-question-form
     IngredientFormComponent,
     TechniqueFormComponent,
     LessonDashboardComponent,
-    SensoryQuestionFormComponent],
+    SensoryQuestionFormComponent,
+    LinkFormComponent],
   imports: [
     CommonModule,
     ManageLessonsRoutingModule,

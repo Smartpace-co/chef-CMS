@@ -49,7 +49,7 @@
 
                 </ng-select>
                   <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'ingredientId')">Ingredient is required</div>
-
+                <a class="hyperlink-label" routerLink="/manage-ingredients">Click here to add new ingredient</a>
             </div>
             <div class="form-group col-lg-4">
                 <label class="form-label">Quantity</label>
@@ -67,6 +67,8 @@
                 </select>
                 <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'unitOfMeasurementId')">
                     Unit of measurement is required</div>
+                <a class="hyperlink-label" routerLink="/manage-units-of-measurement">Click here to add new unit of measurement</a>
+
             </div>
             <div class="form-group col-lg-4">
                 <label class="form-label">Link </label>
@@ -82,6 +84,15 @@
                         <input type="checkbox" formControlName="isOptional" checked="isOptional" name="isOptional" />
                         <span></span>
                         Optional
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-lg-4 mt-7">
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <input type="checkbox" formControlName="isSpotlight" checked="isSpotlight" name="isSpotlight" />
+                        <span></span>
+                        Spotlight
                     </label>
                 </div>
             </div>

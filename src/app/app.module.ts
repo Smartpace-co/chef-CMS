@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { ClipboardModule } from 'ngx-clipboard';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,24 +11,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/_services/auth.service';
 import { environment } from 'src/environments/environment';
+import {AuthInterceptor} from '../app/http.interceptor'
 // Highlight JS
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
-// #fake-end#
+import { DeleteModalComponent } from './_metronic/shared/components/delete-modal/delete-modal.component';
+import { DeleteManyModalComponent } from './_metronic/shared/components/delete-many-modal/delete-many-modal.component';
+import { UpdateStatusModalComponent } from './_metronic/shared/components/update-status-modal/update-status-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
-function appInitializer(authService: AuthService) {
-  return () => {
-    return new Promise((resolve) => {
-      authService.getUserByToken().subscribe().add(resolve);
-    });
-  };
-}
+// #fake-end#
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, DeleteModalComponent, DeleteManyModalComponent, UpdateStatusModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -37,6 +36,7 @@ function appInitializer(authService: AuthService) {
     HttpClientModule,
     HighlightModule,
     ClipboardModule,
+    ToastrModule.forRoot(),
     // #fake-start#
     environment.isMockEnabled
       ? HttpClientInMemoryWebApiModule.forRoot(FakeAPIService, {
@@ -48,14 +48,12 @@ function appInitializer(authService: AuthService) {
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: appInitializer,
-      multi: true,
-      deps: [AuthService],
-    },
+   
+    { provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true},
     {
       provide: HIGHLIGHT_OPTIONS,
       useValue: {

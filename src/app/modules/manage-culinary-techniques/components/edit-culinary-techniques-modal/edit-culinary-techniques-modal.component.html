@@ -15,31 +15,14 @@
                 <div class="spinner spinner-lg spinner-success"></div>
             </div>
         </ng-container>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item cursor-pointer">
-                <a class="nav-link" data-toggle="tab" role="tab" [attr.aria-selected]="activeTabId === tabs.BASIC_TAB"
-                    (click)="changeTab()" [class.active]="activeTabId === tabs.BASIC_TAB">
-                    Basic info
-                </a>
-            </li>
-            <li class="nav-item cursor-pointer">
-                <a class="nav-link" data-toggle="tab" role="button" (click)="activeTabId =tabs.SPOTLIGHT_TAB"
-                    [attr.aria-selected]="activeTabId === tabs.SPOTLIGHT_TAB"
-                    [class.active]="activeTabId === tabs.SPOTLIGHT_TAB">Spotlight Questions</a>
-            </li>
-            <li class="nav-item cursor-pointer">
-                <a class="nav-link" data-toggle="tab" role="button" (click)="activeTabId =tabs.MULTI_SENSORY_TAB"
-                    [attr.aria-selected]="activeTabId === tabs.MULTI_SENSORY_TAB"
-                    [class.active]="activeTabId === tabs.MULTI_SENSORY_TAB">Multi sensory Question</a>
-            </li>
-        </ul>
+        
 
-            <ng-container *ngIf="culinaryTech && activeTabId === tabs.BASIC_TAB">
+            <ng-container *ngIf="culinaryTech">
                 <form action="#" class="form form-label-right" [formGroup]="formGroup">
 
                 <div class="form-group row">
 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-12">
                         <label class="form-label">Culinary Technique Name</label>
                         <input type="text" class="form-control form-control-lg form-control-solid"
                             name="culinaryTechniqueName" placeholder="Enter culinary Technique Name" autocomplete="off"
@@ -52,7 +35,19 @@
                             *ngIf="validationService?.controlHasError('required', 'culinaryTechniqueName')">Country Name
                             is required</div>
                     </div>
-                    <div *ngIf="!id" class="form-group col-lg-4">
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-control form-control-lg form-control-solid" name="Description"
+                            placeholder="Enter Description" autocomplete="off"
+                            [class.is-invalid]="validationService?.isControlInvalid('description')"
+                            [class.is-valid]="validationService?.isControlValid('description')" formControlName="description" />
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('description')">Description was entered
+                            correct
+                        </div>
+                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'description')">
+                            Description is required</div>
+                    </div>
+                    <div *ngIf="!id" class="form-group col-lg-12">
                         <label>Language</label>
                         <select class="form-control form-control-lg form-control-solid" name="languageId" [class.is-invalid]="validationService?.isControlInvalid('languageId')" formControlName="languageId">
                             <option [value]="null" disabled>Select Language </option>
@@ -63,21 +58,9 @@
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'languageId')">Language is required
                         </div>
                     </div>
-                    <div class="form-group col-lg-4">
-                        <label class="form-label">Link for Easy Ordering</label>
-                        <input type="text" class="form-control form-control-lg form-control-solid"
-                            name="culinaryTechniqueName" placeholder="Enter link for Easy Ordering" autocomplete="off"
-                            [class.is-invalid]="validationService?.isControlInvalid('linkforEasyOrdering')"
-                            [class.is-valid]="validationService?.isControlValid('linkforEasyOrdering')"
-                            formControlName="linkforEasyOrdering" />
-                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('linkforEasyOrdering')">
-                            link for Easy Ordering Name was entered correct</div>
-                        <div class="invalid-feedback"
-                            *ngIf="validationService?.controlHasError('required', 'linkforEasyOrdering')">link for Easy
-                            Ordering Name is required</div>
-                    </div>
+                  
 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-12">
                         <label class="form-label">Kitchen Requirements</label>
                         <input type="text" class="form-control form-control-lg form-control-solid"
                             name="kitchenRequirements" placeholder="Enter Kitchen Requirements" autocomplete="off"
@@ -91,79 +74,19 @@
                             Requirements is required</div>
                     </div>
 
-                    <div class="form-group col-lg-4">
-                        <label class="form-label">Video Link</label>
+                    <div class="form-group col-lg-12">
+                        <label class="form-label">Video or Animation Link</label>
                         <input type="text" class="form-control form-control-lg form-control-solid" name="Video"
-                            placeholder="Enter Video Link " autocomplete="off"
+                            placeholder="Enter Video or Animation Link" autocomplete="off"
                             [class.is-invalid]="validationService?.isControlInvalid('video')"
                             [class.is-valid]="validationService?.isControlValid('video')" formControlName="video" />
-                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('video')">video was entered
+                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('video')">Video or animation link  was entered
                             correct
                         </div>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'video')">
-                            video is required</div>
-                    </div>
-                    <div class="form-group col-lg-4">
-                        <label class="form-label">Spotlight Video link</label>
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="spotlightVideo"
-                            placeholder="Enter Spotlight Video link " autocomplete="off"
-                            [class.is-invalid]="validationService?.isControlInvalid('spotlightVideo')"
-                            [class.is-valid]="validationService?.isControlValid('spotlightVideo')" formControlName="spotlightVideo" />
-                        <div class="valid-feedback" *ngIf="validationService?.isControlValid('spotlightVideo')">video was entered
-                            correct
-                        </div>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'spotlightVideo')">
-                            Spotlight video is required</div>
-                    </div>
-
-
-                    <div class="form-group col-lg-4">
-                        <label>Tags</label>
-                        <select class="form-control form-control-lg form-control-solid" name="tags"
-                            formControlName="tags" autocomplete="off"
-                            [class.is-invalid]="validationService?.isControlInvalid('tags')"
-                            [class.is-valid]="validationService?.isControlValid('tags')">
-                            <option value="null" disabled>Select Tags</option>
-                            <option [value]="tag.id" *ngFor="let tag of tagsMaster">
-                                {{tag.tagTitle}}
-                            </option>
-                        </select>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'tags')">
-                            Please select <b>tags</b></div>
-                    </div>
-
-                    <div  *ngIf="showCategoryList" class="form-group col-lg-3">
-                        <label>Category</label>
-                        <select class="form-control form-control-lg form-control-solid" placeholder="Select Category"
-                            name="category" [class.is-invalid]="validationService?.isControlInvalid('category')"
-                            formControlName="category">
-                            <option value="null" disabled>Select Category </option>
-                            <option [value]="cat.id" *ngFor="let cat of categoryMaster">
-                                {{cat.categoryTitle}}</option>
-                        </select>
-                        <div class="invalid-feedback"
-                            *ngIf="validationService?.controlHasError('required', 'category')">
-                            Category is required
-                        </div>
-                    </div>
-                    <div  *ngIf="showCategoryList" class="form-group col-lg-1 mt-8">
-                        <label></label>
-                        <button class=" btn btn-primary" (click)="showCategory()">Add</button>
-                    </div>
-                    <div *ngIf="!showCategoryList" class="form-group col-lg-4 mt-2">
-                        <div class="input-group mb-3">
-                            <input type="text"  [ngModelOptions]="{standalone: true}" [(ngModel)]="newCategory" class="form-control form-control-solid" placeholder="Category">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" (click)="addCategory()">Save</button>
-                                <button class="btn btn-warning" type="button" (click)="resetCategory()">Cancel</button>
-                            </div>
-                        </div>
-                        <div class="input-group invalid-feedback"
-                            *ngIf="categoryErrorMessage">
-                            {{categoryErrorMessage}}
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-4">
+                            Video or animation link is required</div>
+                    </div>              
+                    <div class="form-group col-lg-12">
                         <label>Tool Requirements</label>
                         <app-ng-select-input [formName]="formGroup" [textField]="'toolTitle'" [idfield]="'id'" (onItemSelect)="selectTool($event)" (onSelectAllItem)="selectAllTool($event)"
                         (onDeSelectItem)="onDeselectTool($event)" [fieldControl]="'toolRequirements'" [dataList]="toolMaster"
@@ -173,7 +96,7 @@
                             is required</div>
                     </div>
 
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-12">
                         <label>Status</label>
                         <div class="radio-inline">
                             <label class="radio">
@@ -195,18 +118,7 @@
 
                 </div>
             </form>
-            </ng-container>
-            <ng-container *ngIf="culinaryTech &&  activeTabId === tabs.SPOTLIGHT_TAB">
-                <app-spotlight-text [id]="questionId" [questionData]="spotlightQuestions"
-                    (onCreate)="createSpotQuestion($event)" (onEdit)="editSpotQuestion($event)"
-                    (onDelete)="deleteSpotQuestion($event)"></app-spotlight-text>
-            </ng-container>
-            <ng-container *ngIf="culinaryTech && activeTabId ===tabs.MULTI_SENSORY_TAB">
-                <app-spotlight-text [id]="questionId" [questionData]="multiSensoryQuestions"
-                    (onCreate)="createSensoryQuestion($event)" (onEdit)="editSensoryQuestion($event)"
-                    (onDelete)="deleteSensoryQuestion($event)"></app-spotlight-text>
-            </ng-container>
-      
+            </ng-container>      
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>

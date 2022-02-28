@@ -1,31 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ManageRoleComponent } from './manage-role.component';
-import { RolesComponent } from './roles/roles.component';
+import { UpdateRoleComponent } from './components/update-role/update-role.component';
 
 const routes: Routes = [
-    {
-      path: 'list',
-      component: ManageRoleComponent,
-      // children: [
-      //   // {
-      //   //   path: 'users',
-      //   //   component: UsersComponent,
-      //   // },
-      //   {
-      //     path: 'list',
-      //     component: RolesComponent,
-      //   },
-      //   { path: '', redirectTo: 'list', pathMatch: 'full' },
-      //   { path: '**', redirectTo: 'list', pathMatch: 'full' },
-      // ],
-    },
-    { path: '', redirectTo: 'list', pathMatch: 'full' },
-        { path: '**', redirectTo: 'list', pathMatch: 'full' },
-  ];
-  
-  @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
-  })
-  export class ManageRoleRoutingModule {}
+  {
+    path: '', component: ManageRoleComponent
+  },
+  {
+    path: 'edit', component: UpdateRoleComponent
+  },
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class ManageRoleRoutingModule { }

@@ -32,7 +32,7 @@
             </div>
 
              <div class="form-group col-lg-6">
-                <label class="form-label">Alternative Name</label>
+                <label class="form-label">Alternative Name(Optional)</label>
                 <input type="text" class="form-control form-control-lg form-control-solid" name="alterNativeName" placeholder="Enter Alternative names" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('alterNativeName')" [class.is-valid]="validationService.isControlValid('alterNativeName')"
                     formControlName="alterNativeName" />
                 <div class="valid-feedback" *ngIf="validationService?.isControlValid('alterNativeName')">
@@ -44,7 +44,7 @@
 
 
             <div class="form-group col-lg-6">
-                <label class="form-label">Estimated Recipe Time (In Minutes)</label>
+                <label class="form-label">Estimated Recipe Time (In Minutes) (Optional)</label>
                 <input type="number" class="form-control form-control-lg form-control-solid" name="estimatesTime" placeholder="Enter Estimated Recipe time in minute" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('estimatesTime')" [class.is-valid]="validationService.isControlValid('estimatesTime')"
                     formControlName="estimatesTime" />
                 <div class="valid-feedback" *ngIf="validationService?.isControlValid('estimatesTime')">
@@ -55,7 +55,7 @@
             </div>
 
             <div class="form-group col-lg-6">
-                <label class="form-label">Serves</label>
+                <label class="form-label">Serves (Optional)</label>
                 <ng-select [items]="serveMaster" placeholder="Select Serves" bindLabel="Value" bindValue="id" formControlName="serves">
                 </ng-select>
                 <div class="valid-feedback" *ngIf="validationService?.isControlValid('serves')">
@@ -79,7 +79,24 @@
                 </div>
             </div>
 
-
+            <div class="form-group col-lg-6 ">
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <input type="checkbox" id="isChefInHouse" formControlName="isChefInHouse" checked="isChefInHouse" name="isChefInHouse" (change)="changeChefType($event)" />
+                        <span></span>
+                        Chef In-house
+                    </label>
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <div class="checkbox-list">
+                    <label class="checkbox">
+                        <input type="checkbox" id="isChefAmbassador" formControlName="isChefAmbassador" checked="isChefAmbassador" name="isChefAmbassador" (change)="changeChefType($event)" />
+                        <span></span>
+                        Chef Ambassador
+                    </label>
+                </div>
+            </div>
 
             <div class="form-group col-lg-6">
                 <label>Tools for Big Chef</label>
@@ -87,6 +104,8 @@
                 <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'toolsBigChef')">
                     Tools big chef is required
                 </div>
+                <a class="hyperlink-label" routerLink="/manage-tools">Click here to add new Tool</a>
+
             </div>
 
             <div class="form-group col-lg-6">
@@ -95,6 +114,8 @@
                 <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'toolslittleChef')">
                     Tools little chef is required
                 </div>
+                <a class="hyperlink-label" routerLink="/manage-tools">Click here to add new Tool</a>
+
             </div>
 
             <div class="form-group col-lg-6">

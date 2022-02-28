@@ -32,7 +32,10 @@ export class ExperimentQuestionFormComponent implements OnInit {
   @Output() changeActiveTab: EventEmitter<number> = new EventEmitter<number>();
 
   formGroup: FormGroup;
-  standardsMaster: any = [];
+  elaStandards: any = [];
+  mathStandards: any = [];
+  ngssStandards: any = [];
+  ncssStandards: any = [];
 
   dataFromApi: any;
   experimentQues;
@@ -55,14 +58,18 @@ export class ExperimentQuestionFormComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this.lessonService.isLoading$;
     this.loadMasters();
-    this.getStandardByGrade();
+    this.getStandardBySubject();
     this.loadExperimentQueData();
   }
 
-  getStandardByGrade() {
-    this.lessonService.getStandardByGrade(this.gradeId).subscribe(
+  getStandardBySubject() {
+    this.lessonService.getStandardBySubject().subscribe(
       (res: any) => {
-        this.standardsMaster = res.data;
+        this.elaStandards = res[0].data;
+        this.mathStandards = res[1].data;
+        this.ngssStandards = res[2].data;
+        this.ncssStandards = res[3].data;
+
       },
       (e) => {
         console.log(e.message);
@@ -96,17 +103,52 @@ export class ExperimentQuestionFormComponent implements OnInit {
         )
         .subscribe((experiment: any) => {
           this.dataFromApi = experiment.data;
-          this.experimentQues = experiment.data.experiment
-            .experimentQuestions[0]
-            ? experiment.data.experiment.experimentQuestions[0]
-            : EMPTY_EXPRESSION;
-          this.experimentQues.standards = this.experimentQues.standards.map(
-            (dt) => dt.standard
-          );
+          this.experimentQues = experiment.data.experiment .experimentQuestions[0]? 
+          experiment.data.experiment.experimentQuestions[0]
+          : {
+            question: "",
+            hint: "",
+            image: "",
+            standards: [],
+            answers: [],
+            answerTypeId: null,
+          };;
+          if (this.experimentQues.standards.length > 0) {
+            this.experimentQues.elaStandards = (this.experimentQues.standards.filter((dt) => dt.standard.subject.subjectTitle == 'ELA')).map((dt) => dt.standard);
+            this.experimentQues.mathStandards = (this.experimentQues.standards.filter((dt) => dt.standard.subject.subjectTitle == 'MATH')).map((dt) => dt.standard);
+            this.experimentQues.ngssStandards = (this.experimentQues.standards.filter((dt) => dt.standard.subject.subjectTitle == 'NGSS')).map((dt) => dt.standard);
+            this.experimentQues.ncssStandards = (this.experimentQues.standards.filter((dt) => dt.standard.subject.subjectTitle == 'NCSS')).map((dt) => dt.standard);
+          }
           this.answerType = this.experimentQues.answerTypeId;
           this.loadForm();
         });
       this.subscriptions.push(sb);
+    }
+  }
+
+  loadForm() {
+    this.validationService.formGroupDef = this.formGroup = this.fb.group({
+      question: [this.experimentQues?.question],
+      hint: [this.experimentQues?.hint],
+      image: [this.experimentQues?.image],
+      questionTrack: [this.experimentQues?.questionTrack],
+      elaStandard: [this.experimentQues?.elaStandards?this.experimentQues?.elaStandards:[]],
+      mathStandard: [this.experimentQues?.mathStandards?this.experimentQues?.mathStandards:[]],
+      ngssStandard: [this.experimentQues?.ngssStandards?this.experimentQues?.ngssStandards:[]],
+      ncssStandard: [this.experimentQues?.ncssStandards?this.experimentQues?.ncssStandards:[]],
+      answerType: [
+        this.experimentQues?.answerTypeId,
+        Validators.compose([Validators.required]),
+      ],
+      answers: this.fb.array([]),
+    });
+
+    if (this.experimentQues.answers.length > 0) {
+      this.experimentQues.answers.forEach((e) => {
+        this.addAnswers(e);
+      });
+    } else {
+      this.addAnswers(undefined);
     }
   }
 
@@ -129,15 +171,15 @@ export class ExperimentQuestionFormComponent implements OnInit {
     delete this.dataFromApi.questions;
     delete this.dataFromApi.experiment["experimentIngredients"];
     delete this.dataFromApi.experiment["experimentTools"]; */
-    
+
     this.queArray.push(this.experimentQues);
     this.dataFromApi.experiment.experimentQuestions = this.queArray;
-    let data={
-      id :this.lessonId,
-      experiment:{
-        id:this.dataFromApi.experiment.id,
-        experimentTitle:this.dataFromApi.experiment.experimentTitle,
-        experimentQuestions:this.queArray
+    let data = {
+      id: this.lessonId,
+      experiment: {
+        id: this.dataFromApi.experiment.id,
+        experimentTitle: this.dataFromApi.experiment.experimentTitle,
+        experimentQuestions: this.queArray
       }
     }
 
@@ -156,43 +198,21 @@ export class ExperimentQuestionFormComponent implements OnInit {
     this.subscriptions.push(sbUpdate);
   }
 
-  loadForm() {
-    this.validationService.formGroupDef = this.formGroup = this.fb.group({
-      question: [this.experimentQues?.question],
-      hint: [this.experimentQues?.hint],
-      image: [this.experimentQues?.image],
-      questionTrack:[this.experimentQues?.questionTrack],
-      standards: [this.experimentQues?.standards, Validators.required],
-      answerType: [
-        this.experimentQues?.answerTypeId,
-        Validators.compose([Validators.required]),
-      ],
-      answers: this.fb.array([]),
-    });
-
-    if (this.experimentQues.answers.length > 0) {
-      this.experimentQues.answers.forEach((e) => {
-        this.addAnswers(e);
-      });
-    } else {
-      this.addAnswers(undefined);
-    }
-  }
 
   private prepareForm() {
     const formData = this.formGroup.value;
     this.experimentQues.question = formData.question;
     this.experimentQues.hint = formData.hint == undefined ? "" : formData.hint;
-    this.experimentQues.questionTrack=formData.questionTrack;
-    this.experimentQues.image =
-    formData.image == undefined ? "" : formData.image;
-    if(formData.standards){
-      this.experimentQues.standards = formData.standards.map((dt) => dt.id);
-    }
+    this.experimentQues.questionTrack = formData.questionTrack;
+    this.experimentQues.image = formData.image == undefined ? "" : formData.image;
+
+    let stds = [...formData.elaStandard, ...formData.mathStandard, ...formData.ngssStandard, ...formData.ncssStandard];
+    this.experimentQues.standards = stds.map((dt) => dt.id);
+    
     this.experimentQues.answerTypeId = formData.answerType;
-    if(formData.answerType=="4"){
-      this.experimentQues.answers =[]
-    }else{
+    if (formData.answerType == "4") {
+      this.experimentQues.answers = []
+    } else {
       this.experimentQues.answers = formData.answers;
     }
   }
@@ -285,7 +305,7 @@ export class ExperimentQuestionFormComponent implements OnInit {
     }
   }
 
-  uploadTrack(event,fieldName){
+  uploadTrack(event, fieldName) {
     if (event.target.files && event.target.files.length == 1) {
       const sbCreate = this.lessonService.audioUpload(event.target.files).pipe().subscribe((res: any) => {
         this.formGroup.controls[fieldName].patchValue(res.data[0].mediaPath)
@@ -294,10 +314,10 @@ export class ExperimentQuestionFormComponent implements OnInit {
     }
   }
 
-  removeTrack(fieldName){
+  removeTrack(fieldName) {
     this.formGroup.controls[fieldName].patchValue('');
   }
-  
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }

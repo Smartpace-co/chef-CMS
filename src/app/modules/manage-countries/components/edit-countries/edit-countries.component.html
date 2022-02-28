@@ -50,11 +50,11 @@
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'grades')">Grade Levels is required</div>
                     </div>
 
-                    <div class="form-group col-lg-12">
+<!--                     <div class="form-group col-lg-12">
                         <label>Country Language</label>
                         <ng-select formControlName="languages" [(ngModel)]="this.languageList" [items]="languageMaster"  [multiple]="true" bindLabel="language" placeholder="Select Languages"></ng-select>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'languages')">Languages is required</div>
-                    </div>
+                    </div> -->
 
                 </div>
                 <div class="form-group">
@@ -74,7 +74,7 @@
                 <div class="form-group">
                     <span *ngIf="!formGroup.controls['countryTrack'].value" id="upload_button">
                         <label>
-                            <input type="file"  accept="audio/mp3"
+                            <input type="file"  accept="audio/mp3,audio/aac"
                                 class="form-control" (change)="uploadCountryTrack($event)">
                             <span class="btn btn-success"> Upload Country Track (.MP3) </span>
                         </label>

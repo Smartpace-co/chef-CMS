@@ -49,7 +49,7 @@ export class EditCountriesComponent implements OnInit {
   fileSizeError = false;
   fileResolutionError = false;
   bgfileResolutionError = false;
-  languageMaster: any = []
+ // languageMaster: any = []
   systemLanguageMaster:any=[]
   gradeMaster: any = []
 
@@ -97,7 +97,7 @@ export class EditCountriesComponent implements OnInit {
         return of(EMPTY_COUNTRY);
       })
     ).subscribe((response: any) => {
-      this.languageMaster=response?.[0].data;
+     // this.languageMaster=response?.[0].data;
       this.gradeMaster=response?.[1].data;
     });
     this.subscriptions.push(sb);
@@ -110,7 +110,7 @@ export class EditCountriesComponent implements OnInit {
         id: undefined,
         countryName: '',
         grades: [],
-        languages: '',
+      //  languages: '',
         images:[],
         backgroundImage:'',
         status: true,
@@ -136,12 +136,12 @@ export class EditCountriesComponent implements OnInit {
 
     });
     }
-        if (countrie.data.country_languages.length>0){
+        /* if (countrie.data.country_languages.length>0){
     countrie.data.country_languages.forEach((item, index) => {
       this.languageList.push(item.language);
 
     });
-    }
+    } */
            this.loadForm();
       });
       this.subscriptions.push(sb);
@@ -152,8 +152,8 @@ export class EditCountriesComponent implements OnInit {
     this.validationService.formGroupDef = this.formGroup = this.fb.group({
       countryName: [this.countries.countryName, Validators.compose([Validators.required])],
       grades: [this.countries.grades, Validators.compose([Validators.required])],
-      languages: [this.countries.languages, Validators.compose([Validators.required])],
-      countryTrack:[this.countries.countryTrack, Validators.compose([Validators.required])],
+    //  languages: [this.countries.languages, Validators.compose([Validators.required])],
+      countryTrack:[this.countries.countryTrack],
       flagImage:[this.countries.images, Validators.compose([Validators.required])],
       backgroundImage:[this.countries.backgroundImage, Validators.compose([Validators.required])],
       status: [this.countries.status, Validators.required],
@@ -175,8 +175,8 @@ export class EditCountriesComponent implements OnInit {
     this.validationService.formGroupDef = this.formGroup = this.fb.group({
       countryName: ['', Validators.compose([Validators.required])],
       grades: [this.countries.grades, Validators.compose([Validators.required])],
-      countryTrack:['', Validators.compose([Validators.required])],
-      languages: [this.countries.languages, Validators.compose([Validators.required])],
+      countryTrack:[''],
+     // languages: [this.countries.languages, Validators.compose([Validators.required])],
       flagImage:['', Validators.compose([Validators.required])],
       backgroundImage:['', Validators.compose([Validators.required])],
       status: [true, Validators.required],
@@ -244,7 +244,7 @@ export class EditCountriesComponent implements OnInit {
     const formData = this.formGroup.value;
     this.countries.images=formData.flagImage;
     this.countries.backgroundImage=formData.backgroundImage;
-    this.countries.languages = formData.languages;
+   // this.countries.languages = formData.languages;
     this.countries.countryTrack=formData.countryTrack
     this.countries.status = formData.status;
     this.countries.grades = formData.grades;

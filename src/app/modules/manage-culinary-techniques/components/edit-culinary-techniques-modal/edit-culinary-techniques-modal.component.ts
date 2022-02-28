@@ -13,15 +13,10 @@ import { ToastrService } from 'ngx-toastr';
 const EMPTY_CTM: CulinaryTechniques = {
   id: undefined,
   culinaryTechniqueTitle: '',
-  easyOrdering: '',
-  tagId: '',
-  categoryId: '',
   toolRequirements: [],
   kitchenRequirements: '',
   video: '',
-  spotlightVideo: '',
-  spotlightQuestions: [],
-  multiSensoryQuestions: [],
+  description:'',
   status: true
 
 }
@@ -34,27 +29,13 @@ export class EditCulinaryTechniquesModalComponent implements OnInit {
   @Input() id: number;
   @Input() refId: number;
   @Input() languageId: number;
-  tabs = {
-    BASIC_TAB: 0,
-    SPOTLIGHT_TAB: 1,
-    MULTI_SENSORY_TAB: 2
-  };
-  activeTabId = this.tabs.BASIC_TAB;
   isLoading$;
   culinaryTech: any;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
   toolMaster: any = []
-  categoryMaster: any = []
-  tagsMaster: any = []
   languageMaster = [];
-  spotlightQuestions: any = [];
-  multiSensoryQuestions: any = [];
-  questionId: any;
-  isNewCategory = false;
-  showCategoryList = true;
-  newCategory = "";
-  categoryErrorMessage: any;
+
   constructor(
     private culineryService: ManageCulinaryTechniquesService,
     private toolService: ToolsService,
@@ -78,7 +59,6 @@ export class EditCulinaryTechniquesModalComponent implements OnInit {
     } else {
       this.loadLanguage()
     }
-    this.loadMasters();
     this.loadCulinery();
   }
 
@@ -90,20 +70,6 @@ export class EditCulinaryTechniquesModalComponent implements OnInit {
     }, (e) => {
       console.log(e)
     })
-  }
-
-  loadMasters() {
-    const sb = this.culineryService.loadMasters().pipe(
-      first(),
-      catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
-        return of(EMPTY_CTM);
-      })
-    ).subscribe((response: any) => {
-      this.categoryMaster = response?.[0].data;
-      this.tagsMaster = response?.[1].data;
-    });
-    this.subscriptions.push(sb);
   }
 
   loadCulinery() {
@@ -118,7 +84,7 @@ export class EditCulinaryTechniquesModalComponent implements OnInit {
         toolRequirements: [],
         kitchenRequirements: '',
         video: '',
-        spotlightVideo: '',
+        description:'',
         spotlightQuestions: [],
         multiSensoryQuestions: [],
         status: true
@@ -145,25 +111,14 @@ export class EditCulinaryTechniquesModalComponent implements OnInit {
     this.validationService.formGroupDef = this.formGroup = this.fb.group({
       culinaryTechniqueName: [this.culinaryTech.culinaryTechniqueTitle, Validators.compose([Validators.required])],
       kitchenRequirements: [this.culinaryTech.kitchenRequirements],
-      linkforEasyOrdering: [this.culinaryTech.easyOrdering],
-      tags: [this.culinaryTech.tag?.id],
       toolRequirements: [this.culinaryTech.toolRequirements],
       status: [this.culinaryTech.status, Validators.compose([Validators.required])],
-      video: [this.culinaryTech.video],
-      spotlightVideo: [this.culinaryTech.spotlightVideo],
-      category: [this.culinaryTech.category?.id],
-      spotlightQuestions: this.fb.array([]),
-      multiSensoryQuestions: this.fb.array([]),
+      video: [this.culinaryTech.video, Validators.compose([Validators.required])],
+      description: [this.culinaryTech.description, Validators.compose([Validators.required])],
       languageId: [this.culinaryTech.systemLanguageId,Validators.compose([Validators.required])],
 
     });
 
-    if (this.culinaryTech.spotlightQuestions?.length > 0) {
-      this.spotlightQuestions = [...this.culinaryTech.spotlightQuestions]
-    }
-    if (this.culinaryTech.multiSensoryQuestions?.length > 0) {
-      this.multiSensoryQuestions = [...this.culinaryTech.multiSensoryQuestions]
-    }
   }
 
   save() {
@@ -183,9 +138,11 @@ export class EditCulinaryTechniquesModalComponent implements OnInit {
     console.log(event)
 
   }
+
   onDeselectTool(event) {
     console.log(event)
   }
+
   edit() {
     const sbUpdate = this.culineryService.update(this.culinaryTech).pipe(
       tap((res:any) => {
@@ -230,97 +187,20 @@ export class EditCulinaryTechniquesModalComponent implements OnInit {
     this.subscriptions.push(sbCreate);
   }
 
-  createSpotQuestion(data) {
-    if (data.id) {
-      let index = this.spotlightQuestions.indexOf(data);
-      this.spotlightQuestions[index] = data;
-    } else {
-      this.spotlightQuestions.push(data)
-    }
-  }
-  createSensoryQuestion(data) {
-    if (data.id) {
-      let index = this.multiSensoryQuestions.indexOf(data);
-      this.multiSensoryQuestions[index] = data;
-    } else {
-      this.multiSensoryQuestions.push(data)
-    }
-  }
-  editSpotQuestion(data) {
-    this.questionId = data.id
-  }
-
-  editSensoryQuestion(data) {
-    this.questionId = data.id
-  }
-
-  deleteSpotQuestion(data) {
-    const index: number = this.spotlightQuestions.indexOf(data);
-    if (index !== -1) {
-      this.spotlightQuestions.splice(index, 1);
-    }
-
-  }
-
-  deleteSensoryQuestion(data) {
-    const index: number = this.multiSensoryQuestions.indexOf(data);
-    if (index !== -1) {
-      this.multiSensoryQuestions.splice(index, 1);
-    }
-
-  }
-
-  changeTab() {
-    this.activeTabId = this.tabs.BASIC_TAB
-    this.loadForm()
-  }
-
   private prepareCustomer() {
     const formData = this.formGroup.value;
-    console.log(formData)
     this.culinaryTech.languageId = formData.languages;
     this.culinaryTech.status = formData.status;
     this.culinaryTech.culinaryTechniqueTitle = formData.culinaryTechniqueName;
-    this.culinaryTech.safetyLevelId = formData.safetylevel;
-    this.culinaryTech.easyOrdering = formData.linkforEasyOrdering;
-    this.culinaryTech.tagId = formData.tags;
-    this.culinaryTech.categoryId = formData.category;
-    this.culinaryTech.usesId = formData.uses;
     this.culinaryTech.toolRequirements = formData.toolRequirements.map(dt => dt.id);
     this.culinaryTech.kitchenRequirements = formData.kitchenRequirements;
     this.culinaryTech.video = formData.video;
-    this.culinaryTech.spotlightQuestions = this.spotlightQuestions;
-    this.culinaryTech.multiSensoryQuestions = this.multiSensoryQuestions;
+    this.culinaryTech.description= formData.description;
     this.culinaryTech.systemLanguageId = formData.languageId;
     this.culinaryTech.referenceId = this.refId;
 
   }
 
-  showCategory() {
-    this.showCategoryList = !this.showCategoryList;
-  }
-
-  addCategory() {
-    let data = {
-      categoryTitle: this.newCategory,
-      status: true
-    }
-    this.culineryService.addNewCategory(data).subscribe((res: any) => {
-      this.loadMasters();
-      this.showCategoryList = true;
-    }, (e) => {
-      if (e.error.status == 409) {
-        this.categoryErrorMessage = e.error.message;
-        this.newCategory = "";
-      }
-    });
-
-  }
-
-  resetCategory() {
-    this.newCategory = ""
-    this.showCategoryList = true;
-  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());

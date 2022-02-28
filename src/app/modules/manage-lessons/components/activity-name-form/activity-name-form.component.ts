@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { first, catchError, tap } from 'rxjs/operators';
 import { ManageNutrientsService } from 'src/app/modules/manage-nutrients/services/manage-nutrients.service';
@@ -48,7 +47,6 @@ export class ActivityNameFormComponent implements OnInit {
     private fb: FormBuilder,
     public validationService: FormValidationServices,
     private lessonService: ManageLessonsService,
-    private router: Router,
     public tableService: ManageNutrientsService
   ) { }
 
@@ -178,8 +176,7 @@ export class ActivityNameFormComponent implements OnInit {
     }
     const sbUpdate = this.lessonService.update(data).pipe(
       tap(() => {
-        //this.changeTab(this.nextStepName);
-        this.router.navigateByUrl('/manage-lessons/');
+        this.changeTab(this.nextStepName);
       }),
       catchError((errorMessage) => {
         return of(this.activityData);

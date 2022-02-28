@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, of } from 'rxjs';
 import { first, catchError, tap } from 'rxjs/operators';
@@ -78,8 +78,8 @@ export class EditDistrictAdminModalComponent implements OnInit {
       email: ["", Validators.compose([Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])],
       contact_person_email: ["", Validators.compose([Validators.required,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])],
       contact_person_name: ["", Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z \-\']+')])],
-      contact_person_no: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$')])],
-      phone_number: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$')])],
+      contact_person_no: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$'),Validators.minLength(10), this.validContactPersonNumber.bind(this)])],
+      phone_number: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$'),Validators.minLength(10),this.validPhoneNumber.bind(this)])],
       package_id: ["", Validators.compose([Validators.required])],
     });
     this.loadDistrictAdmin();
@@ -250,4 +250,32 @@ export class EditDistrictAdminModalComponent implements OnInit {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
 
+  validPhoneNumber(control: AbstractControl): any {
+    if (control && control.value) {
+      let isValid = control.value.match('^(?=.*[0-9])[- +()0-9]+$');
+      if (control.value && control.value.length === 11 || control.value.length > 13) {
+        return { 'contactDigitValidate': true }
+      }
+      if (isValid && isValid.input) {
+        this.districtAdminService.contactValidator(control.value).subscribe(
+          (data) => {
+          },
+          (error) => {
+            console.log(error);
+            this.formGroup.controls['phone_number'].setErrors({ 'contactValidate': true });
+          }
+        );
+      }
+    }
+  }
+
+  /**
+ * To check valid phone number for contact person.
+ *   
+ */
+  validContactPersonNumber(control: AbstractControl): any {
+    if (control.value && control.value.length === 11 || control.value.length > 13) {
+      return { 'digitValidate': true }
+    }
+  }
 }

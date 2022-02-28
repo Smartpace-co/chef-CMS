@@ -1,6 +1,6 @@
 export const DynamicAsideMenuConfig = {
   items: [
-    {
+    /* {
       title: 'Dashboard',
       root: true,
       icon: 'flaticon2-architecture-and-city',
@@ -8,35 +8,36 @@ export const DynamicAsideMenuConfig = {
       page: '/dashboard',
       translate: 'MENU.DASHBOARD',
       bullet: 'dot',
-    },
+    }, */
 
     { section: 'Applications' },
+    // {
+    //   title: 'eCommerce',
+    //   bullet: 'dot',
+    //   icon: 'flaticon2-list-2',
+    //   svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+    //   root: true,
+    //   permission: 'accessToECommerceModule',
+    //   page: '/ecommerce',
+    //   submenu: [
+    //     {
+    //       title: 'Customers',
+    //       page: '/ecommerce/customers'
+    //     },
+    //     {
+    //       title: 'Products',
+    //       page: '/ecommerce/products'
+    //     },
+    //   ]
+    // },
+    
     {
-      title: 'eCommerce',
+      title: 'Manage Roles',
+      root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      root: true,
-      permission: 'accessToECommerceModule',
-      page: '/ecommerce',
-      submenu: [
-        {
-          title: 'Customers',
-          page: '/ecommerce/customers'
-        },
-        {
-          title: 'Products',
-          page: '/ecommerce/products'
-        },
-      ]
-    },
-    {
-      title: 'Manage Role',
-      root: true,
-      bullet: 'dot',
-      icon: 'flaticon2-list-2',
-      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-role',
     },
     {
       title: 'Manage Users',
@@ -44,137 +45,176 @@ export const DynamicAsideMenuConfig = {
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-users',
     },
     {
-      title: 'Manage Subscription Packages',
+      title: 'Manage External Users',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-external-users',
     },
     {
-      title: 'Manage District Admin Accounts',
+      title: 'Manage Subscriptions',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-subscription-pkgs',
     },
     {
-      title: 'Manage schools',
+      title: 'Manage District Admin',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-district-admin',
     },
     {
-      title: 'Manage tools',
+      title: 'Manage Schools',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-schools',
     },
     {
-      title: 'Manage ingredients',
+      title: 'Manage Tools',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-tools',
     },
     {
-      title: 'Manage nutrients',
+      title: 'Manage Ingredients',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-ingredients',
     },
     {
-      title: 'Manage culinary techniques',
+      title: 'Manage Nutrients',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-nutrients',
     },
     {
-      title: 'Manage countries',
+      title: 'Manage Culinary Techniques',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-culinary-techniques',
     },
     {
-      title: 'Manage lessons',
+      title: 'Manage Countries',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-country',
     },
     {
-      title: 'Manage stamps',
+      title: 'Manage Lessons',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-lessons',
     },
     {
-      title: 'Manage units of measurement',
+      title: 'Manage Units Of Measurement',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-units-of-measurement',
     },
     {
-      title: 'Manage issues or feedback',
+      title: 'Manage Standards',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-standards',
     },
     {
-      title: 'Manage conversations sentences',
+      title: 'Manage Stamps',
       root: true,
       bullet: 'dot',
       icon: 'flaticon2-list-2',
       svg: './assets/media/svg/icons/Shopping/Cart3.svg',
-      page: '/manage-role/list',
+      page: '/manage-stamps',
     },
     {
-      title: 'User Management',
+      title: 'Manage Subjects',
       root: true,
       bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/General/User.svg',
-      page: '/user-management',
-      submenu: [
-        {
-          title: 'Users',
-          page: '/user-management/users'
-        },
-        {
-          title: 'Roles',
-          page: '/user-management/roles'
-        }
-      ]
+      icon: 'flaticon2-list-2',
+      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+      page: '/manage-subjects',
+    },  
+    {
+      title: 'Manage Issues Or Feedback',
+      root: true,
+      bullet: 'dot',
+      icon: 'flaticon2-list-2',
+      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+      page: '/manage-issuesFeedback',
     },
     {
-      title: 'User Profile',
+      title: 'Manage Conversation Sentences',
       root: true,
       bullet: 'dot',
-      icon: 'flaticon2-user-outline-symbol',
-      svg: './assets/media/svg/icons/Communication/Add-user.svg',
-      page: '/user-profile',
+      icon: 'flaticon2-list-2',
+      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+      page: '/manage-conversationSentence',
+    },
+    {
+      title: 'Manage Health Hygiene',
+      root: true,
+      bullet: 'dot',
+      icon: 'flaticon2-list-2',
+      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+      page: '/manage-health-hygiene',
+    },
+    {
+      title: 'Manage Image Drag Drop',
+      root: true,
+      bullet: 'dot',
+      icon: 'flaticon2-list-2',
+      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+      page: '/manage-image-drag-drop',
+    },
+    {
+      title: 'Manage Image Flip Content',
+      root: true,
+      bullet: 'dot',
+      icon: 'flaticon2-list-2',
+      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+      page: '/manage-image-flip-content',
+    },
+    {
+      title: 'Manage Discussion Forum',
+      root: true,
+      bullet: 'dot',
+      icon: 'flaticon2-list-2',
+      svg: './assets/media/svg/icons/Shopping/Cart3.svg',
+      page: '/manage-discussion-forum',
     }
+    
+    // {
+    //   title: 'User Profile',
+    //   root: true,
+    //   bullet: 'dot',
+    //   icon: 'flaticon2-user-outline-symbol',
+    //   svg: './assets/media/svg/icons/Communication/Add-user.svg',
+    //   page: '/user-profile',
+    // }
   ]
 };

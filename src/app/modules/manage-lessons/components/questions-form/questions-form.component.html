@@ -44,19 +44,43 @@
                 </select>
             </div>
             <div class="form-group col-lg-6">
-                <label>Standards</label>
-                <app-ng-select-input [formName]="formGroup" [fieldControl]="'standards'" [dataList]="standardsMaster" [idfield]="'id'" [textField]="'standardTitle'" [placeHolder]="'Select Standards'">
+                <label>Common Core ELA Standards</label>
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'elaStandard'" [dataList]="elaStandards" [idfield]="'id'" [textField]="'standardTitle'" [placeHolder]="'Select Standards'">
                 </app-ng-select-input>
-                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'standards')">
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'elaStandard')">
+                    Standards is required
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <label>Common Core Math Standards</label>
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'mathStandard'" [dataList]="mathStandards" [idfield]="'id'" [textField]="'standardTitle'" [placeHolder]="'Select Standards'">
+                </app-ng-select-input>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'mathStandard')">
+                    Standards is required
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <label>New Generation Science Standards</label>
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'ngssStandard'" [dataList]="ngssStandards" [idfield]="'id'" [textField]="'standardTitle'" [placeHolder]="'Select Standards'">
+                </app-ng-select-input>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'ngssStandard')">
+                    Standards is required
+                </div>
+            </div>
+            <div class="form-group col-lg-6">
+                <label>National Curriculum Standards for Social Studies</label>
+                <app-ng-select-input [formName]="formGroup" [fieldControl]="'ncssStandard'" [dataList]="ncssStandards" [idfield]="'id'" [textField]="'standardTitle'" [placeHolder]="'Select Standards'">
+                </app-ng-select-input>
+                <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'ncssStandard')">
                     Standards is required
                 </div>
             </div>
             <div class="form-group col-lg-6">
                 <div class="form-group" *ngIf="!formGroup.controls['questionTrack'].value" id="upload_button">
                     <label>
-                        <input type="file" accept="audio/mp3" class="form-control"
+                        <input type="file" accept="audio/mp3,audio/aac" class="form-control"
                             (change)="uploadTrack($event,'questionTrack')">
-                        <span class="btn btn-success">Upload Voicehover for Question (.MP3) </span>
+                        <span class="btn btn-success">Upload Voicehover for Question (.MP3/.aac) </span>
                     </label>
                 </div>
                 <div class="form-group row ml-5" *ngIf="formGroup.controls['questionTrack'].value">
@@ -179,7 +203,7 @@
             <ng-container *ngIf="answerType==4">
                 <div class="form-group col-lg-12">
                     <p class="font-weight-normal font-size-lg pb-7">
-                        Note: Student will be shown textarea for answering
+                        Note: Student will be shown text area for answering
                     </p>
                 </div>
             </ng-container>

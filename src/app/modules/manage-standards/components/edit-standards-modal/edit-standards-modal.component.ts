@@ -117,7 +117,7 @@ export class EditStandardsModalComponent implements OnInit {
         this.standard.skills=this.standard.skills.map(dt => dt.skill);
 
         this.loadForm();
-        this.changeSubject(undefined);
+        this.changeSubject(this.standard.subject?.id);
       });
       this.subscriptions.push(sb);
     }
@@ -129,7 +129,7 @@ export class EditStandardsModalComponent implements OnInit {
       status: [this.standard.status, Validators.compose([Validators.required])],
       grade: [this.standard.grade?.id, Validators.compose([Validators.required])],
       subject: [this.standard.subject?.id, Validators.compose([Validators.required])],
-      image: [this.standard.image, Validators.compose([Validators.required])],
+      image: [this.standard.image],
       languageId:[this.standard.systemLanguageId],
       skill:[this.standard.skills],
 
@@ -211,8 +211,9 @@ export class EditStandardsModalComponent implements OnInit {
     this.standard.image = formData.image;
     this.standard.systemLanguageId=formData.languageId;
     this.standard.referenceId=this.refId;
-    this.standard.skills=formData.skill.map(res=>res.id)
-
+    if(formData.skill){
+      this.standard.skills=formData.skill.map(res=>res.id)
+    }
   }
 
   uploadStandardImage(event) {

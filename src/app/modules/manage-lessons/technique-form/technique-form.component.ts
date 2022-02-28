@@ -8,8 +8,6 @@ import { ManageLessonsService } from '../services/manage-lessons.service';
 const EMPTY_TECH = {
   id: undefined,
   culinaryTechniqueId: null,
-  dialogue: "",
-  animationLink: ""
 }
 @Component({
   selector: 'app-technique-form',
@@ -89,8 +87,6 @@ export class TechniqueFormComponent implements OnInit {
     this.validationService.formGroupDef = this.formGroup = this.fb.group({
       id: [data?.id],
       culinaryTechniqueId: [data?.culinaryTechniqueId],
-      dialogue: [data?.dialogue],
-      animationLink: [data?.animationLink],
       estimatedTime: [data?.estimatedTime],
     });
   }
@@ -104,8 +100,6 @@ export class TechniqueFormComponent implements OnInit {
         culinaryTechnique: this.techniqueMaster.find((dt) => {
           if (formData.culinaryTechniqueId == dt.id) return dt
         }),
-        dialogue: formData.dialogue,
-        animationLink: formData.animationLink,
         estimatedTime: formData.estimatedTime
       }
       this.techniqueData.forEach((element, i) => {
@@ -123,8 +117,6 @@ export class TechniqueFormComponent implements OnInit {
         culinaryTechnique: this.techniqueMaster.find((dt) => {
           if (formData.culinaryTechniqueId == dt.id) return dt
         }),
-        dialogue: formData.dialogue,
-        animationLink: formData.animationLink,
         estimatedTime: formData.estimatedTime
       }
 

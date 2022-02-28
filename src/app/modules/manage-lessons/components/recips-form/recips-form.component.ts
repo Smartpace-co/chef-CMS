@@ -149,7 +149,9 @@ export class RecipsFormComponent implements OnInit {
       toolsBigChef: [this.recipes?.bigChefTools],
       toolslittleChef: [this.recipes?.littleChefTools],
       holidays: [this.recipes?.holiday],
-      recipeImage:[this.recipes?.recipeImage]
+      recipeImage:[this.recipes?.recipeImage],
+      isChefInHouse:[this.recipes?.isChefInHouse],
+      isChefAmbassador:[this.recipes?.isChefAmbassador]
     });
 
     if(this.recipes?.recipeImage){
@@ -168,10 +170,16 @@ export class RecipsFormComponent implements OnInit {
     this.recipes.alternativeName = formData.alterNativeName;
     this.recipes.estimatedMakeTime = formData.estimatesTime;
     this.recipes.serves = formData.serves;
-    this.recipes.bigChefTools = formData.toolsBigChef.map((dt) => dt.id);
-    this.recipes.littleChefTools = formData.toolslittleChef.map((dt) => dt.id);
+    if(formData.toolsBigChef){
+      this.recipes.bigChefTools = formData.toolsBigChef.map((dt) => dt.id);
+    }
+    if(formData.toolslittleChef){
+      this.recipes.littleChefTools = formData.toolslittleChef.map((dt) => dt.id);
+    }
     this.recipes.holiday = formData.holidays;
     this.recipes.recipeImage=formData.recipeImage;
+    this.recipes.isChefInHouse=formData.isChefInHouse;
+    this.recipes.isChefAmbassador=formData.isChefAmbassador;
   }
   onSave() {
     this.prepareForm();
@@ -256,4 +264,13 @@ export class RecipsFormComponent implements OnInit {
         this.moreRecipeImage = true
     }
   }
+
+ changeChefType(e){
+   if(e.target.id=="isChefInHouse" && e.target.checked){
+      this.formGroup.controls['isChefAmbassador'].patchValue(false);
+   }else{
+    this.formGroup.controls['isChefInHouse'].patchValue(false);
+   }
+ }
+
 }

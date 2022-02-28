@@ -104,7 +104,7 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
     if (type) {
       filter['type'] = type;
     }
-    this.lessonService.patchState({ filter });
+    this.lessonService.patchStateForLesson({ filter },this.gradeId);
   }
 
   // search
@@ -144,7 +144,7 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.lessonService.patchState({ paginator });
+    this.lessonService.patchStateForLesson({ paginator },this.gradeId);
   }
 
   // form actions
@@ -161,7 +161,26 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.service = this.lessonService;
     modalRef.componentInstance.fileName = 'Lesson';
-    modalRef.result.then(() => this.lessonService.fetch(), () => { });
+    modalRef.result.then(() => this.lessonService.fetchLessonByFilter(this.gradeId,'gradeId'), () => { });
+  }
+
+  hardDelete(id: number) {
+    const modalRef = this.modalService.open(DeleteModalComponent);
+    modalRef.componentInstance.id = id;
+    modalRef.componentInstance.service = this.lessonService;
+    modalRef.componentInstance.fileName = 'Lesson';
+    modalRef.componentInstance.action= "HardDelete"
+    modalRef.result.then(() => this.lessonService.fetchLessonByFilter(this.gradeId,'gradeId'), () => { });
+  }
+
+  restore(id: number){
+    const modalRef = this.modalService.open(DeleteModalComponent);
+    modalRef.componentInstance.id = id;
+    modalRef.componentInstance.action= "Restore"
+    modalRef.componentInstance.service = this.lessonService;
+    modalRef.componentInstance.fileName = 'Lesson';
+    modalRef.result.then(() => this.lessonService.fetchLessonByFilter(this.gradeId,'gradeId'), () => { });
+
   }
 
   deleteSelected() {

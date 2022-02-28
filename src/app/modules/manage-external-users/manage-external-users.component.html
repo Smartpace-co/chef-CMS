@@ -1,0 +1,88 @@
+<div class="card card-custom gutter-b">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">User list</h3>
+        </div>
+        <div class="card-toolbar">
+            <h5 class="card bg-primary text-white p-2">
+                Students : {{usercountData?.student_count ? usercountData?.student_count:0 }}
+            </h5>
+            <h5 class="card bg-primary text-white p-2">
+                Teachers : {{usercountData?.teacher_count ? usercountData?.teacher_count:0 }}
+            </h5>
+            <h5  class="card bg-primary text-white p-2">
+                Districts : {{usercountData?.distrcit_count ? usercountData?.distrcit_count:0 }}
+            </h5>
+            <h5 class="card bg-primary text-white p-2">
+                Schools : {{usercountData?.school_count ? usercountData?.school_count:0 }}
+            </h5>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- begin:Table -->
+        <div class="table-responsive angular-bootstrap-table">
+            <table class="table table-head-custom table-vertical-center overflow-hidden">
+                <thead>
+                    <th>
+                        ID
+                        <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+                            (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        NAME
+                        <app-sort-icon column="name" [activeColumn]="sorting.column"
+                            [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+
+                    <th>
+                        EMAIL
+                        <app-sort-icon column="email" [activeColumn]="sorting.column"
+                            [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        USER TYPE
+                        <app-sort-icon column="status" [activeColumn]="sorting.column"
+                            [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
+                        PACKAGE NAME
+                    </th>
+                    <th>
+                        PACKAGE TYPE
+                    </th>
+                    <th>
+                        STATUS
+                        <app-sort-icon column="type" [activeColumn]="sorting.column"
+                            [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of userService.items$ | async;let i=index">
+
+                        <td>{{ (paginator.page-1)*paginator.pageSize +i+1}}</td>
+                        <td>{{ user.name | titlecase }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role ?  user.role:'-'| titlecase}}</td>
+                        <td>{{ user.packageTitle | titlecase }}</td>
+                        <td>
+                                <ng-container *ngIf="user.isPrivate === true">Private</ng-container>
+                                <ng-container *ngIf="user.isPrivate === false">Public</ng-container>
+                            
+                        </td>
+                        <td>
+                            <span class="label label-lg label-inline" [class.label-light-success]="user.status === 1"
+                                [class.label-light-danger]="user.status === false">
+                                <ng-container *ngIf="user.status === 1">Active</ng-container>
+                                <ng-container *ngIf="user.status === 0">Inactive</ng-container>
+                            </span>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- end: Table -->
+        <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+            [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+    </div>
+</div>

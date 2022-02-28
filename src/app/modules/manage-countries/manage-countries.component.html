@@ -74,11 +74,11 @@
                         GRADE LEVELS
                         <app-sort-icon column="lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
-                    <th>
+<!--                     <th>
                         LANGUAGES
                         <app-sort-icon column="email" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
-
+ -->
                     <th>
                         STATUS
                         <app-sort-icon column="type" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
@@ -97,8 +97,8 @@
                         <td>{{  (paginator.page-1)*paginator.pageSize +i+1}}</td>
                         <td>{{ country.countryName }}</td>
                         <td><span *ngFor="let g of country.country_grades">{{g.grade.grade}},</span></td>
-                        <td><span *ngFor="let lan of country.country_languages">{{lan.language.language}},</span></td>
-                        <td>
+<!--                         <td><span *ngFor="let lan of country.country_languages">{{lan.language.language}},</span></td>
+ -->                        <td>
                             <span class="label label-lg label-inline" [class.label-light-success]="country.status === true" [class.label-light-danger]="country.status === false">
                                 <ng-container *ngIf="country.status === true">Active</ng-container>
                                 <ng-container *ngIf="country.status === false">Inactive</ng-container>
@@ -107,20 +107,23 @@
 
                         <td>
 
-                            <a title="Edit Country" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-2" (click)="edit(country.id)">
+                            <a title="Edit Country" class="btn btn-icon btn-light btn-hover-primary btn-md pt-2 mr-2 icon-label" (click)="edit(country.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
                                 </span>
+                                <span>Edit</span>
                             </a>
 
-                            <a title="Delete Country" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-2" (click)="delete(country.id)">
+                            <a title="Delete Country" class="btn btn-icon btn-light btn-hover-danger btn-md mr-2 pt-2 icon-label" (click)="delete(country.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
                                 </span>
+                                <span>Delete</span>
                             </a>
-                            <a title="Add Country" class="btn btn-icon btn-light btn-hover-warning btn-sm "
+                            <a title="Add Country" class="btn btn-icon btn-light btn-hover-warning btn-md pt-2 icon-label"
                                 (click)="addCountry(country)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
                                     class="svg-icon svg-icon-md svg-icon-warning">
                                 </span>
+                                <span>Add</span>
                             </a>
                         </td>
                     </tr>

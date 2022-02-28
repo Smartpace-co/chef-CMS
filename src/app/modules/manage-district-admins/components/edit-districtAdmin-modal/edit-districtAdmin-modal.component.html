@@ -56,7 +56,11 @@
                         <label>Phone Number</label>
                         <input class="form-control form-control-lg form-control-solid" name="phone_number"  placeholder="Enter Phone Number" [class.is-invalid]="validationService?.isControlInvalid('phone_number')" formControlName="phone_number"/>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'phone_number')">Phone number is required</div>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern', 'phone_number')">Phone number entered incorrect</div>
+                        <div class="invalid-feedback" *ngIf="formGroup.controls.phone_number.errors?.pattern">Phone number is  is not
+                            valid(Format - (000)-000-0000)</div>
+                          <div class="invalid-feedback" *ngIf="formGroup.controls.phone_number.errors?.minlength">Phone number is  is not
+                            valid(Required Minimum Length is 10 digit)</div>
+                            <div class="invalid-feedback" *ngIf="formGroup.controls.phone_number.errors?.contactDigitValidate">Phone number is  is not valid(Required length is 10,12,13 digit)</div>                          
                     </div>
                     
 
@@ -76,13 +80,12 @@
                         <input type="text" class="form-control form-control-lg form-control-solid" name="contact_person_no" placeholder="Enter Contact Person Number" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('contact_person_no')" [class.is-valid]="validationService.isControlValid('contact_person_no')"
                             formControlName="contact_person_no" />
                         <div class="valid-feedback" *ngIf="validationService?.isControlValid('contact_person_no')">Contact person number Entered Correct</div>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'contact_person_no')">Contact person number is required</div>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern', 'contact_person_no')">Contact person number entered incorrect</div>
-
+                        <div class="invalid-feedback" *ngIf="formGroup.controls.contact_person_no.errors?.pattern">Contact number is not
+                            valid(Format - (000)-000-0000)</div>
+                          <div class="invalid-feedback" *ngIf="formGroup.controls.contact_person_no.errors?.minlength">Contact number is not
+                            valid(Required Minimum Length is 10 digit)</div>
+                            <div class="invalid-feedback" *ngIf="formGroup.controls.contact_person_no.errors?.digitValidate">Contact number is not valid(Required length is 10,12,13 digit)</div>
                     </div>
-                    
-
-
                 </div>
 
                 <div class="form-group row">

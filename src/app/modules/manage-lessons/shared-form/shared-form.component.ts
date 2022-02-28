@@ -26,6 +26,7 @@ export class SharedFormComponent implements OnInit, OnDestroy {
   @Input() nextStepName;
   @Input() lessonId;
   @Input() trackField;
+  @Input() timeField;
   @Output() changeActiveTab: EventEmitter<number> = new EventEmitter<number>();
   formGroup: FormGroup;
   trackForm: FormGroup;
@@ -94,11 +95,13 @@ export class SharedFormComponent implements OnInit, OnDestroy {
   loadTrackForm() {
     if(this.fieldControler!=='cleanupSteps'){
       this.trackForm=this.fb.group({
-        track: [this.dataFromApi.recipe[this.trackField], Validators.compose([Validators.required])]
+        track: [this.dataFromApi.recipe[this.trackField], Validators.compose([Validators.required])],
+        time: [this.dataFromApi.recipe[this.timeField]],
+
       })
     }else{
       this.trackForm=this.fb.group({
-        track: [this.dataFromApi[this.trackField], Validators.compose([Validators.required])]
+        track: [this.dataFromApi[this.trackField], Validators.compose([Validators.required])],
       })
     }  
   }
@@ -119,7 +122,8 @@ export class SharedFormComponent implements OnInit, OnDestroy {
         id: this.dataFromApi?.recipe.id,
         recipeTitle: this.dataFromApi?.recipe.recipeTitle,
         [`${this.fieldControler}`]: this.form.get(`${this.fieldControler}`).value,
-        [`${this.trackField}`]: this.trackForm.get('track').value
+        [`${this.trackField}`]: this.trackForm.get('track').value,
+        [`${this.timeField}`]: this.trackForm.get('time')?.value?this.trackForm.get('time').value:undefined,
       },
     };
 

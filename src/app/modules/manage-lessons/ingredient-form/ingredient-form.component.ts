@@ -12,7 +12,8 @@ const EMPTY_INGREDIENTDATA = {
   unitOfMeasurementId: null,
   quantity: 0,
   linkOfImage: '',
-  isOptional:false
+  isOptional:false,
+  isSpotlight:false,
 }
 @Component({
   selector: 'app-ingredient-form',
@@ -108,7 +109,8 @@ export class IngredientFormComponent implements OnInit {
       unitOfMeasurementId: [data?.unitOfMeasurement?.id],
       image: [data?.image],
       spotlightFacts:this.fb.array([]),
-      isOptional:[data?.isOptional]
+      isOptional:[data?.isOptional],
+      isSpotlight:[data?.isSpotlight]
     });
     if (data?.spotlightFacts.length > 0) {
       data.spotlightFacts.forEach(e => {
@@ -135,7 +137,8 @@ export class IngredientFormComponent implements OnInit {
         quantity: formData.quantity,
         image: formData.image,
         spotlightFacts: formData.spotlightFacts,
-        isOptional:formData.isOptional
+        isOptional:formData.isOptional,
+        isSpotlight:formData.isSpotlight
       }
       this.ingredientData.forEach((element, i) => {
         if (element.id == this.id) {
@@ -158,8 +161,8 @@ export class IngredientFormComponent implements OnInit {
         quantity: formData.quantity,
         image: formData.image,
         spotlightFacts: formData.spotlightFacts,
-        isOptional:formData.isOptional
-
+        isOptional:formData.isOptional,
+        isSpotlight: formData.isSpotlight
       }
       this.ingredientData.push(this.ingredient)
       this.formGroup.reset();

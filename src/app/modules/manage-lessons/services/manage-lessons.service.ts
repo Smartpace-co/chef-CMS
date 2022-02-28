@@ -52,7 +52,7 @@ export class ManageLessonsService extends TableService<Lesson> implements OnDest
   }
 
   findLessonsByFilter(tableState: ITableState, id, filter): Observable<TableResponseModel<Lesson>> {
-    return this.http.get<Lesson[]>(this.API_URL + '?filters[root]=[{"f":"' + filter + '","v":' + id + '}]&fields[root]=["id","lessonTitle","status"]').pipe(
+    return this.http.get<Lesson[]>(this.API_URL + '?filters[root]=[{"f":"' + filter + '","v":' + id + '},{"f":"isPermanentDeleted","v":false}]&fields[root]=["id","lessonTitle","status","isDeleted"]').pipe(
       map((response: any) => {
         const filteredResult = baseFilter(response.data, tableState);
         const result: TableResponseModel<Lesson> = {
@@ -116,31 +116,35 @@ export class ManageLessonsService extends TableService<Lesson> implements OnDest
       this.setlessonArray(res.data);
     })
   }
-
-  getStandardByGrade(gradeId){
-    return this.http.get<any[]>(environment.apiUrl+ '/standard?filters[root]=[{"f":"gradeId","v":'+gradeId+'}]');
+  
+  getStandardBySubject(){
+    const elastandards= this.http.get<any[]>(environment.apiUrl+ '/standard?filters[subjects]=[{"f":"title","v":"ELA"}]&sorting[root]=[{"f":"standardTitle","o":"ASC"}]');
+    const mathStandards= this.http.get<any[]>(environment.apiUrl+ '/standard?filters[subjects]=[{"f":"title","v":"MATH"}]&sorting[root]=[{"f":"standardTitle","o":"ASC"}]');
+    const ngssStandards= this.http.get<any[]>(environment.apiUrl+ '/standard?filters[subjects]=[{"f":"title","v":"NGSS"}]&sorting[root]=[{"f":"standardTitle","o":"ASC"}]');
+    const ncssStandards= this.http.get<any[]>(environment.apiUrl+ '/standard?filters[subjects]=[{"f":"title","v":"NCSS"}]&sorting[root]=[{"f":"standardTitle","o":"ASC"}]');
+    return forkJoin([elastandards,mathStandards,ngssStandards,ncssStandards])
   }
 
   getRecipeMaster(){
-    const countries= this.http.get(environment.apiUrl + '/country');
-    const tools = this.http.get(environment.apiUrl + '/tool');
+    const countries= this.http.get(environment.apiUrl + '/country?sorting[root]=[{"f":"countryName","o":"ASC"}]');
+    const tools = this.http.get(environment.apiUrl + '/tool?sorting[root]=[{"f":"toolTitle","o":"ASC"}]');
     return forkJoin([countries, tools]);
   }
 
   getExperimentMaster(){
-    const tools = this.http.get(environment.apiUrl + '/tool');
-    const ingredients = this.http.get(environment.apiUrl + '/ingredient');
+    const tools = this.http.get(environment.apiUrl + '/tool?sorting[root]=[{"f":"toolTitle","o":"ASC"}]');
+    const ingredients = this.http.get(environment.apiUrl + '/ingredient?sorting[root]=[{"f":"ingredientTitle","o":"ASC"}]');
     return forkJoin([tools,ingredients]);
   }
 
   getIngredientMaster(){
-    const unitOfMeasure = this.http.get(environment.apiUrl + '/unitOfMeasurement');
-    const ingredients = this.http.get(environment.apiUrl + '/ingredient');
+    const unitOfMeasure = this.http.get(environment.apiUrl + '/unitOfMeasurement?sorting[root]=[{"f":"unitOfMeasure","o":"ASC"}]');
+    const ingredients = this.http.get(environment.apiUrl + '/ingredient?sorting[root]=[{"f":"ingredientTitle","o":"ASC"}]');
     return forkJoin([unitOfMeasure,ingredients]);
   }
 
   getTechniqueMaster(){
-    const techniques = this.http.get(environment.apiUrl + '/culinaryTechnique');
+    const techniques = this.http.get(environment.apiUrl + '/culinaryTechnique? sorting[root]=[{"f":"culinaryTechniqueTitle","o":"ASC"}]');
     return forkJoin([techniques]);
   }
 

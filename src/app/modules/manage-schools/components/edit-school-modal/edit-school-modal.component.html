@@ -18,33 +18,29 @@
         <ng-container>
             <form action="#" class="form form-label-right" [formGroup]="formGroup">
                 <div class="form-group row">
-                    
+
                     <div class="col-lg-6">
-                        <label>Select District</label>
-                        <select class="form-control form-control-lg form-control-solid" name="district_id"  placeholder="Select District" [class.is-invalid]="validationService?.isControlInvalid('district_id')" formControlName="district_id">
-                            <option value="" disabled>Select District </option>
-                            <option *ngFor="let district of districtMaster"  [value]="district.id" >{{district.name}}</option>
-                         </select>
-                    </div>
+                        <label>District Name</label>
+                        <input type="text" class="form-control form-control-lg" name="customDistrictName" placeholder="Enter District Name" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('customDistrictName')" [class.is-valid]="validationService.isControlValid('customDistrictName')"
+                        formControlName="customDistrictName" />
+                    <div class="valid-feedback" *ngIf="validationService?.isControlValid('customDistrictName')">District Name entered correct</div>
+                    <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'customDistrictName')">District Name is required</div>
+                </div>
 
                     <div class="col-lg-6">
                         <label>School Name</label>
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="name" placeholder="Enter School Name" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('name')" [class.is-valid]="validationService.isControlValid('name')"
+                        <input type="text" class="form-control form-control-lg " name="name" placeholder="Enter School Name" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('name')" [class.is-valid]="validationService.isControlValid('name')"
                         formControlName="name" />
                     <div class="valid-feedback" *ngIf="validationService?.isControlValid('name')">School Name entered correct</div>
                     <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'name')">School Name is required</div>
 
                 </div>
-
-                  
-
-
                 </div>
                 <div class="form-group row">
                     
                     <div class="col-lg-6">
                         <label class="form-label">Admin Account Name</label>
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="admin_account_name" placeholder="Enter Admin Account Name" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('admin_account_name')" [class.is-valid]="validationService.isControlValid('admin_account_name')"
+                        <input type="text" class="form-control form-control-lg " name="admin_account_name" placeholder="Enter Admin Account Name" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('admin_account_name')" [class.is-valid]="validationService.isControlValid('admin_account_name')"
                             formControlName="admin_account_name" />
                         <div class="valid-feedback" *ngIf="validationService?.isControlValid('admin_account_name')">Admin Name entered correct</div>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'admin_account_name')">Admin Name is required</div>
@@ -54,7 +50,7 @@
                     
                     <div class="col-lg-6">
                         <label>Admin Email Address</label>
-                        <input class="form-control form-control-lg form-control-solid" name="email"  placeholder="Enter Admin Email Address" [class.is-invalid]="validationService?.isControlInvalid('email')" formControlName="email"/>
+                        <input class="form-control form-control-lg " name="email"  placeholder="Enter Admin Email Address" [class.is-invalid]="validationService?.isControlInvalid('email')" formControlName="email"/>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'email')">Email is required</div>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern','email')">Invalid email entered
                         </div>
@@ -69,14 +65,18 @@
                     
                     <div class="col-lg-6">
                         <label>Phone Number</label>
-                        <input class="form-control form-control-lg form-control-solid" name="phone_number"  placeholder="Enter Phone Number" [class.is-invalid]="validationService?.isControlInvalid('phone_number')" formControlName="phone_number"/>
+                        <input class="form-control form-control-lg " name="phone_number"  placeholder="Enter Phone Number" [class.is-invalid]="validationService?.isControlInvalid('phone_number')" formControlName="phone_number"/>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'phone_number')">Phone Number is required</div>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern', 'phone_number')">Phone number entered incorrect</div>
+                        <div class="invalid-feedback" *ngIf="formGroup.controls.phone_number.errors?.pattern">Phone number is  is not
+                            valid(Format - (000)-000-0000)</div>
+                          <div class="invalid-feedback" *ngIf="formGroup.controls.phone_number.errors?.minlength">Phone number is  is not
+                            valid(Required Minimum Length is 10 digit)</div>
+                            <div class="invalid-feedback" *ngIf="formGroup.controls.phone_number.errors?.contactDigitValidate">Phone number is  is not valid(Required length is 10,12,13 digit)</div>                          
 
                     </div>
                     <div class="col-lg-6">
                         <label>Contact Person Name</label>
-                        <input class="form-control form-control-lg form-control-solid" name="contact_person_name"  placeholder="Enter Contact Person Name" [class.is-invalid]="validationService?.isControlInvalid('contact_person_name')" formControlName="contact_person_name">
+                        <input class="form-control form-control-lg " name="contact_person_name"  placeholder="Enter Contact Person Name" [class.is-invalid]="validationService?.isControlInvalid('contact_person_name')" formControlName="contact_person_name">
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'contact_person_name')">Contact Person Name is required</div>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern', 'contact_person_name')">Contact person name entered incorrect</div>
 
@@ -87,16 +87,19 @@
                     
                     <div class="col-lg-6">
                         <label class="form-label">Contact Person Number</label>
-                        <input type="text" class="form-control form-control-lg form-control-solid" name="contact_person_number" placeholder="Enter Contact Person Number" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('contact_person_number')" [class.is-valid]="validationService.isControlValid('contact_person_number')"
+                        <input type="text" class="form-control form-control-lg " name="contact_person_number" placeholder="Enter Contact Person Number" autocomplete="off" [class.is-invalid]="validationService.isControlInvalid('contact_person_number')" [class.is-valid]="validationService.isControlValid('contact_person_number')"
                             formControlName="contact_person_number" />
                         <div class="valid-feedback" *ngIf="validationService?.isControlValid('contact_person_number')">Contact Person Number Entered Correct</div>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'contact_person_number')">Contact Person Number is required</div>
-                        <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern', 'contact_person_number')">Contact person number entered incorrect</div>
+                        <div class="invalid-feedback" *ngIf="formGroup.controls.contact_person_number.errors?.pattern">Contact number is not
+                            valid(Format - (000)-000-0000)</div>
+                          <div class="invalid-feedback" *ngIf="formGroup.controls.contact_person_number.errors?.minlength">Contact number is not
+                            valid(Required Minimum Length is 10 digit)</div>
+                            <div class="invalid-feedback" *ngIf="formGroup.controls.contact_person_number.errors?.digitValidate">Contact number is not valid(Required length is 10,12,13 digit)</div>
                     </div>
                     
                     <div class="col-lg-6">
                         <label>Contact Person Email</label>
-                        <input class="form-control form-control-lg form-control-solid" name="contact_person_email"  placeholder="Enter Contact Person Email" [class.is-invalid]="validationService?.isControlInvalid('contact_person_email')" formControlName="contact_person_email">
+                        <input class="form-control form-control-lg " name="contact_person_email"  placeholder="Enter Contact Person Email" [class.is-invalid]="validationService?.isControlInvalid('contact_person_email')" formControlName="contact_person_email">
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'contact_person_email')">Contact Person Email is required</div>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern','contact_person_email')">Contact person email entered incorrect</div>
                    
@@ -106,7 +109,7 @@
                 <div class="form-group row">
                     <div class="col-lg-6">
                         <label>Emergency Contact Number</label>
-                        <input class="form-control form-control-lg form-control-solid" name="emergency_contact_number"  placeholder="Enter Emergency Contact Number" [class.is-invalid]="validationService?.isControlInvalid('emergency_contact_number')" formControlName="emergency_contact_number"/>
+                        <input class="form-control form-control-lg " name="emergency_contact_number"  placeholder="Enter Emergency Contact Number" [class.is-invalid]="validationService?.isControlInvalid('emergency_contact_number')" formControlName="emergency_contact_number"/>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'emergency_contact_number')">Emergency Contact Number is required</div>
                         <div class="invalid-feedback" *ngIf="validationService?.controlHasError('pattern', 'emergency_contact_number')">Emergency contact number entered incorrect</div>
 
@@ -114,7 +117,7 @@
 
                     <div class="col-lg-6">
                         <label>Select Package</label>
-                        <select class="form-control form-control-lg form-control-solid" name="package_id"  placeholder="Select Package" [class.is-invalid]="validationService?.isControlInvalid('package_id')" formControlName="package_id">
+                        <select class="form-control form-control-lg " name="package_id"  placeholder="Select Package" [class.is-invalid]="validationService?.isControlInvalid('package_id')" formControlName="package_id">
                             <option value="" disabled>Select Package </option>
                             <option *ngFor="let package of packageMaster"  [value]="package.id" >{{package.packageTitle}}</option>
                          </select>

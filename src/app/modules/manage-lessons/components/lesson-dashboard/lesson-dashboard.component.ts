@@ -3,6 +3,7 @@ import { ManageLessonsService } from '../../services/manage-lessons.service';
 import { saveAs } from 'file-saver';
 import {ToastrService } from 'ngx-toastr'
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-lesson-dashboard',
@@ -48,7 +49,7 @@ export class LessonDashboardComponent implements OnInit {
    onDownloadFile(): void {
    /*  this.lessonService.downloadFile().subscribe((response:any)=>{
       if (response) { */
-        saveAs('https://storage.googleapis.com/chefk-staging/lessons.xlsx', `lessons.xlsx`);
+        saveAs(environment.bucketUrl+'/lessons.xlsx', `lessons.xlsx`);
         this.toast.success("File downloaded successfully","Success")
      /*  }
     },(err)=>{

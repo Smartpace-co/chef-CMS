@@ -102,24 +102,27 @@
 
                         <td>
 
-                            <a title="Edit Culinary Technique" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-2"
+                            <a title="Edit Culinary Technique" class="btn btn-icon btn-light btn-hover-primary btn-md mr-2 pt-2 icon-label"
                                 (click)="edit(data.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                                     class="svg-icon svg-icon-md svg-icon-primary">
                                 </span>
+                                <span>Edit</span>
                             </a>
 
-                            <a title="Delete Culinary Technique" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-2"
+                            <a title="Delete Culinary Technique" class="btn btn-icon btn-light btn-hover-danger btn-md pt-2 mr-2 icon-label"
                                 (click)="delete(data.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
                                     class="svg-icon svg-icon-md svg-icon-danger">
                                 </span>
+                                <span>Delete</span>
                             </a>
-                            <a title="Add Culinary Technique" class="btn btn-icon btn-light btn-hover-warning btn-sm "
+                            <a title="Add Culinary Technique" class="btn btn-icon btn-light btn-hover-warning btn-md pt-2 icon-label"
                             (click)="addTechnique(data)">
                             <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
                                 class="svg-icon svg-icon-md svg-icon-warning">
                             </span>
+                            <span>Add</span>
                         </a>
                         </td>
                     </tr>

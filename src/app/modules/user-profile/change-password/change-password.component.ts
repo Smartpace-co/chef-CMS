@@ -2,7 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { AuthService, UserModel, ConfirmPasswordValidator } from '../../auth';
+import { UserModel, ConfirmPasswordValidator } from '../../auth';
+import { AuthService } from '../../auth/_services/auth.service';
+import {  Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'app-change-password',
@@ -16,7 +19,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   isLoading$: Observable<boolean>;
 
-  constructor(private userService: AuthService, private fb: FormBuilder) {
+  constructor(private userService: AuthService, private fb: FormBuilder, private router: Router,private toast:ToastrService) {
     this.isLoading$ = this.userService.isLoadingSubject.asObservable();
   }
 
@@ -53,10 +56,25 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
 
     this.user.password = this.formGroup.value.password;
     this.userService.isLoadingSubject.next(true);
-    setTimeout(() => {
-      this.userService.currentUserSubject.next(Object.assign({}, this.user));
-      this.userService.isLoadingSubject.next(false);
-    }, 2000);
+    this.userService.changePassword({
+      old_password: this.formGroup.value.currentPassword,
+      new_password: this.formGroup.value.password
+    }).subscribe(
+      (data) => {
+        this.userService.isLoadingSubject.next(false);
+        if (data) {
+          this.userService.currentUserSubject.next(Object.assign({}, this.user));
+          this.toast.success(' Password changed successfully', 'Success');
+          this.userService.logout();
+        }
+      },
+      (error) => {
+        if(error.status==403){
+          this.toast.error("Current password doesn't match!", 'Error');
+          this.userService.isLoadingSubject.next(false);
+        }
+      }
+    );
   }
 
   cancel() {

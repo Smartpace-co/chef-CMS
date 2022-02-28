@@ -9,6 +9,7 @@ import { ManageLessonsService } from '../../services/manage-lessons.service';
 import { Lesson } from '../../_models/lessions.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { ToastrService } from 'ngx-toastr';
 
 const EMPTY_LESSON: any = {
   id: undefined,
@@ -69,7 +70,8 @@ export class EditLessonModalComponent implements OnInit {
     INGREDIENT_TAB: 9,
     TECHNIQUE_TAB: 10,
     CLEANUP_TAB: 11,
-    SENSORY_TAB:12
+    SENSORY_TAB:12,
+    REFERENCE_LINK_TAB:13
   };
   activeTabId = this.tabs.BASIC_TAB; // 0 => Basic info | 1 => recpes | 2 => preparation
   lesson;
@@ -93,7 +95,9 @@ export class EditLessonModalComponent implements OnInit {
     public ingredientsService: ManageIngredientsService,
     public countriesService: ManageCountriesService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toast:ToastrService
+
   ) {
     // call all constant data form repective points
     this.loadServingForm();
@@ -195,7 +199,7 @@ export class EditLessonModalComponent implements OnInit {
       safteySteps: this.fb.array([]),
       safetyStepsTrack: [this.lesson.safetyStepsTrack],
       goodbye: [this.lesson.goodbye, Validators.compose([Validators.required])],
-      goodbyeLinguistic: [this.lesson.goodbyeLinguistic, Validators.compose([Validators.required])],
+      goodbyeLinguistic: [this.lesson.goodbyeLinguistic],
       goodbyeTrack: [this.lesson.goodbyeTrack],
       languageId: [this.lesson.systemLanguageId]
       //  links: this.fb.array([])
@@ -325,8 +329,17 @@ export class EditLessonModalComponent implements OnInit {
   // create a new lessions of basic steps
   create() {
     const sbCreate = this.lessonService.create(this.lesson).pipe(
-      tap((d: any) => {
-        this.router.navigate(['manage-lessons/old/', d.data.id], { queryParams: { nextStep: this.tabs.RECIPES_TAB } });
+      tap((res: any) => {
+        if(res.status==200){
+          this.toast.success(res.message,"Success");
+          this.router.navigate(['manage-lessons/old/', res.data.id], { queryParams: { nextStep: this.tabs.RECIPES_TAB } });
+        }
+        else if(res.status==409){
+          this.toast.error(res.message,"Error");
+        }
+        else{
+          this.toast.error("Something went wrong","Error");
+        }
       }),
       catchError((errorMessage) => {
         console.error('UPDATE ERROR', errorMessage);

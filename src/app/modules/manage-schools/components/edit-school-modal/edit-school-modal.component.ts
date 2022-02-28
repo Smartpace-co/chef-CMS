@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, of } from 'rxjs';
 import { first, catchError, tap } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { environment } from '../../../../../environments/environment';
 import * as _ from 'lodash';
 import { School } from '../../_model/school.model';
 import {ToastrService} from 'ngx-toastr'
+import { ManageDistrictAdminService } from 'src/app/modules/manage-district-admins/services/manage-districtAdmin.service';
 
 declare var Stripe;
 
@@ -58,6 +59,7 @@ export class EditSchoolModalComponent implements OnInit {
 
   constructor(
     public schoolService: ManageSchoolService,
+    public districtAdminService: ManageDistrictAdminService,
     private fb: FormBuilder, public modal: NgbActiveModal,
     public validationService: FormValidationServices,
     private actRoute: ActivatedRoute,
@@ -80,15 +82,15 @@ export class EditSchoolModalComponent implements OnInit {
     this.loadSchoolAdmin();
     this.getRoleList();
     this.validationService.formGroupDef = this.formGroup = this.fb.group({
-      district_id: [""],
+      customDistrictName: [""],
       name: ["", Validators.compose([Validators.required])],
       status: [true, Validators.compose([Validators.required])],
       admin_account_name: ["", Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z \-\']+')])],
       email: ["", Validators.compose([Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])],
       contact_person_email: ["", Validators.compose([Validators.required,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')])],
       contact_person_name: ["", Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z \-\']+')])],
-      contact_person_number: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$')])],
-      phone_number: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$')])],
+      contact_person_number: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$'),Validators.minLength(10),this.validContactPersonNumber.bind(this)])],
+      phone_number: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$'),Validators.minLength(10),this.validPhoneNumber.bind(this)])],
       emergency_contact_number: ["", Validators.compose([Validators.required,Validators.pattern('^(?=.*[0-9])[- +()0-9]+$')])],
       package_id: ["", Validators.compose([Validators.required])],
     });
@@ -159,14 +161,15 @@ export class EditSchoolModalComponent implements OnInit {
       if (res && res.data) {
         this.activePackage=res.data.packageId;
         if(this.schoolDetail.district_details!=null){
-          this.districtDetail=this.schoolDetail.district_details.id
+          this.formGroup.controls['customDistrictName'].disable()
+          this.districtDetail=this.schoolDetail.district_details.name
         }
         else
         {
-          this.districtDetail=""
+          this.districtDetail=this.schoolDetail.school.customDistrictName
         }
         this.validationService.formGroupDef = this.formGroup = this.fb.group({
-          district_id: [ this.districtDetail],
+          customDistrictName: [ this.districtDetail],
           name: [this.schoolDetail.school.name, Validators.compose([Validators.required])],
           status: [this.schoolDetail.status, Validators.compose([Validators.required])],
           admin_account_name: [this.schoolDetail.school.admin_account_name, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z \-\']+')])],
@@ -184,7 +187,7 @@ export class EditSchoolModalComponent implements OnInit {
       else
       {
         this.validationService.formGroupDef = this.formGroup = this.fb.group({
-          district_id: [this.schoolDetail.district_details.id, Validators.compose([Validators.required])],
+          customDistrictName: [this.schoolDetail.district_details.name, Validators.compose([Validators.required])],
           name: [this.schoolDetail.school.name, Validators.compose([Validators.required])],
           status: [this.schoolDetail.status, Validators.compose([Validators.required])],
           admin_account_name: [this.schoolDetail.school.admin_account_name, Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z \-\']+')])],
@@ -214,7 +217,7 @@ export class EditSchoolModalComponent implements OnInit {
   edit() {
     this.guestToken = JSON.parse(window.sessionStorage.getItem('v717demo1-authf649fc9a5f55'));
     let submission={
-      district_id: this.formGroup.value.district_id,
+      customDistrictName: this.formGroup.value.customDistrictName,
       name: this.formGroup.value.name,
       status: this.formGroup.value.status,
       admin_account_name: this.formGroup.value.admin_account_name,
@@ -284,7 +287,35 @@ export class EditSchoolModalComponent implements OnInit {
         this.subscriptions.push(sbCreate);
   }
 
+  validPhoneNumber(control: AbstractControl): any {
+    if (control && control.value) {
+      let isValid = control.value.match('^(?=.*[0-9])[- +()0-9]+$');
+      if (control.value && control.value.length === 11 || control.value.length > 13) {
+        return { 'contactDigitValidate': true }
+      }
+      if (isValid && isValid.input) {
+        this.districtAdminService.contactValidator(control.value).subscribe(
+          (data) => {
+          },
+          (error) => {
+            console.log(error);
+            this.formGroup.controls['phone_number'].setErrors({ 'contactValidate': true });
+          }
+        );
+      }
+    }
+  }
 
+  /**
+ * To check valid phone number for contact person.
+ *   
+ */
+  validContactPersonNumber(control: AbstractControl): any {
+    if (control.value && control.value.length === 11 || control.value.length > 13) {
+      return { 'digitValidate': true }
+    }
+  }
+  
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }

@@ -33,6 +33,8 @@
                 <label>Ingredient</label>
                 <app-ng-select-input [formName]="formGroup" [fieldControl]="'ingredients'" [dataList]="ingredientMaster" [idfield]="'id'" [textField]="'ingredientTitle'" [placeHolder]="'Select Ingredients'">
                 </app-ng-select-input>
+                <a class="hyperlink-label" routerLink="/manage-ingredients">Click here to add new Ingredient</a>
+
             </div>
 
             <div class="form-group col-lg-6">
@@ -43,6 +45,7 @@
                 <div class="invalid-feedback" *ngIf="validationService?.controlHasError('required', 'tools')">
                     Tools is required
                 </div>
+                <a class="hyperlink-label" routerLink="/manage-tools">Click here to add new Tool</a>
             </div>
 
            <!--  <div class="form-group col-lg-6">
@@ -78,9 +81,9 @@
                 <label>Voicehover for Experiment Steps :</label>
                 <div  *ngIf="!formGroup.controls['experimentStepsTrack'].value" id="upload_button">
                     <label>
-                        <input type="file" accept="audio/mp3" class="form-control"
+                        <input type="file" accept="audio/mp3,audio/aac" class="form-control"
                             (change)="uploadTrack($event,'experimentStepsTrack')">
-                        <span class="btn btn-success">Upload Voicehover for Experiment Steps (.MP3) </span>
+                        <span class="btn btn-success">Upload Voicehover for Experiment Steps (.MP3/ .aac) </span>
                     </label>
                 </div>
                 <div *ngIf="formGroup.controls['experimentStepsTrack'].value">

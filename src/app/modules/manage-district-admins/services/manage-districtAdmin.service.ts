@@ -160,6 +160,10 @@ getActiveSubscribePackageDetails(id:any):Observable<any>{
       return this.http.post(`${environment.chefkCoreApi}/payment/session`, data)
   }
   
+  contactValidator(cNumber: string): Observable<any> {
+    return this.http.post<any>(`${environment.chefkCoreApi}/helper/checkPhoneNumberConflict`, { phone_number: cNumber });
+  }
+
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }

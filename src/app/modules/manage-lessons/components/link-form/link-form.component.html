@@ -1,0 +1,35 @@
+<!-- <div class="card"> -->
+    <div class="mt-5">
+        <ng-container *ngIf="isLoading$ | async">
+            <div class="progress progress-modal">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </ng-container>
+        <form action="#" class="form form-label-right" [formGroup]="formGroup" (ngSubmit)="onSave()" *ngIf="data">
+            <div class="form-group row">
+    
+                <ng-container class="form-group row" formArrayName="links">
+                    <div class="col-lg-4 mb-1" *ngFor="let items of linkNames().controls; let i=index " [formGroupName]="i">
+                        <label class="form-label ">Link {{i+1}}</label>
+                        <span class="float-right btn btn-xs btn-light-danger btn-icon ml-2 " (click)="removeQuantity(i)" *ngIf="linkNames().controls.length > 0"><i
+                                class="ki ki-minus icon-xs "></i></span>
+                        <input type="text " class="form-control form-control-lg form-control-solid " name="{{i}}" formControlName="videoLink" placeholder="Enter Link " autocomplete="off " [class.is-invalid]="items.controls[ 'videoLink'].invalid && (items.controls[
+                                    'videoLink'].dirty || items.controls[ 'videoLink'].touched) " [class.is-valid]="items.controls[ 'videoLink'].valid && (items.controls[ 'videoLink'].dirty || items.controls[ 'videoLink'].touched) " />
+                    </div>
+                    <div class="plusIcon"> <span class="float-right btn btn-success" (click)="addQuantity(undefined)"><i class="ki ki-plus icon-xs "></i> Add Reference
+                            Link</span>
+                    </div>
+                </ng-container>
+            </div>
+            
+    <!--         <app-description-fields [form]="formGroup" [fieldValues]="recipes?.description" [fieldControler]="'description'"></app-description-fields>
+     -->        <div class="float-right ">
+                <a class="btn btn-default font-weight-bold mr-2 " routerLink="/manage-lessons/ ">Cancel</a>
+                <a class="btn btn-default font-weight-bold mr-2 " (click)="changeTab(previousStepName)">Previous</a>
+                <button type="submit " class="btn btn-primary font-weight-bold mr-2 " [disabled]="formGroup.invalid">Save
+                    </button>
+    
+            </div>
+        </form>
+    
+    </div>

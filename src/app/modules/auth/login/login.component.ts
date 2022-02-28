@@ -18,8 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   //   password: '',
   // };
   defaultAuth: any = {
-    email: 'admin@demo.com',
-    password: 'demo',
+    email: '',
+    password: '',
   };
   loginForm: FormGroup;
   hasError: boolean;
@@ -37,9 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
+   
   }
 
   ngOnInit(): void {
@@ -83,12 +81,33 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe((user: UserModel) => {
         if (user) {
-          this.router.navigate([this.  returnUrl]);
+          this.router.navigate([this.  returnUrl]); 
         } else {
           this.hasError = true;
         }
       });
     this.unsubscribe.push(loginSubscr);
+  }
+
+  // helpers for View
+  isControlValid(controlName: string): boolean {
+    const control = this.loginForm.controls[controlName];
+    return control.valid && (control.dirty || control.touched);
+  }
+
+  isControlInvalid(controlName: string): boolean {
+    const control = this.loginForm.controls[controlName];
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  controlHasError(validation, controlName): boolean {
+    const control = this.loginForm.controls[controlName];
+    return control.hasError(validation) && (control.dirty || control.touched);
+  }
+
+  isControlTouched(controlName): boolean {
+    const control = this.loginForm.controls[controlName];
+    return control.dirty || control.touched;
   }
 
   ngOnDestroy() {

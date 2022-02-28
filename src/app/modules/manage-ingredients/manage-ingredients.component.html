@@ -100,20 +100,24 @@
 
                         <td>
 
-                            <a title="Edit Ingredient" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-2" (click)="edit(ingredient.id)">
+                            <a title="Edit Ingredient" class="btn btn-icon btn-light btn-hover-primary btn-md pt-2 mr-2 icon-label" (click)="edit(ingredient.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-primary">
                   </span>
+                  <span>Edit</span>
                             </a>
 
-                            <a title="Delete Ingredient" class="btn btn-icon btn-light btn-hover-danger btn-sm mr-2" (click)="delete(ingredient.id)">
+                            <a title="Delete Ingredient" class="btn btn-icon btn-light btn-hover-danger btn-md mr-2 pt-2 icon-label" (click)="delete(ingredient.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true" class="svg-icon svg-icon-md svg-icon-danger">
                   </span>
+                  <span>Delete</span>
                             </a>
-                            <a title="Add Ingredient" class="btn btn-icon btn-light btn-hover-warning btn-sm "
+                            <a title="Add Ingredient" class="btn btn-icon btn-light btn-hover-warning btn-md pt-2 icon-label "
                                 (click)="addIngredient(ingredient)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
                                     class="svg-icon svg-icon-md svg-icon-warning">
                                 </span>
+                                <span>Add</span>
+
                             </a>
                         </td>
                     </tr>

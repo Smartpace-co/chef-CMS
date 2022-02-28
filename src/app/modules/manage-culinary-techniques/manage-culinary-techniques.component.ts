@@ -146,7 +146,7 @@ export class ManageCulinaryTechniquesComponent implements OnInit, OnDestroy,
   }
 
   edit(id: number, referenceId?: number, languageId?: number) {
-    const modalRef = this.modalService.open(EditCulinaryTechniquesModalComponent, { size: 'xl' });
+    const modalRef = this.modalService.open(EditCulinaryTechniquesModalComponent, { size: 'md' });
     if (referenceId) {
       modalRef.componentInstance.refId = referenceId;
     }

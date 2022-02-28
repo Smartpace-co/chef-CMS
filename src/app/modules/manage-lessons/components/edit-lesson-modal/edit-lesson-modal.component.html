@@ -41,31 +41,31 @@
             </li>
             <li *ngIf="lesson" class="nav-item cursor-pointer">
                 <a class="nav-link" data-toggle="tab" role="button"
-                    (click)="lesson.id ? activeTabId=tabs.INGREDIENT_TAB:''"
+                    (click)="lesson.id && lesson.recipe ? activeTabId=tabs.INGREDIENT_TAB:''"
                     [attr.aria-selected]="activeTabId === tabs.INGREDIENT_TAB"
                     [class.active]="activeTabId === tabs.INGREDIENT_TAB">Ingredients</a>
             </li>
             <li *ngIf="lesson" class="nav-item cursor-pointer">
                 <a class="nav-link" data-toggle="tab" role="button"
-                    (click)="lesson.id ? activeTabId=tabs.TECHNIQUE_TAB:''"
+                    (click)="lesson.id && lesson.recipe ? activeTabId=tabs.TECHNIQUE_TAB:''"
                     [attr.aria-selected]="activeTabId === tabs.TECHNIQUE_TAB"
                     [class.active]="activeTabId === tabs.TECHNIQUE_TAB">Techniques</a>
             </li>
             <li *ngIf="lesson" class="nav-item cursor-pointer">
                 <a class="nav-link" data-toggle="tab" role="button"
-                    (click)="lesson.id ? activeTabId=tabs.PREPARATION_TAB:''"
+                    (click)="lesson.id && lesson.recipe ? activeTabId=tabs.PREPARATION_TAB:''"
                     [attr.aria-selected]="activeTabId === tabs.PREPARATION_TAB"
                     [class.active]="activeTabId === tabs.PREPARATION_TAB">Preparation</a>
             </li>
             <li *ngIf="lesson" class="nav-item cursor-pointer">
                 <a class="nav-link" data-toggle="tab" role="button"
-                    (click)="lesson.id ? activeTabId=tabs.COOKINGSTEP_TAB:''"
+                    (click)="lesson.id && lesson.recipe ? activeTabId=tabs.COOKINGSTEP_TAB:''"
                     [attr.aria-selected]="activeTabId === tabs.COOKINGSTEP_TAB"
                     [class.active]="activeTabId === tabs.COOKINGSTEP_TAB">Cooking </a>
             </li>
             <li *ngIf="lesson" class="nav-item cursor-pointer">
                 <a class="nav-link" data-toggle="tab" role="button"
-                    (click)="lesson.id ? activeTabId=tabs.SERVING_TAB:''"
+                    (click)="lesson.id && lesson.recipe ? activeTabId=tabs.SERVING_TAB:''"
                     [attr.aria-selected]="activeTabId === tabs.SERVING_TAB"
                     [class.active]="activeTabId === tabs.SERVING_TAB">Serving</a>
             </li>
@@ -82,7 +82,7 @@
             </li>
             <li *ngIf="lesson" class="nav-item cursor-pointer">
                 <a class="nav-link" data-toggle="tab" role="tab"
-                    (click)="lesson.id ? activeTabId=tabs.EXPERIMENT_QUE_TAB:''"
+                    (click)="lesson.id && lesson.experiment? activeTabId=tabs.EXPERIMENT_QUE_TAB:''"
                     [attr.aria-selected]="activeTabId === tabs.EXPERIMENT_QUE_TAB"
                     [class.active]="activeTabId === tabs.EXPERIMENT_QUE_TAB">Experiment Question</a>
             </li>
@@ -101,6 +101,12 @@
                     [attr.aria-selected]="activeTabId === tabs.ACTIVITY_TAB"
                     [class.active]="activeTabId === tabs.ACTIVITY_TAB">Take Action Activity</a>
             </li>
+            <li *ngIf="lesson" class="nav-item cursor-pointer">
+                <a class="nav-link" data-toggle="tab" role="tab" (click)="lesson.id ? activeTabId=tabs.REFERENCE_LINK_TAB:''"
+                    [attr.aria-selected]="activeTabId === tabs.REFERENCE_LINK_TAB"
+                    [class.active]="activeTabId === tabs.REFERENCE_LINK_TAB">Reference Links</a>
+            </li>
+
         </ul>
 
 
@@ -214,14 +220,14 @@
                             <div class="form-group col-lg-4 mt-7">
                                 <span *ngIf="!formGroup.controls['greetingTrack'].value" id="upload_button">
                                     <label>
-                                        <input type="file" accept="audio/mp3" class="form-control"
+                                        <input type="file" accept="audio/mp3,audio/aac" class="form-control"
                                             (change)="uploadGreetingTrack($event)">
-                                        <span class="btn btn-success"> Upload Greeting Voicehover (.MP3) </span>
+                                        <span class="btn btn-success"> Upload Greeting Voicehover (.MP3 / .aac) </span>
                                     </label>
                                 </span>
                                 <span class="row" *ngIf="formGroup.controls['greetingTrack'].value">
                                     <audio style="width: 22rem!important;"  controls>
-                                        <source [src]="formGroup.controls['greetingTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['greetingTrack'].value" type="audio/mp3,audio/aac">
                                     </audio>
                                     <label (click)="removeGreetingTrack()"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -243,7 +249,7 @@
                             </div>
 
                             <div class="form-group col-lg-4">
-                                <label class="form-label">Enjoy your meal Linguistic Details</label>
+                                <label class="form-label">Enjoy your meal Linguistic Details(Optional)</label>
                                 <input type="text" class="form-control form-control-lg form-control-solid"
                                     name="goodbyeLinguistic" placeholder="Enter Enjoy your meal Linguistic details"
                                     autocomplete="off" [class.is-invalid]="isControlInvalid('goodbyeLinguistic')"
@@ -257,14 +263,14 @@
                             <div class="form-group col-lg-4 mt-7">
                                 <span *ngIf="!formGroup.controls['goodbyeTrack'].value" id="upload_button">
                                     <label>
-                                        <input type="file" accept="audio/mp3" class="form-control"
+                                        <input type="file" accept="audio/mp3,audio/aac" class="form-control"
                                             (change)="uploadGoodbyeTrack($event)">
-                                        <span class="btn btn-success"> Upload Enjoy your meal Voicehover (.MP3) </span>
+                                        <span class="btn btn-success"> Upload Enjoy your meal Voicehover (.MP3/ .aac) </span>
                                     </label>
                                 </span>
                                 <span class="row" *ngIf="formGroup.controls['goodbyeTrack'].value">
                                     <audio style="width: 22rem!important;" controls>
-                                        <source [src]="formGroup.controls['goodbyeTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['goodbyeTrack'].value" type="audio/mp3,audio/aac">
                                     </audio>
                                         <label (click)="removeGoodbyeTrack()"
                                             class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -300,15 +306,15 @@
                             <div class="form-group col-lg-4 mt-7">
                                 <span *ngIf="!formGroup.controls['learningObjectivesForStudentTrack'].value" id="upload_button">
                                     <label>
-                                        <input type="file" accept="audio/mp3" class="form-control"
+                                        <input type="file" accept="audio/mp3,audio/aac" class="form-control"
                                             (change)="uploadLearningObjectiveTrack($event,'learningObjectivesForStudentTrack')">
-                                        <span class="btn btn-success"> Upload Learning Objective Voicerhover For Student(.MP3) </span>
+                                        <span class="btn btn-success"> Upload Learning Objective Voicerhover For Student(.MP3/ .aac) </span>
                                     </label>
                                 </span>
                                 <span class="row" *ngIf="formGroup.controls['learningObjectivesForStudentTrack'].value">
                                     <label>Learning Objective Voicehover For Student</label>
                                     <audio style="width: 20rem!important;" controls>
-                                        <source [src]="formGroup.controls['learningObjectivesForStudentTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['learningObjectivesForStudentTrack'].value" type="audio/mp3,audio/aac">
                                     </audio>
                                     <label (click)="removeLearningObjectiveTrack('learningObjectivesForStudentTrack')"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -319,15 +325,15 @@
                             <div class="form-group col-lg-4 mt-7">
                                 <span *ngIf="!formGroup.controls['learningObjectivesForTeacherTrack'].value" id="upload_button">
                                     <label>
-                                        <input type="file" accept="audio/mp3" class="form-control"
+                                        <input type="file" accept="audio/mp3,audio/aac" class="form-control"
                                             (change)="uploadLearningObjectiveTrack($event,'learningObjectivesForTeacherTrack')">
-                                        <span class="btn btn-success">Upload Learning Objective Voicehover For Teacher (.MP3) </span>
+                                        <span class="btn btn-success">Upload Learning Objective Voicehover For Teacher (.MP3/ .aac) </span>
                                     </label>
                                 </span>
                                 <span class="row" *ngIf="formGroup.controls['learningObjectivesForTeacherTrack'].value">
                                     <label>Learning Objective Voicehover For Teacher</label>
                                     <audio style="width: 20rem!important;" controls>
-                                        <source [src]="formGroup.controls['learningObjectivesForTeacherTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['learningObjectivesForTeacherTrack'].value" type="audio/mp3,audio/aac">
                                     </audio>
                                     <label (click)="removeLearningObjectiveTrack('learningObjectivesForTeacherTrack')"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -340,13 +346,13 @@
                                     <label>
                                         <input type="file" accept="audio/mp3" class="form-control"
                                             (change)="uploadLearningObjectiveTrack($event,'safetyStepsTrack')">
-                                        <span class="btn btn-success">Upload Voicehover for Safety Steps (.MP3) </span>
+                                        <span class="btn btn-success">Upload Voicehover for Safety Steps (.MP3/ .aac) </span>
                                     </label>
                                 </span>
                                 <span class="row" *ngIf="formGroup.controls['safetyStepsTrack'].value">
                                     <label>Voicehover for Safety Steps :</label>
                                     <audio style="width: 20rem!important;" controls>
-                                        <source [src]="formGroup.controls['safetyStepsTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['safetyStepsTrack'].value" type="audio/mp3,audio/aac">
                                     </audio>
                                     <label (click)="removeLearningObjectiveTrack('safetyStepsTrack')"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -491,32 +497,32 @@
                 (changeActiveTab)="changeTab($event)" [previousStepName]="tabs.BASIC_TAB"
                 [nextStepName]="tabs.INGREDIENT_TAB"></app-recips-form>
         </ng-container>
-        <ng-container *ngIf="activeTabId===tabs.INGREDIENT_TAB && lesson && id">
+        <ng-container *ngIf="activeTabId===tabs.INGREDIENT_TAB && lesson && id && lesson.recipe ">
             <app-ingredient-form [fieldControler]="'recipeIngredients'" [lessonId]="id" [labelName]="'Ingredients'"
                 [form]="ingredientForm" [activeTabId]="activeTabId" [previousStepName]="tabs.RECIPES_TAB"
                 [nextStepName]="tabs.TECHNIQUE_TAB" (changeActiveTab)="changeTab($event)"></app-ingredient-form>
         </ng-container>
-        <ng-container *ngIf="activeTabId===tabs.TECHNIQUE_TAB && lesson && id">
+        <ng-container *ngIf="activeTabId===tabs.TECHNIQUE_TAB && lesson && id && lesson.recipe">
             <app-technique-form [fieldControler]="'recipeTechniques'" [lessonId]="id" [labelName]="'Techniques'"
                 [form]="techniqueForm" [activeTabId]="activeTabId" [previousStepName]="tabs.INGREDIENT_TAB"
                 [nextStepName]="tabs.PREPARATION_TAB" (changeActiveTab)="changeTab($event)"></app-technique-form>
         </ng-container>
-        <ng-container *ngIf="activeTabId===tabs.PREPARATION_TAB && lesson && id">
-            <app-shared-form [fieldControler]="'preparationSteps'" [trackField]="'preparationStepsTrack'" [lessonId]="id" [labelName]="'Preparation Step'"
+        <ng-container *ngIf="activeTabId===tabs.PREPARATION_TAB && lesson && id && lesson.recipe">
+            <app-shared-form [fieldControler]="'preparationSteps'" [timeField]="'estimatedTimeForPreparation'" [trackField]="'preparationStepsTrack'" [lessonId]="id" [labelName]="'Preparation Step'"
                 [form]="preprationForm" [activeTabId]="activeTabId" [previousStepName]="tabs.TECHNIQUE_TAB"
                 [nextStepName]="tabs.COOKINGSTEP_TAB" (changeActiveTab)="changeTab($event)">
             </app-shared-form>
         </ng-container>
 
-        <ng-container *ngIf="activeTabId===tabs.COOKINGSTEP_TAB && lesson && id">
-            <app-shared-form [fieldControler]="'cookingSteps'" [lessonId]="id" [labelName]="'Cooking Step'"
+        <ng-container *ngIf="activeTabId===tabs.COOKINGSTEP_TAB && lesson && id && lesson.recipe">
+            <app-shared-form [fieldControler]="'cookingSteps'" [timeField]="'estimatedTimeForCooking'" [lessonId]="id" [labelName]="'Cooking Step'"
                 [form]="cookingForm" [activeTabId]="activeTabId" [trackField]="'cookingStepsTrack'" [previousStepName]="tabs.PREPARATION_TAB"
                 [nextStepName]="tabs.SERVING_TAB" (changeActiveTab)="changeTab($event)">
             </app-shared-form>
         </ng-container>
 
 
-        <ng-container *ngIf="activeTabId===tabs.SERVING_TAB && lesson && id">
+        <ng-container *ngIf="activeTabId===tabs.SERVING_TAB && lesson && id && lesson.recipe">
             <app-shared-form [fieldControler]="'servingSteps'" [lessonId]="id" [labelName]="'Serving Step'"
                 [form]="servingForm" [activeTabId]="activeTabId" [trackField]="'servingStepsTrack'" [previousStepName]="tabs.COOKINGSTEP_TAB"
                 [nextStepName]="tabs.CLEANUP_TAB" (changeActiveTab)="changeTab($event)">
@@ -535,7 +541,7 @@
             </app-experiment-steps-form>
         </ng-container>
 
-        <ng-container *ngIf="activeTabId===tabs.EXPERIMENT_QUE_TAB && lesson && id">
+        <ng-container *ngIf="activeTabId===tabs.EXPERIMENT_QUE_TAB && lesson && id && lesson.experiment">
             <app-experiment-question-form [activeTabId]="activeTabId" [gradeId]="lesson?.grade.id" [lessonId]="id"
                 [previousStepName]="tabs.EXPERIMENT_TAB" [nextStepName]="tabs.QUESTION_TAB"
                 (changeActiveTab)="changeTab($event)"></app-experiment-question-form>
@@ -553,7 +559,11 @@
         </ng-container>
         <ng-container *ngIf="activeTabId===tabs.ACTIVITY_TAB && lesson && id">
             <app-activity-name-form [activeTabId]="activeTabId" [lessonId]="id" [previousStepName]="tabs.SENSORY_TAB"
-                [nextStepName]="true" (changeActiveTab)="changeTab($event)"></app-activity-name-form>
+                [nextStepName]="tabs.REFERENCE_LINK_TAB" (changeActiveTab)="changeTab($event)"></app-activity-name-form>
+        </ng-container>
+        <ng-container *ngIf="activeTabId===tabs.REFERENCE_LINK_TAB && lesson && id">
+            <app-link-form [activeTabId]="activeTabId" [lessonId]="id" [previousStepName]="tabs.ACTIVITY_TAB"
+                [nextStepName]="true" (changeActiveTab)="changeTab($event)"></app-link-form>
         </ng-container>
     </div>
 </div>

@@ -95,13 +95,11 @@ export class EditToolsComponent implements OnInit {
 
   loadUser() {
     if (!this.id) {
-      //this.tools = EMPTY_TOOLS;
       this.tools = {
         id: undefined,
         toolTitle: '',
         images: [],
         safetyLevelId: '',
-//        difficultyLevelId: '',
         relatedQuestions: [],
         description: '',
         status: true
@@ -127,7 +125,6 @@ export class EditToolsComponent implements OnInit {
       toolName: [this.tools.toolTitle, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
       safetyLevel: [this.tools.safetyLevel?.id],
       images: [this.tools.images],
-     // diffcultyLevel: [this.tools.difficultyLevel?.id],
       relatedQuestions: this.fb.array([]),
       description: [this.tools.description],
       status: [this.tools.status,Validators.compose([Validators.required])],
@@ -210,7 +207,9 @@ export class EditToolsComponent implements OnInit {
   //  this.tools.difficultyLevelId = formData.diffcultyLevel;
     this.tools.status = formData.status;
     this.tools.description = formData.description;
-    this.tools.relatedQuestions = formData.relatedQuestions
+    if(formData.relatedQuestions.length>0 && formData.relatedQuestions[0].question){
+      this.tools.relatedQuestions = formData.relatedQuestions
+    }
     this.tools.systemLanguageId = formData.languageId;
     this.tools.referenceId = this.refId;
   }
@@ -230,12 +229,12 @@ export class EditToolsComponent implements OnInit {
   newLinkName(data): FormGroup {
     if (data == undefined) {
       return this.fb.group({
-        question: [data, Validators.required],
+        question: [data],
       })
     }
     return this.fb.group({
       id: [data.id],
-      question: [data.question, Validators.required],
+      question: [data.question],
     })
   }
 

@@ -21,8 +21,10 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
   @Output() changeActiveTab: EventEmitter<number> = new EventEmitter<number>();
 
   formGroup: FormGroup;
-  standardsMaster: any = [];
-
+  elaStandards: any = [];
+  mathStandards: any = [];
+  ngssStandards: any = [];
+  ncssStandards: any = [];
   dataFromApi: any;
   subjectQuestion;
   queArray: any = [];
@@ -53,11 +55,19 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
   }
 
   getStandardByGrade() {
-    this.lessonService.getStandardByGrade(this.gradeId).subscribe((res: any) => {
-      this.standardsMaster = res.data;
-    }, (e) => {
-      console.log(e.message)
-    })
+    this.lessonService.getStandardBySubject().subscribe(
+      (res: any) => {
+        this.elaStandards = res[0].data;
+        this.mathStandards = res[1].data;
+        this.ngssStandards = res[2].data;
+        this.ncssStandards = res[3].data;
+
+      },
+      (e) => {
+        console.log(e.message);
+      }
+    );
+
   }
 
   loadMasters() {
@@ -97,8 +107,10 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
       hint: [data?.hint],
       image: [data?.image],
       questionTrack: [data?.questionTrack],
-      //   estimatedTime: [data?.estimatedTime],
-      standards: [data?.standards],
+      elaStandard: [data?.elaStandards ? data?.elaStandards : []],
+      mathStandard: [data?.mathStandards ? data?.mathStandards : []],
+      ngssStandard: [data?.ngssStandards ? data?.ngssStandards: []],
+      ncssStandard: [data?.ncssStandards ? data?.ncssStandards: []],
       answerTypeId: [data?.answerTypeId, Validators.compose([Validators.required])],
       answers: this.fb.array([]),
     });
@@ -113,6 +125,10 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
   add() {
     if (this.id) {
       const formData = this.formGroup.value;
+      !formData.elaStandard? formData.elaStandard = []: null;
+      !formData.mathStandard? formData.mathStandard = []: null;
+      !formData.ngssStandard? formData.ngssStandard = []: null;
+      !formData.ncssStandard? formData.ncssStandard = []: null;
       this.subjectQuestion = {
         id: formData.id,
         question: formData.question,
@@ -120,13 +136,14 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
         answerTypeId: formData.answerTypeId,
         answer_type: this.getAnswerType(formData.answerTypeId),
         question_type: this.getQuestionType(formData.questionTypeId),
-        standards: formData.standards,
         hint: formData.hint,
         image: formData.image,
         questionTrack: formData.questionTrack,
         //    estimatedTime: formData.estimatedTime,
         answers: formData.answers
       }
+      let stds = formData.elaStandard.concat(formData.mathStandard, formData.ngssStandard, formData.ncssStandard);
+      this.subjectQuestion.standards = stds.map((dt) => dt);
       this.questionData.forEach((element, i) => {
         if (element.id == this.id) {
           this.questionData[i] = this.subjectQuestion;
@@ -137,6 +154,10 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
 
     } else {
       const formData = this.formGroup.value;
+      !formData.elaStandard? formData.elaStandard = []: null;
+      !formData.mathStandard? formData.mathStandard = []: null;
+      !formData.ngssStandard? formData.ngssStandard = []: null;
+      !formData.ncssStandard? formData.ncssStandard = []: null;
       this.subjectQuestion = {
         question: formData.question,
         questionTypeId: formData.questionTypeId,
@@ -144,20 +165,14 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
         answer_type: this.getAnswerType(formData.answerTypeId),
         question_type: this.getQuestionType(formData.questionTypeId),
         questionTrack: formData.questionTrack,
-        /*  questionTypeId: this.questionTypeMaster.find((dt) => {
-           if (formData.questionTypeId == dt.id) {
-             return dt.id
-           }
-         }),
-         answerTypeId: this.answerTypeMaster.find((dt) => {
-           if (formData.answerTypeId == dt.id) return dt.id
-         }), */
-        standards: formData.standards,
         hint: formData.hint,
         image: formData.image,
-        //    estimatedTime: formData.estimatedTime,
         answers: formData.answers
       }
+        let stds = formData.elaStandard.concat(formData.mathStandard, formData.ngssStandard, formData.ncssStandard);
+        this.subjectQuestion.standards = stds.map((dt) => dt);  
+      
+
       this.questionData.push(this.subjectQuestion)
       this.formGroup.reset();
       this.id = undefined
@@ -183,9 +198,14 @@ export class QuestionsFormComponent implements OnInit, OnDestroy {
     this.formGroup.controls['questionTypeId'].patchValue(data.questionTypeId);
     this.formGroup.controls['answerTypeId'].patchValue(data.answerTypeId);
     if (data.standards) {
-      data.standards = data.standards.map((dt) => dt.standard)
-      this.formGroup.controls['standards'].patchValue(data.standards);
-
+      data.elaStandards = (data.standards.filter((dt) => dt.standard.subject.subjectTitle == 'ELA')).map((dt) => dt.standard)
+      this.formGroup.controls['elaStandard'].patchValue(data.elaStandards);
+      data.mathStandards = (data.standards.filter((dt) => dt.standard.subject.subjectTitle == 'MATH')).map((dt) => dt.standard)
+      this.formGroup.controls['mathStandard'].patchValue(data.mathStandards);
+      data.ngssStandards = (data.standards.filter((dt) => dt.standard.subject.subjectTitle == 'NGSS')).map((dt) => dt.standard)
+      this.formGroup.controls['ngssStandard'].patchValue(data.ngssStandards);
+      data.ncssStandards = (data.standards.filter((dt) => dt.standard.subject.subjectTitle == 'NCSS')).map((dt) => dt.standard)
+      this.formGroup.controls['ncssStandard'].patchValue(data.ncssStandards);
     }
     //  this.formGroup.controls['estimatedTime'].patchValue(data.estimatedTime);
     this.formGroup.controls['hint'].patchValue(data.hint);

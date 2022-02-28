@@ -65,7 +65,7 @@
                     <th>ACTIONS</th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let lesson of lessonService.items$ | async; let i=index">
+                    <tr *ngFor="let lesson of lessonService.items$ | async; let i=index" [ngStyle]="{'background': lesson.isDeleted ? '#EBEBE4': ''}">
 
                         <td>{{  (paginator.page-1)*paginator.pageSize +i+1}}</td>
                         <td>{{ lesson?.lessonTitle }}</td>
@@ -83,7 +83,8 @@
 
                         <td>
 
-                            <a title="Edit Lesson" class="btn btn-icon btn-light btn-hover-primary btn-md mr-2 pt-2 icon-label"
+                            <a [ngStyle]="{'pointer-events': lesson.isDeleted ? 'none': 'auto'}" [ngClass]="lesson.isDeleted?'':'btn-light'"
+                            title="Edit Lesson" class="btn btn-icon btn-md mr-2 pt-2 action-btn icon-label"
                                 (click)="edit(lesson?.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                                     class="svg-icon svg-icon-md svg-icon-primary">
@@ -91,21 +92,30 @@
                                 <span>Edit</span>
                             </a>
 
-                            <a title="Delete Lesson" class="btn btn-icon btn-light btn-hover-danger btn-md mr-2 pt-2 icon-label"
+                            <a *ngIf="!lesson.isDeleted"  title="Delete Lesson" class="btn btn-icon action-btn btn-light btn-md mr-2 pt-2 icon-label"
                                 (click)="delete(lesson.id)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
                                     class="svg-icon svg-icon-md svg-icon-danger">
                                 </span>
-                                <span>Delete</span>
+                                <span>Trash</span>
                             </a>
-                            <a title="Add Lesson" class="btn btn-icon btn-light btn-hover-warning btn-md pt-2 icon-label"
+                            <a *ngIf="lesson.isDeleted" title="Restore Lesson" class="btn btn-icon action-btn btn-light btn-md mr-2 pt-2 icon-label"
+                                (click)="restore(lesson.id)">
+                                <i class="fas fa-trash-restore svg-icon-warning"></i>
+                                <span>Restore</span>
+                            </a>
+                            <a [ngStyle]="{'pointer-events': lesson.isDeleted ? 'none': 'auto'}" [ngClass]="lesson.isDeleted?'':'btn-light'" title="Add Lesson" class="btn btn-icon action-btn btn-hover-warning btn-md mr-2 pt-2 icon-label"
                                 (click)="addLesson(lesson)">
                                 <span [inlineSVG]="'./assets/media/svg/icons/Code/Plus.svg'" cacheSVG="true"
                                     class="svg-icon svg-icon-md svg-icon-warning">
                                 </span>
                                 <span>New</span>
                             </a>
-
+                            <a  title="Delete Lesson" class="btn btn-icon action-btn btn-light btn-md mr-2 pt-2 icon-label"
+                            (click)="hardDelete(lesson.id)">
+                            <i class="fas fa-times fa-icon-danger"></i>
+                            <span>Delete</span>
+                        </a>
                         </td>
                     </tr>
                 </tbody>
