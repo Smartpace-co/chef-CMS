@@ -32,6 +32,14 @@ export function sortArray(incomingArray: any[], sortField: string = '', sortOrde
   if (!sortField) {
     return incomingArray;
   }
+  incomingArray.forEach(element => {
+    if(element['lessonTitle']){
+      element['lessonTitle']= element['lessonTitle'].charAt(0).toUpperCase() + element['lessonTitle'].slice(1);
+    }
+    if(element['countryName']){
+      element['countryName']= element['countryName'].charAt(0).toUpperCase() + element['countryName'].slice(1);
+    }
+  });
 
   let result: any[] = [];
   result = incomingArray.sort((a, b) => {

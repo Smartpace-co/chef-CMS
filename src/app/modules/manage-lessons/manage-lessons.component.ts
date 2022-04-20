@@ -39,6 +39,7 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
   fileInputLabel: any;
   languageMaster = [];
   gradeId:any;
+  languageId : any = null;
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
@@ -50,12 +51,16 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
 
   // angular lifecircle hooks
   ngOnInit(): void {
-    this.route.params.subscribe(res => this.gradeId = res ? res.id : undefined)
+    
+    setTimeout(()=>{
+      this.route.params.subscribe(res => this.gradeId = res ? res.id : undefined)
+      this.lessonService.fetchLessonByFilter(this.gradeId,'gradeId');
+    },1000)
     this.loadLanguage();
     this.filterForm();
     this.searchForm();
    // this.lessonService.fetch();
-    this.lessonService.fetchLessonByFilter(this.gradeId,'gradeId');
+   
     this.grouping = this.lessonService.grouping;
     this.paginator = this.lessonService.paginator;
     this.sorting = this.lessonService.sorting;
@@ -139,12 +144,12 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.lessonService.patchState({ sorting });
+    this.lessonService.patchState({ sorting },this.gradeId,this.languageId);
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.lessonService.patchStateForLesson({ paginator },this.gradeId);
+    this.lessonService.patchStateForLesson({ paginator },this.gradeId,this.languageId);
   }
 
   // form actions
@@ -212,11 +217,11 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
   }
 
   changeLanguage(e) {
-    let languageId = e.target.value;
-    if (languageId == "null") {
-      this.lessonService.fetchByLanguage(languageId);
+    this.languageId = e.target.value;
+    if (this.languageId == "null") {
+      this.lessonService.fetchByLanguage(this.languageId,this.gradeId);
     } else {
-      this.lessonService.fetchByLanguage(languageId);
+      this.lessonService.fetchByLanguage(this.languageId,this.gradeId);
     }
   }
 

@@ -38,8 +38,9 @@ export class ManageLessonsService extends TableService<Lesson> implements OnDest
     return forkJoin([grade, language]);
   }
   // READ
-  find(tableState: ITableState): Observable<TableResponseModel<Lesson>> {
-    return this.http.get<Lesson[]>(this.API_URL).pipe(
+  find(tableState: ITableState,gradeId=null,languageId=null): Observable<TableResponseModel<Lesson>> {
+    const url = languageId!='null' && languageId != null ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + languageId + '},{"f":"gradeId","v":' + gradeId + '},{"f":"is_permanent_deleted","v":' + false + '}]' : this.API_URL + '?filters[root]=[{"f":"gradeId","v":' + gradeId + '},{"f":"is_permanent_deleted","v":' + false + '}]';
+    return this.http.get<Lesson[]>(url).pipe(
       map((response: any) => {
         const filteredResult = baseFilter(response.data, tableState);
         const result: TableResponseModel<Lesson> = {
@@ -51,8 +52,9 @@ export class ManageLessonsService extends TableService<Lesson> implements OnDest
     );
   }
 
-  findLessonsByFilter(tableState: ITableState, id, filter): Observable<TableResponseModel<Lesson>> {
-    return this.http.get<Lesson[]>(this.API_URL + '?filters[root]=[{"f":"' + filter + '","v":' + id + '},{"f":"isPermanentDeleted","v":false}]&fields[root]=["id","lessonTitle","status","isDeleted"]').pipe(
+  findLessonsByFilter(tableState: ITableState, id, filter,languageId=null,langfilter): Observable<TableResponseModel<Lesson>> {
+    const url = languageId!='null' && languageId != null ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + languageId + '},{"f":"' + filter + '","v":' + id + '},{"f":"is_permanent_deleted","v":' + false + '}]&fields[root]=["id","lessonTitle","status"]' : this.API_URL + '?filters[root]=[{"f":"' + filter + '","v":' + id + '},{"f":"is_permanent_deleted","v":' + false + '}]&fields[root]=["id","lessonTitle","status"]';
+    return this.http.get<Lesson[]>(url).pipe(
       map((response: any) => {
         const filteredResult = baseFilter(response.data, tableState);
         const result: TableResponseModel<Lesson> = {
@@ -70,6 +72,20 @@ export class ManageLessonsService extends TableService<Lesson> implements OnDest
       tasks$.push(this.delete(id));
     });
     return forkJoin(tasks$);
+  }
+
+  findByLanguage(tableState: ITableState, id, gradeid):Observable<TableResponseModel<Lesson>> {
+    const url =  id!="null" ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + id + '},{"f":"gradeId","v":' + gradeid + '},{"f":"is_permanent_deleted","v":' + false + '}]' : this.API_URL + '?filters[root]=[{"f":"gradeId","v":' + gradeid + '},{"f":"is_permanent_deleted","v":' + false + '}]';
+    return this.http.get<Lesson[]>(url).pipe(
+      map((response: any) => {
+        const filteredResult = baseFilter(response.data, tableState);
+        const result: TableResponseModel<Lesson> = {
+          items: filteredResult.items,
+          total: filteredResult.total
+        };
+        return result;
+      })
+    );
   }
 
 

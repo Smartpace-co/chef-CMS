@@ -68,11 +68,11 @@
                     </th>
                     <th>
                         NAME
-                        <app-sort-icon column="name" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                        <app-sort-icon column="countryName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
                     <th>
                         GRADE LEVELS
-                        <app-sort-icon column="lastName" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                        <app-sort-icon column="country_grades" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
 <!--                     <th>
                         LANGUAGES
@@ -81,7 +81,7 @@
  -->
                     <th>
                         STATUS
-                        <app-sort-icon column="type" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                        <app-sort-icon column="status" [activeColumn]="sorting.column" [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
                     <th>ACTIONS</th>
                 </thead>

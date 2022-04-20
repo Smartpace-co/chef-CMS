@@ -40,6 +40,11 @@
                             [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
                     <th>
+                        USER NAME
+                        <app-sort-icon column="email" [activeColumn]="sorting.column"
+                            [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
+                    </th>
+                    <th>
                         USER TYPE
                         <app-sort-icon column="status" [activeColumn]="sorting.column"
                             [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
@@ -62,7 +67,8 @@
                         <td>{{ (paginator.page-1)*paginator.pageSize +i+1}}</td>
                         <td>{{ user.name | titlecase }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.role ?  user.role:'-'| titlecase}}</td>
+                        <td>{{ user.user_name ? user.user_name:'-' }}</td>
+                        <td>{{ user.title ?  user.title:'-'| titlecase}}</td>
                         <td>{{ user.packageTitle | titlecase }}</td>
                         <td>
                                 <ng-container *ngIf="user.isPrivate === true">Private</ng-container>

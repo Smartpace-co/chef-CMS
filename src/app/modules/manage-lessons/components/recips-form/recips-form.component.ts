@@ -88,7 +88,7 @@ export class RecipsFormComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading$ = this.lessonService.isLoading$;
     this.loadMaster();
-    this.loadRecipes();
+    
   }
 
   loadMaster() {
@@ -96,6 +96,7 @@ export class RecipsFormComponent implements OnInit {
       this.countryMaster=res[0].data.filter((s) => s.status === true);
       this.toolBigChefMaster = res[1].data.filter((s) => s.status === true);
       this.toolLittleChefMaster = res[1].data.filter((s) => s.status === true);
+      this.loadRecipes();
     },(e)=>{
       console.log(e)
     })

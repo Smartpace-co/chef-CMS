@@ -201,7 +201,7 @@ export class EditLessonModalComponent implements OnInit {
       goodbye: [this.lesson.goodbye, Validators.compose([Validators.required])],
       goodbyeLinguistic: [this.lesson.goodbyeLinguistic],
       goodbyeTrack: [this.lesson.goodbyeTrack],
-      languageId: [this.lesson.systemLanguageId]
+      languageId: [this.lesson.systemLanguageId,Validators.compose([Validators.required])]
       //  links: this.fb.array([])
     });
     /*  if (this.lesson?.links.length > 0) {

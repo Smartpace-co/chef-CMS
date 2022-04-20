@@ -106,8 +106,10 @@ export abstract class TableService<T> {
 
 
   // READ (Returning filtered list of entities)
-  find(tableState: ITableState): Observable<TableResponseModel<T>> {
-    const url = this.API_URL + '/find';
+  find(tableState: ITableState,gradeId=null,languageId=null): Observable<TableResponseModel<T>> {
+   // const url = this.API_URL + '/find';
+    const url = languageId!='null' && languageId != null ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + languageId + '},{"f":"gradeId","v":' + gradeId + '},{"f":"is_permanent_deleted","v":' + false + '}]' : this.API_URL + '?filters[root]=[{"f":"gradeId","v":' + gradeId + '},{"f":"is_permanent_deleted","v":' + false + '}]';
+    
     this._errorMessage.next('');
     return this.http.post<TableResponseModel<T>>(url, tableState).pipe(
       catchError(err => {
@@ -117,11 +119,11 @@ export abstract class TableService<T> {
       })
     );
   }
-
-  findByLanguage(tableState: ITableState, id): Observable<TableResponseModel<T>> {
-    const url = this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + id + '}]';
+  
+  findByLanguage(tableState: ITableState, id, gradeid): Observable<TableResponseModel<T>> {
+    const url = id!="null" ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + id + '},{"f":"gradeId","v":' + gradeid + '},{"f":"is_permanent_deleted","v":' + false + '}]' : this.API_URL + '?filters[root]=[{"f":"gradeId","v":' + gradeid + '},{"f":"is_permanent_deleted","v":' + false + '}]';
     this._errorMessage.next('');
-    return this.http.post<TableResponseModel<T>>(url, tableState).pipe(
+    return this.http.get<TableResponseModel<T>>(url).pipe(
       catchError(err => {
         this._errorMessage.next(err);
         console.error('FIND ITEMS by lang', err);
@@ -130,8 +132,8 @@ export abstract class TableService<T> {
     );
   }
 
-  findLessonsByFilter(tableState: ITableState, id, filter): Observable<TableResponseModel<T>> {
-    const url = this.API_URL + '?filters[root]=[{"f":"' + filter + '","v":' + id + '}]&fields[root]=["id","lessonTitle","status"]';
+  findLessonsByFilter(tableState: ITableState, id, filter,languageId=null,langfilter): Observable<TableResponseModel<T>> {
+    const url = languageId != 'null' && languageId != null ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + languageId + '},{"f":"' + filter + '","v":' + id + '},{"f":"is_permanent_deleted","v":' + false + '}]&fields[root]=["id","lessonTitle","status"]' : this.API_URL + '?filters[root]=[{"f":"' + filter + '","v":' + id + '},{"f":"is_permanent_deleted","v":' + false + '}]&fields[root]=["id","lessonTitle","status"]';
     this._errorMessage.next('');
     return this.http.post<TableResponseModel<T>>(url, tableState).pipe(
       catchError(err => {
@@ -234,10 +236,10 @@ export abstract class TableService<T> {
     );
   }
 
-  public fetch() {
+  public fetch(gradeId=null,lessonId=null) {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const request = this.find(this._tableState$.value)
+    const request = this.find(this._tableState$.value,gradeId,lessonId)
       .pipe(
         tap((res: TableResponseModel<T>) => {
           this._items$.next(res.items);
@@ -276,10 +278,10 @@ export abstract class TableService<T> {
     this._subscriptions.push(request);
   }
 
-  public fetchByLanguage(languageId) {
+  public fetchByLanguage(languageId,gradeId=1) {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const request = this.findByLanguage(this._tableState$.value, languageId)
+    const request = this.findByLanguage(this._tableState$.value, languageId,gradeId)
       .pipe(
         tap((res: TableResponseModel<T>) => {
           this._items$.next(res.items);
@@ -311,10 +313,10 @@ export abstract class TableService<T> {
     this._subscriptions.push(request);
   }
 
-  public fetchLessonByFilter(id, filter) {
+  public fetchLessonByFilter(id, filter,languageId=null) {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const request = this.findLessonsByFilter(this._tableState$.value, id, filter)
+    const request = this.findLessonsByFilter(this._tableState$.value, id, filter,languageId,'systemLanguageId')
       .pipe(
         tap((res: TableResponseModel<T>) => {
           this._items$.next(res.items);
@@ -414,14 +416,14 @@ export abstract class TableService<T> {
   }
 
   // Base Methods
-  public patchState(patch: Partial<ITableState>) {
+  public patchState(patch: Partial<ITableState>,gradeId=null,lessonId=null) {
     this.patchStateWithoutFetch(patch);
-    this.fetch();
+    this.fetch(gradeId,lessonId);
   }
    // Base Methods
-   public patchStateForLesson(patch: Partial<ITableState>,gradeId) {
+   public patchStateForLesson(patch: Partial<ITableState>,gradeId,languageId=null) {
     this.patchStateWithoutFetch(patch);
-    this.fetchLessonByFilter(gradeId,'gradeId');
+    this.fetchLessonByFilter(gradeId,'gradeId',languageId);
   }
 
   public patchStateWithoutFetch(patch: Partial<ITableState>) {

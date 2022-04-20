@@ -40,7 +40,7 @@
                     </th>
                     <th>
                         LESSON NAME
-                        <app-sort-icon column="name" [activeColumn]="sorting.column"
+                        <app-sort-icon column="lessonTitle" [activeColumn]="sorting.column"
                             [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
                 <!--<th>
@@ -59,7 +59,7 @@
                             -->
                     <th>
                         STATUS
-                        <app-sort-icon column="type" [activeColumn]="sorting.column"
+                        <app-sort-icon column="status" [activeColumn]="sorting.column"
                             [activeDirection]="sorting.direction" (sort)="sort($event)"></app-sort-icon>
                     </th>
                     <th>ACTIONS</th>

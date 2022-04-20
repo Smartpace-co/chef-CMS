@@ -36,6 +36,7 @@ export class ManageCountriesComponent implements OnInit,
   isLoading: boolean;
   filterGroup: FormGroup;
   searchGroup: FormGroup;
+  languageId : any;
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
   languageMaster = [];
 
@@ -133,12 +134,12 @@ export class ManageCountriesComponent implements OnInit,
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.countriesService.patchState({ sorting });
+    this.countriesService.patchState({ sorting },null,this.languageId);
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.countriesService.patchState({ paginator });
+    this.countriesService.patchState({ paginator },null,this.languageId);
   }
 
   // form actions
@@ -198,11 +199,11 @@ export class ManageCountriesComponent implements OnInit,
   }
 
   changeLanguage(e) {
-    let languageId = e.target.value;
-    if (languageId == "null") {
+    this.languageId = e.target.value;
+    if (this.languageId == "null") {
       this.countriesService.fetch();
     } else {
-      this.countriesService.fetchByLanguage(languageId);
+      this.countriesService.fetchByLanguage(this.languageId);
     }
   }
 

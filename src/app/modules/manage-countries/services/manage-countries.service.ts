@@ -35,8 +35,9 @@ export class ManageCountriesService extends TableService<Country> implements OnD
     return forkJoin([language, grade]);
   }
   // READ
-  find(tableState: ITableState): Observable<TableResponseModel<Country>> {
-    return this.http.get<Country[]>(this.API_URL).pipe(
+  find(tableState: ITableState,gradeId=null,languageId=null): Observable<TableResponseModel<Country>> {
+    const url = languageId!='null' && languageId != null ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + languageId + '}]' : this.API_URL;
+    return this.http.get<Country[]>(url).pipe(
       map((response:any) => {
         const filteredResult = baseFilter(response.data, tableState);
         const result: TableResponseModel<Country> = {
@@ -49,6 +50,7 @@ export class ManageCountriesService extends TableService<Country> implements OnD
   }
 
   findByLanguage(tableState: ITableState,id): Observable<TableResponseModel<Country>> {
+    const url = id!='null' && id != null ? this.API_URL + '?filters[root]=[{"f":"systemLanguageId","v":' + id + '}]' : this.API_URL;
     return this.http.get<Country[]>(this.API_URL+'?filters[root]=[{"f":"systemLanguageId","v":'+id+'}]').pipe(
       map((response: any) => {
         const filteredResult = baseFilter(response.data, tableState);
