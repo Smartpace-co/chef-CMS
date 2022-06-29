@@ -174,7 +174,7 @@ export class EditIngredientsModalComponent implements OnInit {
       linkForEasyOrdering: [this.ingredients.easyOrdering],
       size: [this.ingredients.size],
       status: [this.ingredients.status, Validators.compose([Validators.required])],
-      seasonId: [this.ingredients.season?.id, Validators.compose([Validators.required])],
+      seasonId: [this.ingredients.season?.id],
       commonNameOfIngredient: [this.ingredients.commonName],
       scientificNameOfIngredient: [this.ingredients.scientificName],
       allergen: [this.ingredients.allergen],

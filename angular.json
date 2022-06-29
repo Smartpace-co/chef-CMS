@@ -138,6 +138,9 @@
           "configurations": {
             "production": {
               "browserTarget": "demo1-app:build:production"
+            },
+            "uat": {
+              "browserTarget": "demo1-app:build:uat"
             }
           }
         },

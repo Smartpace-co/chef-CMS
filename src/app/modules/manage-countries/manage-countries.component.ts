@@ -40,6 +40,8 @@ export class ManageCountriesComponent implements OnInit,
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
   languageMaster = [];
 
+  searchValue: string = "";
+
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
@@ -61,6 +63,10 @@ export class ManageCountriesComponent implements OnInit,
 
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
+  }
+
+  handleChangeInput(value: string){
+    this.searchValue = value;
   }
 
   // Load system languages

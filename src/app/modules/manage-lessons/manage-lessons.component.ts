@@ -131,7 +131,7 @@ export class ManageLessonsComponent implements OnInit, OnDestroy,
   }
 
   search(searchTerm: string) {
-    this.lessonService.patchState({ searchTerm });
+    this.lessonService.patchStateForLesson({ searchTerm }, this.gradeId);
   }
 
   // sorting

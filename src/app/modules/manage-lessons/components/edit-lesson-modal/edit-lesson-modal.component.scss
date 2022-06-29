@@ -17,3 +17,14 @@
   #upload_button input[type="file"] {
     display: none;
   }
+
+
+.select-disable {
+  cursor: not-allowed;
+}
+
+.select-disable > select {
+  pointer-events: none;
+  opacity: 0.65;
+  box-shadow: none;
+}

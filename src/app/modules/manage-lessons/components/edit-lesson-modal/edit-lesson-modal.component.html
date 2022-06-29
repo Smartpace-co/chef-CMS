@@ -127,7 +127,7 @@
 
                             </div>
 
-                            <div class="form-group" [ngClass]="id ? 'col-lg-6':'col-lg-4'">
+                            <div class="form-group col-lg-4">
 
                                 <label class="form-label">Lesson Name</label>
 
@@ -147,7 +147,7 @@
                                     Lesson Name is required
                                 </div>
                             </div>
-                            <div class="form-group" [ngClass]="id ? 'col-lg-6':'col-lg-4'">
+                            <div class="form-group col-lg-4">
                                 <label>Grade</label>
                                 <select class="form-control form-control-lg form-control-solid"
                                     placeholder="Select Grade" name="grade"
@@ -162,15 +162,17 @@
                                     required
                                 </div>
                             </div>
-                            <div *ngIf="!id" class="form-group" [ngClass]="!id ? 'col-lg-4':''">
+                            <!-- <div *ngIf="!id" class="form-group" [ngClass]="!id ? 'col-lg-4':''"> -->
+                            <div  class="form-group col-lg-4">
                                 <label>Language</label>
-                                <select class="form-control form-control-lg form-control-solid" name="languageId"
-                                    [class.is-invalid]="isControlInvalid('languageId')" formControlName="languageId">
-                                    <option [value]="null" disabled>Select Language </option>
-                                    <option [value]="item.id" [disabled]="!item.is_enable"
-                                        *ngFor="let item of systemLanguageMaster">{{item.title}}</option>
-
-                                </select>
+                                <div [class.select-disable]="id">
+                                    <select class="form-control form-control-lg form-control-solid" name="languageId"
+                                        [class.is-invalid]="isControlInvalid('languageId')" formControlName="languageId">
+                                        <option [value]="null" disabled>Select Language </option>
+                                        <option [value]="item.id" [disabled]="!item.is_enable"
+                                            *ngFor="let item of systemLanguageMaster">{{item.title}}</option>
+                                    </select>
+                                </div>
                                 <div class="invalid-feedback" *ngIf="controlHasError('required', 'languageId')">Language
                                     is required
                                 </div>
@@ -227,7 +229,8 @@
                                 </span>
                                 <span class="row" *ngIf="formGroup.controls['greetingTrack'].value">
                                     <audio style="width: 22rem!important;"  controls>
-                                        <source [src]="formGroup.controls['greetingTrack'].value" type="audio/mp3,audio/aac">
+                                        <source [src]="formGroup.controls['greetingTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['greetingTrack'].value" type="audio/aac">
                                     </audio>
                                     <label (click)="removeGreetingTrack()"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -249,7 +252,7 @@
                             </div>
 
                             <div class="form-group col-lg-4">
-                                <label class="form-label">Enjoy your meal Linguistic Details(Optional)</label>
+                                <label class="form-label">Enjoy your meal Linguistic Details</label>
                                 <input type="text" class="form-control form-control-lg form-control-solid"
                                     name="goodbyeLinguistic" placeholder="Enter Enjoy your meal Linguistic details"
                                     autocomplete="off" [class.is-invalid]="isControlInvalid('goodbyeLinguistic')"
@@ -270,7 +273,8 @@
                                 </span>
                                 <span class="row" *ngIf="formGroup.controls['goodbyeTrack'].value">
                                     <audio style="width: 22rem!important;" controls>
-                                        <source [src]="formGroup.controls['goodbyeTrack'].value" type="audio/mp3,audio/aac">
+                                        <source [src]="formGroup.controls['goodbyeTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['goodbyeTrack'].value" type="audio/aac">
                                     </audio>
                                         <label (click)="removeGoodbyeTrack()"
                                             class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -314,7 +318,8 @@
                                 <span class="row" *ngIf="formGroup.controls['learningObjectivesForStudentTrack'].value">
                                     <label>Learning Objective Voicehover For Student</label>
                                     <audio style="width: 20rem!important;" controls>
-                                        <source [src]="formGroup.controls['learningObjectivesForStudentTrack'].value" type="audio/mp3,audio/aac">
+                                        <source [src]="formGroup.controls['learningObjectivesForStudentTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['learningObjectivesForStudentTrack'].value" type="audio/aac">
                                     </audio>
                                     <label (click)="removeLearningObjectiveTrack('learningObjectivesForStudentTrack')"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -333,7 +338,8 @@
                                 <span class="row" *ngIf="formGroup.controls['learningObjectivesForTeacherTrack'].value">
                                     <label>Learning Objective Voicehover For Teacher</label>
                                     <audio style="width: 20rem!important;" controls>
-                                        <source [src]="formGroup.controls['learningObjectivesForTeacherTrack'].value" type="audio/mp3,audio/aac">
+                                        <source [src]="formGroup.controls['learningObjectivesForTeacherTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['learningObjectivesForTeacherTrack'].value" type="audio/aac">
                                     </audio>
                                     <label (click)="removeLearningObjectiveTrack('learningObjectivesForTeacherTrack')"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">
@@ -352,7 +358,8 @@
                                 <span class="row" *ngIf="formGroup.controls['safetyStepsTrack'].value">
                                     <label>Voicehover for Safety Steps :</label>
                                     <audio style="width: 20rem!important;" controls>
-                                        <source [src]="formGroup.controls['safetyStepsTrack'].value" type="audio/mp3,audio/aac">
+                                        <source [src]="formGroup.controls['safetyStepsTrack'].value" type="audio/mp3">
+                                        <source [src]="formGroup.controls['safetyStepsTrack'].value" type="audio/aac">
                                     </audio>
                                     <label (click)="removeLearningObjectiveTrack('safetyStepsTrack')"
                                     class="btn btn-md btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow ml-2">

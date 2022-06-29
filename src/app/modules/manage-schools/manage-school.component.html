@@ -8,6 +8,22 @@
         </div>
     </div>
     <div class="card-body">
+        <form class="mb-5" [formGroup]="searchGroup">
+            <div class="search-input">
+                <span
+                  [inlineSVG]="'./assets/media/svg/icons/General/Search.svg'"
+                  cacheSVG="true"
+                  class="search-input__svg svg-icon svg-icon-md"
+                >
+                </span>
+                <input
+                formControlName="searchTerm"
+                  class="form-control"
+                  type="text"
+                  placeholder="Search"
+                />
+              </div>
+        </form>
 
         <!-- begin:Table -->
         <div class="table-responsive angular-bootstrap-table">

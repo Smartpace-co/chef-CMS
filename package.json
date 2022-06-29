@@ -9,8 +9,10 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "rtl": "webpack --config webpack-rtl.config.js",
-        "docker:build": "docker build . -t gcr.io/spatial-arcadia-321321/chefk-cms-frontend-prod:latest",
-        "docker:push": "docker push  gcr.io/spatial-arcadia-321321/chefk-cms-frontend-prod:latest"
+        "docker:build": "docker build . -t gcr.io/spatial-arcadia-321321/chefk-cms-frontend-staging:latest",
+        "docker:push": "docker push  gcr.io/spatial-arcadia-321321/chefk-cms-frontend-staging:latest",
+        "docker:build:prod": "docker build . -t gcr.io/spatial-arcadia-321321/chefk-cms-frontend-prod:latest",
+        "docker:push:prod": "docker push  gcr.io/spatial-arcadia-321321/chefk-cms-frontend-prod:latest"
     },
     "private": true,
     "dependencies": {

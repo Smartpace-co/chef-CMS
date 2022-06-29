@@ -125,7 +125,7 @@ export class EditStandardsModalComponent implements OnInit {
 
   loadForm() {
     this.validationService.formGroupDef = this.formGroup = this.fb.group({
-      standardTitle: [this.standard.standardTitle, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      standardTitle: [this.standard.standardTitle, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(150)])],
       status: [this.standard.status, Validators.compose([Validators.required])],
       grade: [this.standard.grade?.id, Validators.compose([Validators.required])],
       subject: [this.standard.subject?.id, Validators.compose([Validators.required])],

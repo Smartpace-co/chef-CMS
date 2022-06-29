@@ -275,3 +275,15 @@
 .resize-none {
 	resize: none;
 }
+
+.search-input {
+  position: relative;
+
+  
+  &__svg {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

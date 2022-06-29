@@ -40,7 +40,7 @@ export function sortArray(incomingArray: any[], sortField: string = '', sortOrde
       element['countryName']= element['countryName'].charAt(0).toUpperCase() + element['countryName'].slice(1);
     }
   });
-
+  
   let result: any[] = [];
   result = incomingArray.sort((a, b) => {
     if (a[sortField] < b[sortField]) {

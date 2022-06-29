@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
-import { exhaustMap, map } from 'rxjs/operators';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { User } from '../_models/user.model';
 import { baseFilter } from 'src/app/_fake/fake-helpers/http-extenstions';
@@ -35,6 +35,7 @@ export class UsersService extends TableService<User> implements OnDestroy {
           items: filteredResult.items,
           total: filteredResult.total
         };
+        console.log(33333333333333, result);
         return result;
       })
     );
@@ -97,4 +98,18 @@ export class UsersService extends TableService<User> implements OnDestroy {
   getExternalUsersCount(): Observable<any>{
     return this.http.get(`${environment.apiUrl}/user/webPortal`);
   }
+
+  sendEmailNewPassword(data): Observable<any>{
+    return this.http.post(`${environment.chefkCoreApi}/forgotPassword/validateEmail`, {...data})
+    .pipe(
+      catchError(()=> {
+        throw  new Error("Something wrong");
+      }),
+      map((res: any) => {
+        return res;
+      })
+    );
+  }
+
+
 }

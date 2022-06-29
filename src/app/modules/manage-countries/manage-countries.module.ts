@@ -5,6 +5,7 @@ import { ManageCountriesRoutingModule } from './manage-countries-routing.module'
 import { ManageCountriesComponent } from './manage-countries.component';
 import { EditCountriesComponent } from './components/edit-countries/edit-countries.component';
 import { CommonModules } from 'src/app/_metronic/shared/common/common.module';
+import { CoreModule } from 'src/app/_metronic/core';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { CommonModules } from 'src/app/_metronic/shared/common/common.module';
   imports: [
     CommonModule,
     ManageCountriesRoutingModule,
-    CommonModules
+    CommonModules,
+    CoreModule
   ]
 })
 export class ManageCountriesModule { }

@@ -199,7 +199,7 @@ export class EditLessonModalComponent implements OnInit {
       safteySteps: this.fb.array([]),
       safetyStepsTrack: [this.lesson.safetyStepsTrack],
       goodbye: [this.lesson.goodbye, Validators.compose([Validators.required])],
-      goodbyeLinguistic: [this.lesson.goodbyeLinguistic],
+      goodbyeLinguistic: [this.lesson.goodbyeLinguistic, Validators.compose([Validators.required])],
       goodbyeTrack: [this.lesson.goodbyeTrack],
       languageId: [this.lesson.systemLanguageId,Validators.compose([Validators.required])]
       //  links: this.fb.array([])
