@@ -7,8 +7,8 @@ export const environment = {
   appVersion: 'v717demo1',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: false,
-  apiUrl: 'http://localhost:3000/api/v1',
-  chefkCoreApi: 'http://localhost:3001/api/v1',
+  apiUrl: 'https://kchback.smartpace.co.uk/api/v1',
+  chefkCoreApi: 'https://kch.smartpace.co.uk/api/v1',
   bucketUrl:'https://storage.googleapis.com/chefk-staging',
   public_key:'pk_test_51J2qQTLnyrqVEiSe5LUumXNARXUbszlstNit2HsGbPr2rRtJPSttDyGHEOt4yIU4M14e2KRz3f1Oa53sNhDOyMTv00Hun3pjbK',
 };  
